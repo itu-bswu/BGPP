@@ -10,14 +10,18 @@ We will be using the MVC (Model-View-Controller) architecture.
 
 <b>Model</b>
 	Car
-	CarType (?)
+	CarType
 	Customer
-	Reservation (?)
+	Reservation
 	
 <b>Controller</b>
+	ReservationOverController
+	AddEditReservationController
+	CustomerOverviewController
+	EditCustomerController
 
 <b>View</b>
-	Reservation overview
-	Add/Edit reservation
-	Customer overview
-	Edit customer
+	ReservationOverview
+	AddEditReservation
+	CustomerOverview
+	EditCustomer
