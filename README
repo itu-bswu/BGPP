@@ -15,7 +15,7 @@ We will be using the MVC (Model-View-Controller) architecture.
 	Reservation
 	
 <b>Controller</b>
-	ReservationOverController
+	ReservationOverviewController
 	AddEditReservationController
 	CustomerOverviewController
 	EditCustomerController
