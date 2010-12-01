@@ -5,3 +5,19 @@ IT University of Copenhagen:
 This project is a school project. It is about a car rental service.
 The system will be a single-user system, and will be using a MySQL
 database for storing the data.
+
+We will be using the MVC (Model-View-Controller) architecture.
+
+<b>Model</b>
+	Car
+	CarType (?)
+	Customer
+	Reservation (?)
+	
+<b>Controller</b>
+
+<b>View</b>
+	Reservation overview
+	Add/Edit reservation
+	Customer overview
+	Edit customer
