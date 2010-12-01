@@ -1,0 +1,7 @@
+IT University of Copenhagen:
+	- Ulrik Damm (ulfd@itu.dk)
+	- Niklas Hansen (nikl@itu.dk)
+	
+This project is a school project. It is about a car rental service.
+The system will be a single-user system, and will be using a MySQL
+database for storing the data.
