@@ -46,7 +46,7 @@ public class CarTest {
 	}
 	
 	/**
-	 * Test - Car #1
+	 * Test - Car #1-3
 	 */
 	@Test
 	public void testCarCreate () {
@@ -55,11 +55,10 @@ public class CarTest {
 		createVars.put("car", "Ford Transit");
 		createVars.put("licenseplate", "SV 32 654");
 		
-		boolean created = false;
-		if (car.create(createVars) > 0) {
-			created = true;
-		}
+		int car1 = car.create(createVars);
 		
-		assertTrue(created);
+		assertTrue(car1 > 0);
+		assertTrue(car.read(car1) != null);
+		assertTrue(car.delete(car1));
 	}
 }
