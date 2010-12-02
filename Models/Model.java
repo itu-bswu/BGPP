@@ -3,10 +3,13 @@ package Models;
 import java.util.Map;
 
 /**
- * Model - Car
+ * Model
+ * Basic abstract super-class for models. With this certain 
+ * basic methods are guaranteed in all models. This is based 
+ * on the CRUD-model (Create, Read, Update, Delete).
  *
  */
-public class Car extends Model {
+public abstract class Model {
 	
 	/**
 	 * Creates an entry in the particular data-source, with 
@@ -16,7 +19,7 @@ public class Car extends Model {
 	 * @param createVars Map containing data to be stored.
 	 * @return ID on success; -1 on failure.
 	 */
-	public int create (Map createVars) { return -1; }
+	abstract public int create (Map createVars);
 	
 	/**
 	 * Reads and returns the data with the provided Id in 
@@ -27,7 +30,7 @@ public class Car extends Model {
 	 * @param id The id of the entry to read.
 	 * @return Map containing data on success; null on failure.
 	 */
-	public Map read (int id) { return null; }
+	abstract public Map read (int id);
 	
 	/**
 	 * Updates the entry with the provided ID in the data-
@@ -41,7 +44,7 @@ public class Car extends Model {
 	 * @param updateVars Map containing the data to be updated.
 	 * @return true on success; false on failure.
 	 */
-	public boolean update(int id, Map updateVars) { return false; }
+	abstract public boolean update(int id, Map updateVars);
 	
 	/**
 	 * Deletes the entry with the provided ID in the data-
@@ -52,5 +55,5 @@ public class Car extends Model {
 	 * @param id The ID of the entry to be deleted.
 	 * @return true on success; false on failure.
 	 */
-	public boolean delete (int id) { return false; }
+	abstract public boolean delete (int id);
 }
