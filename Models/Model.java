@@ -19,7 +19,7 @@ public abstract class Model {
 	 * @param createVars Map containing data to be stored.
 	 * @return ID on success; -1 on failure.
 	 */
-	abstract public int create (Map createVars);
+	abstract public int create (Map<String, Object> createVars);
 	
 	/**
 	 * Reads and returns the data with the provided Id in 
@@ -30,7 +30,7 @@ public abstract class Model {
 	 * @param id The id of the entry to read.
 	 * @return Map containing data on success; null on failure.
 	 */
-	abstract public Map read (int id);
+	abstract public Map<String, Object> read (int id);
 	
 	/**
 	 * Updates the entry with the provided ID in the data-
@@ -44,7 +44,7 @@ public abstract class Model {
 	 * @param updateVars Map containing the data to be updated.
 	 * @return true on success; false on failure.
 	 */
-	abstract public boolean update(int id, Map updateVars);
+	abstract public boolean update(int id, Map<String, Object> updateVars);
 	
 	/**
 	 * Deletes the entry with the provided ID in the data-
