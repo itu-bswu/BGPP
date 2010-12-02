@@ -1,4 +1,5 @@
-import Views.ReservationOverview;
+import Views.*;
+import Controllers.*;
 
 /**
  * Main - Main class
@@ -7,5 +8,6 @@ import Views.ReservationOverview;
 public class Main {
 	public static void main(String[] args) {
 		ReservationOverview window = new ReservationOverview();
+		ReservationOverviewController controller = new ReservationOverviewController(window);
 	}
 }
