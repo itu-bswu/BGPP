@@ -16,7 +16,22 @@ public class Customer extends Model {
 	 * @param createVars Map containing data to be stored.
 	 * @return ID on success; -1 on failure.
 	 */
-	public int create (Map<String, Object> createVars) { return -1; }
+	public int create (Map<String, Object> createVars) {
+		String name = createVars.get("name").toString();
+		int phone = Integer.parseInt(createVars.get("phone").toString());
+		return create(name, phone);
+	}
+	
+	/**
+	 * TODO: Edit this text
+	 * Creates an entry in the particular data-source, with 
+	 * the data given in the Map. The ID of the new entry 
+	 * is returned on success.
+	 * 
+	 * @param createVars Map containing data to be stored.
+	 * @return ID on success; -1 on failure.
+	 */
+	public int create (String name, int phone) { return -1; }
 	
 	/**
 	 * Reads and returns the data with the provided Id in 
