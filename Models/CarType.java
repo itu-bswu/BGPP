@@ -19,6 +19,7 @@ public class CarType extends Model {
 	public int create (Map<String, Object> createVars) { return -1; }
 	
 	/**
+	 * TODO: Edit this text
 	 * Creates an entry in the particular data-source, with 
 	 * the data given in the Map. The ID of the new entry 
 	 * is returned on success.
@@ -38,6 +39,18 @@ public class CarType extends Model {
 	 * @return Map containing data on success; null on failure.
 	 */
 	public Map<String, Object> read (int id) { return null; }
+	
+	/**
+	 * TODO: Edit this text
+	 * Reads and returns the data with the provided Id in 
+	 * a Map, with data-names as keys. If an entry with 
+	 * the provided ID cannot be found in the data-source, 
+	 * null will be returned.
+	 * 
+	 * @param id The id of the entry to read.
+	 * @return Map containing data on success; null on failure.
+	 */
+	public Map<String, Object> read (String title) { return null; }
 	
 	/**
 	 * Updates the entry with the provided ID in the data-
