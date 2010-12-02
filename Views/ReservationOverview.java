@@ -22,6 +22,29 @@ public class ReservationOverview extends javax.swing.JFrame {
 	public ReservationOverview() {
 		this.setSize(800, 400);
 		
+		javax.swing.JMenuBar menuBar = new javax.swing.JMenuBar();
+		this.setJMenuBar(menuBar);
+		
+		javax.swing.JMenu fileMenu = new javax.swing.JMenu("File");
+		menuBar.add(fileMenu);
+		
+		javax.swing.JMenuItem newReservationItem = new javax.swing.JMenuItem("New reservation...");
+		fileMenu.add(newReservationItem);
+		
+		fileMenu.addSeparator();
+		javax.swing.JMenuItem quitItem = new javax.swing.JMenuItem("Quit");
+		fileMenu.add(quitItem);
+		
+		javax.swing.JMenu viewMenu = new javax.swing.JMenu("View");
+		menuBar.add(viewMenu);
+		
+		javax.swing.JMenuItem gotoItem = new javax.swing.JMenuItem("Go to date...");
+		viewMenu.add(gotoItem);
+		
+		viewMenu.addSeparator();
+		javax.swing.JMenuItem customerItem = new javax.swing.JMenuItem("View customer list...");
+		viewMenu.add(customerItem);
+		
 		//TODO: Load number of cars from database
 		carsStates = new CellState[15][7];
 		
