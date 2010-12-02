@@ -87,6 +87,9 @@ public class CarTest {
 		
 		assertTrue(car2 > 0); // Test #6
 		assertFalse(car.create(createVars) > 0); // Test #7
+		
+		car.delete(car1);
+		car.delete(car2);
 	}
 	
 	/**
