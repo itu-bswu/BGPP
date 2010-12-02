@@ -20,7 +20,7 @@ public class ReservationOverview extends javax.swing.JFrame {
 	 * ReservationOverview contructor
 	 */
 	public ReservationOverview() {
-		this.setSize(800, 600);
+		this.setSize(800, 400);
 		
 		//TODO: Load number of cars from database
 		carsStates = new CellState[15][7];
@@ -87,8 +87,16 @@ public class ReservationOverview extends javax.swing.JFrame {
 		}
 		
 		this.setLayout(new java.awt.BorderLayout());
-		this.add(table.getTableHeader(), java.awt.BorderLayout.PAGE_START);
-		this.add(table, java.awt.BorderLayout.CENTER);
+		this.add(table.getTableHeader(), java.awt.BorderLayout.NORTH);
+		this.add(new javax.swing.JScrollPane(table), java.awt.BorderLayout.CENTER);
+		
+		//bottom panel
+		javax.swing.JPanel bottomPanel = new javax.swing.JPanel();
+		bottomPanel.setLayout(new java.awt.BorderLayout());
+		bottomPanel.add(new javax.swing.JButton("<"), java.awt.BorderLayout.WEST);
+		bottomPanel.add(new javax.swing.JButton(">"), java.awt.BorderLayout.EAST);
+		bottomPanel.add(new javax.swing.JButton("Go to date..."), java.awt.BorderLayout.CENTER);
+		this.add(bottomPanel, java.awt.BorderLayout.SOUTH);
 		
 		this.setVisible(true);
 	}
