@@ -3,6 +3,7 @@ package Views;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
+import java.awt.event.*;
 
 /**
  * View - Reservation Overview
@@ -18,7 +19,12 @@ public class ReservationOverview extends JFrame {
 		CELL_START, CELL_MIDDLE, CELL_END, CELL_NONE
 	}
 	
-	CellState[][] carsStates;
+	private CellState[][] carsStates;
+	
+	private JMenuItem newReservationItem;
+	private JMenuItem quitItem;
+	private JMenuItem gotoItem;
+	private JMenuItem customerListItem;
 	
 	/**
 	 * ReservationOverview contructor
@@ -26,27 +32,28 @@ public class ReservationOverview extends JFrame {
 	public ReservationOverview() {
 		this.setSize(800, 400);
 		
+		//setting up the menu bar
 		JMenuBar menuBar = new JMenuBar();
 		this.setJMenuBar(menuBar);
 		
 		JMenu fileMenu = new JMenu("File");
 		menuBar.add(fileMenu);
 		
-		JMenuItem newReservationItem = new JMenuItem("New reservation...");
+		newReservationItem = new JMenuItem("New reservation...");
 		fileMenu.add(newReservationItem);
 		
 		fileMenu.addSeparator();
-		JMenuItem quitItem = new JMenuItem("Quit");
+		quitItem = new JMenuItem("Quit");
 		fileMenu.add(quitItem);
 		
 		JMenu viewMenu = new JMenu("View");
 		menuBar.add(viewMenu);
 		
-		JMenuItem gotoItem = new JMenuItem("Go to date...");
+		gotoItem = new JMenuItem("Go to date...");
 		viewMenu.add(gotoItem);
 		
 		viewMenu.addSeparator();
-		JMenuItem customerItem = new JMenuItem("View customer list...");
+		customerListItem = new JMenuItem("View customer list...");
 		viewMenu.add(customerItem);
 		
 		//TODO: Load number of cars from database
@@ -128,12 +135,53 @@ public class ReservationOverview extends JFrame {
 		this.setVisible(true);
 	}
 	
+	
+	/**
+	 * addNewReservationListener
+	 * add a new ActionListener to the add new reservation action
+	 * @param a the ActionListener
+	 */
+	public void addNewReservationListener(ActionListener a) {
+		newReservationItem.addActionListener(a);
+	}
+	
+	
+	/**
+	 * addQuitListener
+	 * add a new ActionListener to the quit action
+	 * @param a the ActionListener
+	 */
+	public void addQuitListener(ActionListener a) {
+		quitItem.addActionListener(a);
+	}
+	
+	
+	/**
+	 * addGotoListener
+	 * add a new ActionListener to the go to date action
+	 * @param a the ActionListener
+	 */
+	public void addGotoListener(ActionListener a) {
+		gotoItem.addActionListener(a);
+	}
+	
+	
+	/**
+	 * addCustomerListListener
+	 * add a new ActionListener to the show customer list action
+	 * @param a the ActionListener
+	 */
+	public void addCustomerListListener(ActionListener a) {
+		customerListItem.addActionListener(a);
+	}
+	
+	
 	/**
 	 * class TableCellRenderer
 	 * custom renderer class for the cells in the table
 	 * extends JPanel instead of the default JLabel, since no text is needed
 	 */
-	public class CustomTableCellRenderer extends JPanel implements TableCellRenderer {
+	private class CustomTableCellRenderer extends JPanel implements TableCellRenderer {
 		private int row;
 		private int column;
 		
