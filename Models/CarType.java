@@ -16,7 +16,7 @@ public class CarType extends Model {
 	 * @param createVars Map containing data to be stored.
 	 * @return ID on success; -1 on failure.
 	 */
-	public int create (Map createVars) { return -1; }
+	public int create (Map<String, Object> createVars) { return -1; }
 	
 	/**
 	 * Reads and returns the data with the provided Id in 
@@ -27,7 +27,7 @@ public class CarType extends Model {
 	 * @param id The id of the entry to read.
 	 * @return Map containing data on success; null on failure.
 	 */
-	public Map read (int id) { return null; }
+	public Map<String, Object> read (int id) { return null; }
 	
 	/**
 	 * Updates the entry with the provided ID in the data-
@@ -41,7 +41,7 @@ public class CarType extends Model {
 	 * @param updateVars Map containing the data to be updated.
 	 * @return true on success; false on failure.
 	 */
-	public boolean update(int id, Map updateVars) { return false; }
+	public boolean update(int id, Map<String, Object> updateVars) { return false; }
 	
 	/**
 	 * Deletes the entry with the provided ID in the data-
