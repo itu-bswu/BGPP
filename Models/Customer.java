@@ -45,6 +45,24 @@ public class Customer extends Model {
 	public Map<String, Object> read (int id) { return null; }
 	
 	/**
+	 * TODO: Edit this text
+	 * Reads and returns the data with the provided Id in 
+	 * a Map, with data-names as keys. If an entry with 
+	 * the provided ID cannot be found in the data-source, 
+	 * null will be returned.
+	 * 
+	 * @param id The id of the entry to read.
+	 * @return Map containing data on success; null on failure.
+	 */
+	public Map<String, Object> read (int phoneId, boolean phone) {
+		if (!phone) {
+			return read(phoneId);
+		}
+		
+		return null;
+	}
+	
+	/**
 	 * Updates the entry with the provided ID in the data-
 	 * source. The data to be updated is the keys in the map, 
 	 * and the values are the new data. If then entry is 
