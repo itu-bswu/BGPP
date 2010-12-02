@@ -54,7 +54,11 @@ public class ReservationOverview extends JFrame {
 		
 		viewMenu.addSeparator();
 		customerListItem = new JMenuItem("View customer list...");
+<<<<<<< HEAD
 		viewMenu.add(customerListItem);
+=======
+		viewMenu.add(customerItem);
+>>>>>>> d373571b463987e5715a1871aeed9276615c2c51
 		
 		//TODO: Load number of cars from database
 		carsStates = new CellState[15][7];
