@@ -19,6 +19,16 @@ public class CarType extends Model {
 	public int create (Map<String, Object> createVars) { return -1; }
 	
 	/**
+	 * Creates an entry in the particular data-source, with 
+	 * the data given in the Map. The ID of the new entry 
+	 * is returned on success.
+	 * 
+	 * @param createVars Map containing data to be stored.
+	 * @return ID on success; -1 on failure.
+	 */
+	public int create (String typeName) { return -1; }
+	
+	/**
 	 * Reads and returns the data with the provided Id in 
 	 * a Map, with data-names as keys. If an entry with 
 	 * the provided ID cannot be found in the data-source, 
