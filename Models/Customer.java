@@ -86,4 +86,12 @@ public class Customer extends Model {
 	 * @return true on success; false on failure.
 	 */
 	public boolean delete (int id) { return false; }
+	
+	/**
+	 * Gives the amount of entries in the data-source, 
+	 * i.e. the amount of customers in the database.
+	 * 
+	 * @return The amount of entries in the data-source.
+	 */
+	public int amountOfEntries () { return 0; }
 }

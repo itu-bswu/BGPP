@@ -56,4 +56,12 @@ public abstract class Model {
 	 * @return true on success; false on failure.
 	 */
 	abstract public boolean delete (int id);
+	
+	/**
+	 * Gives the amount of entries in the data-source, 
+	 * i.e. the amount of customers in the database.
+	 * 
+	 * @return The amount of entries in the data-source.
+	 */
+	abstract public int amountOfEntries ();
 }
