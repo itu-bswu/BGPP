@@ -49,7 +49,7 @@ public class Car extends Model {
 			String query = "SELECT Car.carId, Car.carType, Car.licensePlate, Car.title, CarType.title " +
 						   "FROM Car " +
 						   "WHERE carId = " + id + " " +
-						   "CarType.typeId = Car.carType" + 
+						   "AND CarType.typeId = Car.carType " + 
 						   "LIMIT 1";
 			ResultSet result = conn.query(query);
 			
