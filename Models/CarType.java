@@ -66,19 +66,16 @@ public class CarType extends Model {
 	public Map<String, Object> read (int id) {
 		try {
 			MySQLConnection conn = MySQLConnection.getInstance();
-			String query = "SELECT Car.carId, Car.carType, Car.licensePlate, Car.title, CarType.title " +
-						   "FROM Car " +
-						   "WHERE carId = " + id + " " +
-						   "CarType.typeId = Car.carType " + 
+			String query = "SELECT typeId, title " +
+						   "FROM CarType " +
+						   "WHERE typeId = '" + id + "' " +
 						   "LIMIT 1";
 			ResultSet result = conn.query(query);
+			result.next();
 			
 			Map<String, Object> returnMap = new TreeMap<String, Object>();
-			returnMap.put("id", 			result.getInt("Car.carId"));
-			returnMap.put("name", 			result.getInt("Car.title"));
-			returnMap.put("typeId", 		result.getInt("Car.carType"));
-			returnMap.put("typeName", 		result.getInt("CarType.title"));
-			returnMap.put("licensePlate", 	result.getInt("Car.licensePlate"));
+			returnMap.put("id", 			result.getInt("typeId"));
+			returnMap.put("name", 			result.getString("title"));
 			
 			return returnMap;
 		} catch (SQLException e) {
@@ -97,23 +94,23 @@ public class CarType extends Model {
 	 * 
 	 * @param id The id of the entry to read.
 	 * @return Map containing data on success; null on failure.
+	 * 			key 			=> description:
+	 * 			id 				=> The ID of the car-type
+	 * 			name			=> The title of the car-type
 	 */
 	public Map<String, Object> read (String title) {
 		try {
 			MySQLConnection conn = MySQLConnection.getInstance();
-			String query = "SELECT Car.carId, Car.carType, Car.licensePlate, Car.title, CarType.title " +
-						   "FROM Car " +
-						   "WHERE Car.title = '" + title + "' " +
-						   "CarType.typeId = Car.carType " + 
+			String query = "SELECT typeId, title " +
+						   "FROM CarType " +
+						   "WHERE title = '" + title + "' " +
 						   "LIMIT 1";
 			ResultSet result = conn.query(query);
+			result.next();
 			
 			Map<String, Object> returnMap = new TreeMap<String, Object>();
-			returnMap.put("id", 			result.getInt("Car.carId"));
-			returnMap.put("name", 			result.getInt("Car.title"));
-			returnMap.put("typeId", 		result.getInt("Car.carType"));
-			returnMap.put("typeName", 		result.getInt("CarType.title"));
-			returnMap.put("licensePlate", 	result.getInt("Car.licensePlate"));
+			returnMap.put("id", 			result.getInt("typeId"));
+			returnMap.put("name", 			result.getString("title"));
 			
 			return returnMap;
 		} catch (SQLException e) {
