@@ -1,5 +1,6 @@
 package Models;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -84,4 +85,11 @@ public class CarType extends Model {
 	 * @return The amount of entries in the data-source.
 	 */
 	public int amountOfEntries () { return 0; }
+	
+	/**
+	 * Lists the entries of the data-source.
+	 * 
+	 * @return A list with all data from the data-source.
+	 */
+	public List list () { return null; }
 }

@@ -1,6 +1,7 @@
 package Models;
 
 import java.util.Map;
+import java.util.List;
 
 /**
  * Model
@@ -64,4 +65,11 @@ public abstract class Model {
 	 * @return The amount of entries in the data-source.
 	 */
 	abstract public int amountOfEntries ();
+	
+	/**
+	 * Lists the entries of the data-source.
+	 * 
+	 * @return A list with all data from the data-source.
+	 */
+	abstract public List list ();
 }
