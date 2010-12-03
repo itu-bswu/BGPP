@@ -69,4 +69,12 @@ public class Reservation extends Model {
 	 * @return A list with all data from the data-source.
 	 */
 	public List list () { return null; }
+	
+	/**
+	 * Lists the entries of the data-source, from the user 
+	 * with the provided ID.
+	 * 
+	 * @return A list with all data from the data-source.
+	 */
+	public List<Map<String, Object>> list (int id) { return null; }
 }
