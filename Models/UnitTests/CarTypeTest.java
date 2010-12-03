@@ -45,7 +45,9 @@ public class CarTypeTest {
 		
 		assertTrue(reindeer > 0); // Test #1
 		assertTrue(toboggan > 0); // Test #2
+		assertEquals(2, carType.amountOfEntries()); // Test #2
 		assertTrue(carType.delete(toboggan)); // Test #3
+		assertEquals(1, carType.amountOfEntries()); // Test #3
 	}
 	
 	/**
