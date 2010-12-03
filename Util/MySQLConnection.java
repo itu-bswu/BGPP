@@ -61,7 +61,10 @@ public class MySQLConnection {
 	public ResultSet query (String query) {
 		try {
 			Statement stmt = conn.createStatement();
-			return stmt.executeQuery(query);
+			if (query.substring(0, query.indexOf(' ')).toLowerCase().equals("select"))
+				return stmt.executeQuery(query);
+			stmt.execute(query, Statement.RETURN_GENERATED_KEYS);
+			return stmt.getGeneratedKeys();
 		} catch (SQLException e) {
 			Logger.write("SQL query failed: " + e.getMessage());
 		}
