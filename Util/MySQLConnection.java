@@ -56,13 +56,13 @@ public class MySQLConnection {
 	 * 
 	 * @param query The SQL query string.
 	 * @return true on success; false on failure
-	 * @see fetch()
 	 */
 	public ResultSet query (String query) {
 		try {
 			Statement stmt = conn.createStatement();
-			if (query.substring(0, query.indexOf(' ')).toLowerCase().equals("select"))
+			if (query.substring(0, query.indexOf(' ')).toLowerCase().equals("select")) {
 				return stmt.executeQuery(query);
+			}
 			stmt.execute(query, Statement.RETURN_GENERATED_KEYS);
 			return stmt.getGeneratedKeys();
 		} catch (SQLException e) {
