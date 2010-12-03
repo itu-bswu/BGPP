@@ -29,16 +29,25 @@ import java.util.Date;
  */
 public class Logger {
 	
-	FileWriter writer;
+	private FileWriter writer;
 	
 	static private Logger logger;
 	
+	/**
+	 * Constructor for objects of class Logger.
+	 * Initializes the File Writer, and opens the file.
+	 */
 	public Logger () {
 		try {
 			this.writer = new FileWriter("error.log");
 		} catch (IOException e) {}
 	}
 	
+	/**
+	 * Write a message to the log.
+	 * 
+	 * @param errorMsg The error message to be recorded.
+	 */
 	static public void write (String errorMsg) {
 		logger = new Logger();
 		logger.writeToLog(errorMsg);
@@ -46,6 +55,11 @@ public class Logger {
 		logger = null;
 	}
 	
+	/**
+	 * Write a message to the log.
+	 * 
+	 * @param errorMsg The error message to be recorded.
+	 */
 	public void writeToLog (String errorMsg) {
 		if (writer == null)
 			return;
@@ -60,6 +74,9 @@ public class Logger {
 		} catch (IOException e) {}
 	}
 	
+	/**
+	 * Close the Logger and the File Writer.
+	 */
 	public void close () {
 		if (writer == null)
 			return;
