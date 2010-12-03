@@ -43,10 +43,11 @@ public class CarType extends Model {
 		try {
 			MySQLConnection conn = MySQLConnection.getInstance();
 			String query = "INSERT INTO CarType " +
-						   "SET title = " + typeName;
+			   			   "SET title = '" + typeName + "'";
 			ResultSet result = conn.query(query);
+			result.next();
 			return result.getInt(1);
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			Logger.write("Couldn't insert row to database: " + e.getMessage());
 		}
 		
@@ -68,7 +69,7 @@ public class CarType extends Model {
 			String query = "SELECT Car.carId, Car.carType, Car.licensePlate, Car.title, CarType.title " +
 						   "FROM Car " +
 						   "WHERE carId = " + id + " " +
-						   "CarType.typeId = Car.carType" + 
+						   "CarType.typeId = Car.carType " + 
 						   "LIMIT 1";
 			ResultSet result = conn.query(query);
 			
@@ -102,8 +103,8 @@ public class CarType extends Model {
 			MySQLConnection conn = MySQLConnection.getInstance();
 			String query = "SELECT Car.carId, Car.carType, Car.licensePlate, Car.title, CarType.title " +
 						   "FROM Car " +
-						   "WHERE Car.title = " + title + " " +
-						   "CarType.typeId = Car.carType" + 
+						   "WHERE Car.title = '" + title + "' " +
+						   "CarType.typeId = Car.carType " + 
 						   "LIMIT 1";
 			ResultSet result = conn.query(query);
 			
@@ -153,7 +154,20 @@ public class CarType extends Model {
 	 * 
 	 * @return The amount of entries in the data-source.
 	 */
-	public int amountOfEntries () { return 0; }
+	public int amountOfEntries () {
+		try {
+			MySQLConnection conn = MySQLConnection.getInstance();
+			String query = "SELECT count(*) AS entryAmount " +
+						   "FROM CarType";
+			ResultSet result = conn.query(query);
+			
+			return result.getInt(1);
+		} catch (SQLException e) {
+			Logger.write("Couldn't read from database: " + e.getMessage());
+		}
+		
+		return 0;
+	}
 	
 	/**
 	 * Lists the entries of the data-source.
