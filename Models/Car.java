@@ -1,7 +1,13 @@
 package Models;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
+
+import Util.Logger;
+import Util.MySQLConnection;
 
 /**
  * Model - Car
@@ -27,8 +33,40 @@ public class Car extends Model {
 	 * 
 	 * @param id The id of the entry to read.
 	 * @return Map containing data on success; null on failure.
+	 * 			key 			=> description:
+	 * 			id 				=> The ID of the car
+	 * 			name			=> The title of the car
+	 * 			typeId 			=> The type-ID of the car
+	 * 			typeName		=> The name of the car-type
+	 * 			licensePlate	=> The license plate
 	 */
-	public Map<String, Object> read (int id) { return null; }
+	public Map<String, Object> read (int id) {
+		if (id <= 0)
+			throw new NullPointerException();
+		
+		try {
+			MySQLConnection conn = MySQLConnection.getInstance();
+			String query = "SELECT Car.carId, Car.carType, Car.licensePlate, Car.title, CarType.title " +
+						   "FROM Car " +
+						   "WHERE carId = " + id + " " +
+						   "CarType.typeId = Car.carType" + 
+						   "LIMIT 1";
+			ResultSet result = conn.query(query);
+			
+			Map<String, Object> returnMap = new TreeMap<String, Object>();
+			returnMap.put("id", 			result.getInt("Car.carId"));
+			returnMap.put("name", 			result.getInt("Car.title"));
+			returnMap.put("typeId", 		result.getInt("Car.carType"));
+			returnMap.put("typeName", 		result.getInt("CarType.title"));
+			returnMap.put("licensePlate", 	result.getInt("Car.licensePlate"));
+			
+			return returnMap;
+		} catch (SQLException e) {
+			Logger.write("Couldn't read from the database: " + e.getMessage());
+		}
+		
+		return null;
+	}
 	
 	/**
 	 * Updates the entry with the provided ID in the data-
