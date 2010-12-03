@@ -55,10 +55,10 @@ public class Car extends Model {
 			
 			Map<String, Object> returnMap = new TreeMap<String, Object>();
 			returnMap.put("id", 			result.getInt("Car.carId"));
-			returnMap.put("name", 			result.getInt("Car.title"));
+			returnMap.put("name", 			result.getString("Car.title"));
 			returnMap.put("typeId", 		result.getInt("Car.carType"));
-			returnMap.put("typeName", 		result.getInt("CarType.title"));
-			returnMap.put("licensePlate", 	result.getInt("Car.licensePlate"));
+			returnMap.put("typeName", 		result.getString("CarType.title"));
+			returnMap.put("licensePlate", 	result.getString("Car.licensePlate"));
 			
 			return returnMap;
 		} catch (SQLException e) {
