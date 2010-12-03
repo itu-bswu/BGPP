@@ -26,6 +26,11 @@ public class ReservationOverview extends JFrame {
 	private JMenuItem gotoItem;
 	private JMenuItem customerListItem;
 	
+	private String customerListItemTitle = "View customer list...";
+	private String newReservationItemTitle = "New reservation...";
+	
+	private JTable table;
+	
 	/**
 	 * ReservationOverview contructor
 	 */
@@ -39,7 +44,7 @@ public class ReservationOverview extends JFrame {
 		JMenu fileMenu = new JMenu("File");
 		menuBar.add(fileMenu);
 		
-		newReservationItem = new JMenuItem("New reservation...");
+		newReservationItem = new JMenuItem(newReservationItemTitle);
 		fileMenu.add(newReservationItem);
 		
 		fileMenu.addSeparator();
@@ -53,7 +58,7 @@ public class ReservationOverview extends JFrame {
 		viewMenu.add(gotoItem);
 		
 		viewMenu.addSeparator();
-		customerListItem = new JMenuItem("View customer list...");
+		customerListItem = new JMenuItem(customerListItemTitle);
 		viewMenu.add(customerListItem);
 		
 		//TODO: Load number of cars from database
@@ -71,43 +76,9 @@ public class ReservationOverview extends JFrame {
 			state[6] = CellState.CELL_END;
 		}
 		
-		//date colums
-		//TODO: generate from date
-		String[] colums = {
-			"Car",
-			"1/12",
-			"2/12",
-			"3/12",
-			"4/12",
-			"5/12",
-			"6/12",
-			"7/12"
-		};
-		
-		//cell contents
-		//TODO: Load cars from database
-		Object[][] data = {
-			{ "Lastbil 1", "", "", "", "", "", "", "" },
-			{ "Lastbil 2", "", "", "", "", "", "", "" },
-			{ "Lastbil 3", "", "", "", "", "", "", "" },
-			{ "Sportsvogn 1", "", "", "", "", "", "", "" },
-			{ "Sportsvogn 2", "", "", "", "", "", "", "" },
-			{ "Sportsvogn 2", "", "", "", "", "", "", "" },
-			{ "Sportsvogn 3", "", "", "", "", "", "", "" },
-			{ "Sportsvogn 4", "", "", "", "", "", "", "" },
-			{ "Sportsvogn 5", "", "", "", "", "", "", "" },
-			{ "Varevogn 1", "", "", "", "", "", "", "" },
-			{ "Varevogn 2", "", "", "", "", "", "", "" },
-			{ "Varevogn 3", "", "", "", "", "", "", "" },
-			{ "hundesl\u00E6de 1", "", "", "", "", "", "", "" },
-			{ "hundesl\u00E6de 2", "", "", "", "", "", "", "" },
-			{ "Din mor", "", "", "", "", "", "", "" }
-		};
-		
 		//creates the table
-		JTable table = new JTable(data, colums);
+		table = new JTable(new CustomTableModel());
 		table.setShowGrid(true);
-		table.setShowHorizontalLines(true);
 		table.setGridColor(Color.GRAY);
 		table.setRowHeight(25);
 		
@@ -173,6 +144,99 @@ public class ReservationOverview extends JFrame {
 	 */
 	public void addCustomerListListener(ActionListener a) {
 		customerListItem.addActionListener(a);
+	}
+	
+	
+	/**
+	 * getCustomerListItemTitle
+	 * used to get the title of the get customer list command
+	 * @return the title of the get customer list command
+	 */
+	public String getCustomerListItemTitle() {
+		return customerListItemTitle;
+	}
+	
+	
+	/**
+	 * getNewReservationItemTitle
+	 * used to get the title of the new reservation command
+	 * @return the title of the new reservation command
+	 */
+	public String getNewReservationItemTitle() {
+		return newReservationItemTitle;
+	}
+	
+	
+	public void addTableMouseListener(MouseListener m) {
+		table.addMouseListener(m);
+	}
+	
+	
+	public int getSelectedRow() {
+		return table.getSelectedRow();
+	}
+	
+	
+	public int getSelectedColumn() {
+		return table.getSelectedColumn();
+	}
+	
+	
+	private class CustomTableModel extends AbstractTableModel {
+		String[] columns = {
+		"Car",
+		"1/12",
+		"2/12",
+		"3/12",
+		"4/12",
+		"5/12",
+		"6/12",
+		"7/12"
+		};
+		
+		
+		String[] cars = {
+		"Lastbil 1",
+		"Lastbil 2",
+		"Lastbil 3",
+		"Sportsvogn 1",
+		"Sportsvogn 2",
+		"Sportsvogn 2",
+		"Sportsvogn 3",
+		"Sportsvogn 4",
+		"Sportsvogn 5",
+		"Varevogn 1",
+		"Varevogn 2",
+		"Varevogn 3",
+		"hundesl\u00E6de 1",
+		"hundesl\u00E6de 2",
+		"Din mor"
+		};
+		
+		
+		public int getRowCount() {
+			return cars.length;
+		}
+		
+		public int getColumnCount() {
+			return columns.length;
+		}
+		
+		public Object getValueAt(int row, int column) {
+			if (column > 0) {
+				return null;
+			} else {
+				return cars[row];
+			}
+		}
+		
+		public String getColumnName(int column) {
+			return columns[column];
+		}
+		
+		public boolean isCellEditable(int rowIndex, int columnIndex) {
+			return false;
+		}
 	}
 	
 	
