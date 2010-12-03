@@ -73,7 +73,7 @@ public class CarTypeTest {
 		int typeReindeer = carType.create("Rensdyrslæde");
 		assertTrue(typeReindeer > 0); // Test #7
 		
-		Map<String, Object> toboggan = carType.read("Kælk");
+		Map<String, Object> toboggan = carType.read("Rensdyrslæde");
 		id = Integer.parseInt(toboggan.get("id").toString());
 		carType.delete(id);
 		carType.delete(typeReindeer);
