@@ -40,14 +40,15 @@ public class CarTypeTest {
 	 */
 	@Test
 	public void testTypeCreate () {
+		int prevAmount = carType.amountOfEntries();
 		int reindeer = carType.create("Rensdyrslæde");
 		int toboggan = carType.create("Kælk");
 		
 		assertTrue(reindeer > 0); // Test #1
 		assertTrue(toboggan > 0); // Test #2
-		assertEquals(2, carType.amountOfEntries()); // Test #2
+		assertEquals(prevAmount+2, carType.amountOfEntries()); // Test #2
 		assertTrue(carType.delete(toboggan)); // Test #3
-		assertEquals(1, carType.amountOfEntries()); // Test #3
+		assertEquals(prevAmount+1, carType.amountOfEntries()); // Test #3
 	}
 	
 	/**
