@@ -22,6 +22,8 @@ public class CarType extends Model {
 	 * is returned on success.
 	 * 
 	 * @param createVars Map containing data to be stored.
+	 * 			key		=> description
+	 * 			name	=> The title of the car-type
 	 * @return ID on success; -1 on failure.
 	 */
 	public int create (Map<String, Object> createVars) {
