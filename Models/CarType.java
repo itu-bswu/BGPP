@@ -10,6 +10,7 @@ import Util.Logger;
 import Util.MySQLConnection;
 
 /**
+ * TODO: Write class description
  * Model - Car Type
  *
  */
@@ -125,6 +126,7 @@ public class CarType extends Model {
 	}
 	
 	/**
+	 * TODO: Future release: Implement this
 	 * Updates the entry with the provided ID in the data-
 	 * source. The data to be updated is the keys in the map, 
 	 * and the values are the new data. If then entry is 
@@ -190,7 +192,7 @@ public class CarType extends Model {
 	}
 	
 	/**
-	 * TODO: Implement this
+	 * TODO: Future release: Implement this
 	 * Lists the entries of the data-source.
 	 * 
 	 * @return A list with all data from the data-source.
