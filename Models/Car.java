@@ -10,6 +10,8 @@ import Util.Logger;
 import Util.MySQLConnection;
 
 /**
+ * TODO: Write class description
+ * TODO: Rewrite javadoc
  * Model - Car
  *
  */
@@ -102,7 +104,7 @@ public class Car extends Model {
 	public int amountOfEntries () { return 0; }
 	
 	/**
-	 * TODO: Implement this
+	 * TODO: Future release: Implement this
 	 * Lists the entries of the data-source.
 	 * 
 	 * @return A list with all data from the data-source.
