@@ -16,6 +16,8 @@ import java.util.Map;
 import java.util.HashMap;
 
 /**
+ * TODO: Write unit test javadoc.
+ * TODO: Review unit tests based on CRUD-model.
  * @author Niklas Hansen
  *
  */
