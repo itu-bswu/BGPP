@@ -20,7 +20,7 @@ public class CustomerOverviewController implements MouseListener {
 		if (e.getClickCount() == 2) {
 			int row = window.getSelectedRow();
 			int column = window.getSelectedColumn();
-			System.out.println("x: " + row + ", y: " + column);
+			new EditCustomer();
 		}
 	}
 	

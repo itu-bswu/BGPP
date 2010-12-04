@@ -13,6 +13,7 @@ public class AddEditReservation extends JFrame {
 	 * creates a new reservation window
 	 */
 	public AddEditReservation() {
+		super("Reservation");
 		this.setupInterface(-1);
 	}
 	
@@ -22,6 +23,7 @@ public class AddEditReservation extends JFrame {
 	 * @param reservationID the reservation ID
 	 */
 	public AddEditReservation(int reservationID) {
+		super("Reservation");
 		this.setupInterface(reservationID);
 	}
 	

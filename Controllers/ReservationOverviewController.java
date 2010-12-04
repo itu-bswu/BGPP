@@ -20,22 +20,29 @@ public class ReservationOverviewController implements ActionListener, MouseListe
 		window.addNewReservationListener(this);
 		window.addCustomerListListener(this);
 		window.addTableMouseListener(this);
+		window.addPrevWeekListener(this);
+		window.addNextWeekListener(this);
+		window.addGotoListener(this);
 	}
 	
 	
 	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals(window.getNewReservationItemTitle())) {
+		if (e.getActionCommand().equals(window.newReservationItemTitle)) {
 			new AddEditReservation();
-		} else if (e.getActionCommand().equals(window.getCustomerListItemTitle())) {
+		} else if (e.getActionCommand().equals(window.customerListItemTitle)) {
 			new CustomerOverviewController(new CustomerOverview());
+		} else if (e.getActionCommand().equals(window.prevWeekItemTitle)) {
+			
+		} else if (e.getActionCommand().equals(window.nextWeekItemTitle)) {
+			
+		} else if (e.getActionCommand().equals(window.gotoItemTitle)) {
+			
 		}
 	}
 	
 	public void mouseClicked(MouseEvent e) {
 		if (e.getClickCount() == 2) {
-			int row = window.getSelectedRow();
-			int column = window.getSelectedColumn();
-			System.out.println("x: " + row + ", y: " + column);
+			new AddEditReservation();
 		}
 	}
 	

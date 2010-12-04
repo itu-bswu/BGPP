@@ -1,6 +1,7 @@
 package Views;
 
 import javax.swing.*;
+import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -9,7 +10,11 @@ import java.awt.event.*;
  *
  */
 public class EditCustomer extends JFrame {
+	JTable table;
+	
 	public EditCustomer() {
+		super("Edit customer");
+		
 		this.setLayout(new BorderLayout());
 		
 		JPanel topPanel = new JPanel(new BorderLayout());

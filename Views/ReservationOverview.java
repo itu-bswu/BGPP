@@ -24,10 +24,15 @@ public class ReservationOverview extends JFrame {
 	private JMenuItem newReservationItem;
 	private JMenuItem quitItem;
 	private JMenuItem gotoItem;
+	private JMenuItem prevWeekItem;
+	private JMenuItem nextWeekItem;
 	private JMenuItem customerListItem;
 	
-	private String customerListItemTitle = "View customer list...";
-	private String newReservationItemTitle = "New reservation...";
+	public final String customerListItemTitle = "View customer list...";
+	public final String newReservationItemTitle = "New reservation...";
+	public final String prevWeekItemTitle = "Previous week";
+	public final String nextWeekItemTitle = "Next week";
+	public final String gotoItemTitle = "Go to week...";
 	
 	private JTable table;
 	
@@ -35,6 +40,8 @@ public class ReservationOverview extends JFrame {
 	 * ReservationOverview contructor
 	 */
 	public ReservationOverview() {
+		super("Reservatoins overview");
+		
 		this.setSize(800, 400);
 		
 		//setting up the menu bar
@@ -54,7 +61,13 @@ public class ReservationOverview extends JFrame {
 		JMenu viewMenu = new JMenu("View");
 		menuBar.add(viewMenu);
 		
-		gotoItem = new JMenuItem("Go to date...");
+		prevWeekItem = new JMenuItem(prevWeekItemTitle);
+		viewMenu.add(prevWeekItem);
+		
+		nextWeekItem = new JMenuItem(nextWeekItemTitle);
+		viewMenu.add(nextWeekItem);
+		
+		gotoItem = new JMenuItem(gotoItemTitle);
 		viewMenu.add(gotoItem);
 		
 		viewMenu.addSeparator();
@@ -94,14 +107,6 @@ public class ReservationOverview extends JFrame {
 		this.setLayout(new BorderLayout());
 		this.add(table.getTableHeader(), BorderLayout.NORTH);
 		this.add(new JScrollPane(table), BorderLayout.CENTER);
-		
-		//bottom panel
-		JPanel bottomPanel = new JPanel();
-		bottomPanel.setLayout(new BorderLayout());
-		bottomPanel.add(new JButton("<"), BorderLayout.WEST);
-		bottomPanel.add(new JButton(">"), BorderLayout.EAST);
-		bottomPanel.add(new JButton("Go to date..."), BorderLayout.CENTER);
-		this.add(bottomPanel, BorderLayout.SOUTH);
 		
 		this.setVisible(true);
 	}
@@ -148,40 +153,59 @@ public class ReservationOverview extends JFrame {
 	
 	
 	/**
-	 * getCustomerListItemTitle
-	 * used to get the title of the get customer list command
-	 * @return the title of the get customer list command
+	 * addNextWeekListener
+	 * add a new ActionListener to the previous week list action
+	 * @param a the ActionListener
 	 */
-	public String getCustomerListItemTitle() {
-		return customerListItemTitle;
+	public void addNextWeekListener(ActionListener a) {
+		nextWeekItem.addActionListener(a);
 	}
 	
 	
 	/**
-	 * getNewReservationItemTitle
-	 * used to get the title of the new reservation command
-	 * @return the title of the new reservation command
+	 * addPrevWeekListener
+	 * add a new ActionListener to the next week list action
+	 * @param a the ActionListener
 	 */
-	public String getNewReservationItemTitle() {
-		return newReservationItemTitle;
+	public void addPrevWeekListener(ActionListener a) {
+		prevWeekItem.addActionListener(a);
 	}
 	
 	
+	/**
+	 * addTableMouseListener
+	 * add a new MouseListener to the table
+	 * @param m the MouseListener
+	 */
 	public void addTableMouseListener(MouseListener m) {
 		table.addMouseListener(m);
 	}
 	
 	
+	/**
+	 * getSelectedRow
+	 * used to receive the selected row in the table
+	 * @return the selected row index
+	 */
 	public int getSelectedRow() {
 		return table.getSelectedRow();
 	}
 	
 	
+	/**
+	 * getSelectedColumn
+	 * used to receive the selected column in the table
+	 * @return the selected column index
+	 */
 	public int getSelectedColumn() {
 		return table.getSelectedColumn();
 	}
 	
 	
+	/**
+	 * CustomTableModel
+	 * 
+	 */
 	private class CustomTableModel extends AbstractTableModel {
 		String[] columns = {
 		"Car",

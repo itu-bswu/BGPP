@@ -13,6 +13,8 @@ public class CustomerOverview extends JFrame {
 	private JTable table;
 	
 	public CustomerOverview() {
+		super("Customers list");
+		
 		this.setLayout(new BorderLayout());
 		
 		JPanel topPanel = new JPanel(new BorderLayout());
