@@ -40,7 +40,9 @@ public class Logger {
 	public Logger () {
 		try {
 			this.writer = new FileWriter("error.log");
-		} catch (IOException e) {}
+		} catch (IOException e) {
+			System.err.println("Couldn't open file: " + e.getMessage());
+		}
 	}
 	
 	/**
@@ -71,7 +73,9 @@ public class Logger {
 			writer.write('[' + dateFormat.format(date) + ']');
 			writer.write(" " + errorMsg);
 			writer.write('\n');
-		} catch (IOException e) {}
+		} catch (IOException e) {
+			System.err.println("Couldn't open file: " + e.getMessage());
+		}
 	}
 	
 	/**
@@ -83,6 +87,8 @@ public class Logger {
 		
 		try {
 			writer.close();
-		} catch (IOException e) {}
+		} catch (IOException e) {
+			System.err.println("Couldn't open file: " + e.getMessage());
+		}
 	}
 }
