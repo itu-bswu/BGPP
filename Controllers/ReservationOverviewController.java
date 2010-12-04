@@ -1,6 +1,7 @@
 package Controllers;
 
 import java.awt.event.*;
+import javax.swing.*;
 import Views.*;
 
 /**
@@ -36,7 +37,14 @@ public class ReservationOverviewController implements ActionListener, MouseListe
 		} else if (e.getActionCommand().equals(window.nextWeekItemTitle)) {
 			
 		} else if (e.getActionCommand().equals(window.gotoItemTitle)) {
+			Object[] weeks = new Object[52];
 			
+			int i;
+			for (i = 0; i < weeks.length; i++) {
+				weeks[i] = "" + i;
+			}
+			
+			String result = (String)JOptionPane.showInputDialog(window, "Choose week number:", "Go to week", JOptionPane.PLAIN_MESSAGE, null, weeks, "49");
 		}
 	}
 	
