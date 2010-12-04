@@ -23,9 +23,53 @@ public class Car extends Model {
 	 * is returned on success.
 	 * 
 	 * @param createVars Map containing data to be stored.
+	 * 			key				=> description
+	 * 			name			=> The title of the car; eg. Ford Fiesta
+	 * 			licensePlate	=> The licenseplate of the car; eg. SV 21 435
+	 * 			carType 		=> The ID of the car-type of the car.
 	 * @return ID on success; -1 on failure.
 	 */
-	public int create (Map<String, Object> createVars) { return -1; }
+	public int create (Map<String, Object> createVars) {
+		return create (createVars.get("name").toString(), 
+					   createVars.get("licensePlate").toString(), 
+					   Integer.parseInt(createVars.get("carType").toString()));
+	}
+	
+	/**
+	 * TODO: Add validity check to (int) carType
+	 * Creates an entry in the particular data-source, with 
+	 * the data given in the Map. The ID of the new entry 
+	 * is returned on success.
+	 * 
+	 * @param title The title of the car; eg. Ford Fiesta
+	 * @param licensePlate The licenseplate of the car; eg. SV 21 435 (spaces unnecessary)
+	 * @param carType The ID of the car-type of the car.
+	 * @return ID on success; -1 on failure.
+	 */
+	public int create (String title, String licensePlate, int carType) {
+		if (title == null || title.length() <= 0 || 
+			licensePlate == null || licensePlate.length() <= 0 || 
+			carType <= 0)
+				throw new NullPointerException();
+		
+		try {
+			MySQLConnection conn = MySQLConnection.getInstance();
+			String query = "INSERT INTO Car " +
+			   			   "SET title = '" + title + "', " +
+			   			   	"licensePlate = '" + licensePlate.replaceAll(" ", "") + "', " +
+			   			   	"carType = " + carType;
+			ResultSet result = conn.query(query);
+			result.next();
+			int newId = result.getInt(1);
+			if (newId > 0) {
+				return newId;
+			}
+		} catch (Exception e) {
+			Logger.write("Couldn't insert row to database: " + e.getMessage());
+		}
+		
+		return -1;
+	}
 	
 	/**
 	 * Reads and returns the data with the provided Id in 
