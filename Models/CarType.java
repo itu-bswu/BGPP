@@ -46,7 +46,10 @@ public class CarType extends Model {
 			   			   "SET title = '" + typeName + "'";
 			ResultSet result = conn.query(query);
 			result.next();
-			return result.getInt(1);
+			int newId = result.getInt(1);
+			if (newId > 0) {
+				return newId;
+			}
 		} catch (Exception e) {
 			Logger.write("Couldn't insert row to database: " + e.getMessage());
 		}
