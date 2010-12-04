@@ -47,6 +47,9 @@ public class CarType extends Model {
 			String query = "INSERT INTO CarType " +
 			   			   "SET title = '" + typeName + "'";
 			ResultSet result = conn.query(query);
+			if (result == null) {
+				throw new SQLException();
+			}
 			result.next();
 			int newId = result.getInt(1);
 			if (newId > 0) {

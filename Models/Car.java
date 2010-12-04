@@ -93,11 +93,15 @@ public class Car extends Model {
 		try {
 			MySQLConnection conn = MySQLConnection.getInstance();
 			String query = "SELECT Car.carId, Car.carType, Car.licensePlate, Car.title, CarType.title " +
-						   "FROM Car " +
+						   "FROM Car, CarType " +
 						   "WHERE carId = " + id + " " +
 						   "AND CarType.typeId = Car.carType " + 
 						   "LIMIT 1";
 			ResultSet result = conn.query(query);
+			if (result == null) {
+				throw new SQLException();
+			}
+			result.next();
 			
 			Map<String, Object> returnMap = new TreeMap<String, Object>();
 			returnMap.put("id", 			result.getInt("Car.carId"));
