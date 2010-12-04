@@ -50,15 +50,10 @@ public class CarTest {
 	 */
 	@Test
 	public void testCarCreate () {
-		Map<String, Object> createVars = new HashMap<String, Object>();
-		createVars.put("type", varevogn);
-		createVars.put("car", "Ford Transit");
-		createVars.put("licenseplate", "SV 32 654");
-		
-		int car1 = car.create(createVars);
+		int car1 = car.create("Ford Transit", "SV 32 654", varevogn);
 		
 		assertTrue(car1 > 0); // Test #1
-		assertTrue(car.read(car1) != null); // Test #2
+		assertNotNull(car.read(car1)); // Test #2
 		assertTrue(car.delete(car1)); // Test #3
 	}
 	
@@ -67,26 +62,17 @@ public class CarTest {
 	 */
 	@Test
 	public void testMultipleCars () {
-		Map<String, Object> createVars = new HashMap<String, Object>();
-		createVars.put("type", varevogn);
-		createVars.put("car", "Ford Transit");
-		createVars.put("licenseplate", "SV 32 654");
-		int car1 = car.create(createVars);
-		
-		createVars = new HashMap<String, Object>();
-		createVars.put("type", sportsvogn);
-		createVars.put("car", "Mazda MX-5");
-		createVars.put("licenseplate", "VS 12 345");
-		int car2 = car.create(createVars);
+		int car1 = car.create("Ford Transit", "SV 32 654", varevogn);
+		int car2 = car.create("Mazda MX-5", "VS 12 345", sportsvogn);
 		
 		assertTrue(car1 > 0); // Test #4
 		assertTrue(car2 > 0); // Test #4
 		assertTrue(car.delete(car2)); // Test #5
 		
-		car2 = car.create(createVars);
+		car2 = car.create("Mazda MX-5", "VS 12 345", sportsvogn);
 		
 		assertTrue(car2 > 0); // Test #6
-		assertFalse(car.create(createVars) > 0); // Test #7
+		assertFalse(car.create("Mazda MX-5", "VS 12 345", sportsvogn) > 0); // Test #7
 		
 		car.delete(car1);
 		car.delete(car2);
@@ -97,12 +83,7 @@ public class CarTest {
 	 */
 	@Test
 	public void testUnknownType () {
-		int submarine = 1337;
-		Map<String, Object> createVars = new HashMap<String, Object>();
-		createVars.put("type", submarine);
-		createVars.put("car", "Ford Transit");
-		createVars.put("licenseplate", "SV 32 654");
-		
-		assertFalse(car.create(createVars) > 0); // Test #8
+		int submarine = 1337;		
+		assertFalse(car.create("Ford Transit", "SV 32 654", submarine) > 0); // Test #8
 	}
 }
