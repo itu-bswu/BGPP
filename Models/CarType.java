@@ -28,10 +28,9 @@ public class CarType extends Model {
 	}
 	
 	/**
-	 * TODO: Edit this text
-	 * Creates an entry in the particular data-source, with 
-	 * the data given in the Map. The ID of the new entry 
-	 * is returned on success.
+	 * Creates a car-type in the database, with the data
+	 * given in the Map. The ID of the new entry is returned
+	 * on success; -1 on failure.
 	 * 
 	 * @param createVars Map containing data to be stored.
 	 * @return ID on success; -1 on failure.
@@ -58,13 +57,16 @@ public class CarType extends Model {
 	}
 	
 	/**
-	 * Reads and returns the data with the provided Id in 
-	 * a Map, with data-names as keys. If an entry with 
-	 * the provided ID cannot be found in the data-source, 
+	 * Reads and returns the car-type, with the provided ID, 
+	 * in a Map, with data-names as keys. If a car-type with 
+	 * the provided ID cannot be found in the database, 
 	 * null will be returned.
 	 * 
-	 * @param id The id of the entry to read.
+	 * @param id The id of the car-type to read.
 	 * @return Map containing data on success; null on failure.
+	 * 			key 			=> description:
+	 * 			id 				=> The ID of the car-type
+	 * 			name			=> The title of the car-type
 	 */
 	public Map<String, Object> read (int id) {
 		try {
@@ -89,13 +91,12 @@ public class CarType extends Model {
 	}
 	
 	/**
-	 * TODO: Edit this text
-	 * Reads and returns the data with the provided Id in 
-	 * a Map, with data-names as keys. If an entry with 
-	 * the provided ID cannot be found in the data-source, 
+	 * Reads and returns the car-type, with the provided ID, 
+	 * in a Map, with data-names as keys. If a car-type with 
+	 * the provided ID cannot be found in the database, 
 	 * null will be returned.
 	 * 
-	 * @param id The id of the entry to read.
+	 * @param title The title of the car-type to read.
 	 * @return Map containing data on success; null on failure.
 	 * 			key 			=> description:
 	 * 			id 				=> The ID of the car-type
