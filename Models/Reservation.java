@@ -64,13 +64,15 @@ public class Reservation extends Model {
 	public int amountOfEntries () { return 0; }
 	
 	/**
+	 * TODO: Implement this
 	 * Lists the entries of the data-source.
 	 * 
 	 * @return A list with all data from the data-source.
 	 */
-	public List list () { return null; }
+	public List<Map<String, Object>> list () { return null; }
 	
 	/**
+	 * TODO: Implement this
 	 * Lists the entries of the data-source, from the user 
 	 * with the provided ID.
 	 * 

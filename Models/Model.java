@@ -71,5 +71,5 @@ public abstract class Model {
 	 * 
 	 * @return A list with all data from the data-source.
 	 */
-	abstract public List list ();
+	abstract public List<Map<String, Object>> list ();
 }

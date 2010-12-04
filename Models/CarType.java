@@ -189,9 +189,10 @@ public class CarType extends Model {
 	}
 	
 	/**
+	 * TODO: Implement this
 	 * Lists the entries of the data-source.
 	 * 
 	 * @return A list with all data from the data-source.
 	 */
-	public List list () { return null; }
+	public List<Map<String, Object>> list () { return null; }
 }
