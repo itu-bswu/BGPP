@@ -10,6 +10,7 @@ import java.util.Map;
 public class Reservation extends Model {
 	
 	/**
+	 * TODO: Implement this
 	 * Creates an entry in the particular data-source, with 
 	 * the data given in the Map. The ID of the new entry 
 	 * is returned on success.
@@ -20,6 +21,7 @@ public class Reservation extends Model {
 	public int create (Map<String, Object> createVars) { return -1; }
 	
 	/**
+	 * TODO: Implement this
 	 * Reads and returns the data with the provided Id in 
 	 * a Map, with data-names as keys. If an entry with 
 	 * the provided ID cannot be found in the data-source, 
@@ -31,6 +33,7 @@ public class Reservation extends Model {
 	public Map<String, Object> read (int id) { return null; }
 	
 	/**
+	 * TODO: Implement this
 	 * Updates the entry with the provided ID in the data-
 	 * source. The data to be updated is the keys in the map, 
 	 * and the values are the new data. If then entry is 
@@ -45,6 +48,7 @@ public class Reservation extends Model {
 	public boolean update(int id, Map<String, Object> updateVars) { return false; }
 	
 	/**
+	 * TODO: Implement this
 	 * Deletes the entry with the provided ID in the data-
 	 * source. On success true will be returned. If the 
 	 * deletion failed (invalid ID or similar), false 
@@ -73,6 +77,7 @@ public class Reservation extends Model {
 	
 	/**
 	 * TODO: Implement this
+	 * TODO: More list()-methods
 	 * Lists the entries of the data-source, from the user 
 	 * with the provided ID.
 	 * 
