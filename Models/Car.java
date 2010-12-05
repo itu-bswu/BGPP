@@ -119,6 +119,7 @@ public class Car extends Model {
 	}
 	
 	/**
+	 * TODO: Future release: Implement this
 	 * Updates the entry with the provided ID in the data-
 	 * source. The data to be updated is the keys in the map, 
 	 * and the values are the new data. If then entry is 
@@ -141,7 +142,34 @@ public class Car extends Model {
 	 * @param id The ID of the entry to be deleted.
 	 * @return true on success; false on failure.
 	 */
-	public boolean delete (int id) { return false; }
+	/**
+	 * Deletes the entry with the provided ID in the data-
+	 * source. On success true will be returned. If the 
+	 * deletion failed (invalid ID or similar), false 
+	 * will be returned.
+	 * 
+	 * @param id The ID of the entry to be deleted.
+	 * @return true on success; false on failure.
+	 */
+	public boolean delete (int id) {
+		if (id <= 0)
+			throw new NullPointerException();
+		
+		try {
+			MySQLConnection conn = MySQLConnection.getInstance();
+			String query = "DELETE FROM Car " +
+						   "WHERE carId = " + id;
+			ResultSet result = conn.query(query);
+			result.next();
+			if (result != null) {
+				return true;
+			}
+		} catch (Exception e) {
+			Logger.write("Couldn't delete row from database: " + e.getMessage());
+		}
+		
+		return false;
+	}
 	
 	/**
 	 * Gives the amount of entries in the data-source, 
