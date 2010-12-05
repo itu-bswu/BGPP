@@ -2,6 +2,7 @@ package Models;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -236,10 +237,32 @@ public class Customer extends Model {
 	}
 	
 	/**
-	 * TODO: Implement this
-	 * Lists the entries of the data-source.
+	 * TODO: list(coloumnSort) & list(coloumnSort,sortOrder)
+	 * Lists the customers from the database.
 	 * 
 	 * @return A list with all data from the data-source.
 	 */
-	public List<Map<String, Object>> list () { return null; }
+	public List<Map<String, Object>> list () {
+		List<Map<String, Object>> list = new LinkedList<Map<String, Object>>();
+		
+		try {
+			String query =	"SELECT customerId, name, phone " +
+							"FROM Customer " +
+							"ORDER BY name ASC";
+			MySQLConnection conn = MySQLConnection.getInstance();
+			ResultSet result = conn.query(query);
+			Map<String, Object> curr = new HashMap<String, Object>();
+			while (result.next()) {
+				curr.put("id", result.getString("customerId"));
+				curr.put("name", result.getString("name"));
+				curr.put("phone", result.getInt("phone"));
+				
+				list.add(curr);
+			}
+		} catch (SQLException e) {
+			Logger.write("Failed to list items from database: " + e.getMessage());
+		}
+		
+		return list;
+	}
 }
