@@ -1,8 +1,10 @@
 package Models;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import Util.Logger;
 import Util.MySQLConnection;
@@ -87,8 +89,38 @@ public class Customer extends Model {
 	 * @return Map containing data on success; null on failure.
 	 */
 	public Map<String, Object> read (int phoneId, boolean phone) {
+		if (phoneId <= 0)
+			throw new NullPointerException();
+		
+		String query = "";
 		if (!phone) {
-			return read(phoneId);
+			query = "SELECT customerId, name, phone " +
+					"FROM Customer " +
+					"WHERE customerId = " + phoneId + " " + 
+					"LIMIT 1";
+		} else {
+			query = "SELECT customerId, name, phone " +
+					"FROM Customer " +
+					"WHERE phone = " + phoneId + " " + 
+					"LIMIT 1";
+		}
+		
+		try {
+			MySQLConnection conn = MySQLConnection.getInstance();
+			ResultSet result = conn.query(query);
+			if (result == null) {
+				throw new SQLException();
+			}
+			result.next();
+			
+			Map<String, Object> returnMap = new TreeMap<String, Object>();
+			returnMap.put("id", 			result.getInt	("customerId"));
+			returnMap.put("name", 			result.getString("name"));
+			returnMap.put("phone", 			result.getInt	("phone"));
+			
+			return returnMap;
+		} catch (SQLException e) {
+			Logger.write("Couldn't read from the database: " + e.getMessage());
 		}
 		
 		return null;
