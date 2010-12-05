@@ -42,10 +42,10 @@ public class CustomerTest {
 		
 		assertTrue(poulKrebs > 0); // Test #1
 		assertNotNull(customer.read(poulKrebs)); // Test #2
-		assertNotNull(customer.read(87654321)); // Test #2
+		assertNotNull(customer.read(87654321, true)); // Test #2
 		assertTrue(customer.update(poulKrebs, "Poul Krebs", 12345678)); // Test #3
-		assertNotNull(customer.read(12345678)); // Test #3
-		assertNull(customer.read(87654321)); // Test #4
+		assertNotNull(customer.read(12345678, true)); // Test #3
+		assertNull(customer.read(87654321, true)); // Test #4
 		assertTrue(customer.delete(poulKrebs)); // Test #5
 	}
 	
