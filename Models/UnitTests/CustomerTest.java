@@ -38,15 +38,18 @@ public class CustomerTest {
 	 */
 	@Test
 	public void testCreateCustomer () {
+		int prevAmount = customer.amountOfEntries();
 		int poulKrebs = customer.create("Poul Krebs", 87654321);
 		
 		assertTrue(poulKrebs > 0); // Test #1
+		assertEquals(prevAmount+1, customer.amountOfEntries()); // Test #1
 		assertNotNull(customer.read(poulKrebs)); // Test #2
 		assertNotNull(customer.read(87654321, true)); // Test #2
 		assertTrue(customer.update(poulKrebs, "Poul Krebs", 12345678)); // Test #3
 		assertNotNull(customer.read(12345678, true)); // Test #3
 		assertNull(customer.read(87654321, true)); // Test #4
 		assertTrue(customer.delete(poulKrebs)); // Test #5
+		assertEquals(prevAmount, customer.amountOfEntries()); // Test #5
 	}
 	
 	/**

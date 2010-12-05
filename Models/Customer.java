@@ -214,13 +214,26 @@ public class Customer extends Model {
 	}
 	
 	/**
-	 * TODO: Future release: Implement this
 	 * Gives the amount of entries in the data-source, 
 	 * i.e. the amount of customers in the database.
 	 * 
 	 * @return The amount of entries in the data-source.
 	 */
-	public int amountOfEntries () { return 0; }
+	public int amountOfEntries () {
+		try {
+			MySQLConnection conn = MySQLConnection.getInstance();
+			String query = "SELECT count(*) AS entryAmount " +
+						   "FROM Customer";
+			ResultSet result = conn.query(query);
+			
+			result.next();
+			return result.getInt(1);
+		} catch (SQLException e) {
+			Logger.write("Couldn't read from database: " + e.getMessage());
+		}
+		
+		return 0;
+	}
 	
 	/**
 	 * TODO: Implement this
