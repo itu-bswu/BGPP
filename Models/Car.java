@@ -36,7 +36,6 @@ public class Car extends Model {
 	}
 	
 	/**
-	 * TODO: Add validity check to (int) carType
 	 * Creates an entry in the particular data-source, with 
 	 * the data given in the Map. The ID of the new entry 
 	 * is returned on success.
@@ -54,10 +53,11 @@ public class Car extends Model {
 		
 		try {
 			MySQLConnection conn = MySQLConnection.getInstance();
-			String query = "INSERT INTO Car " +
-			   			   "SET title = '" + title + "', " +
-			   			   	"licensePlate = '" + licensePlate.replaceAll(" ", "") + "', " +
-			   			   	"carType = " + carType;
+			String query = 	"INSERT INTO Car (title, licensePlate, carType) " +
+								"SELECT '" + title + "', " + 
+								"'" + licensePlate.replaceAll(" ", "") + "', " + 
+								carType + " " + 
+								"FROM CarType WHERE typeId = " + carType;
 			ResultSet result = conn.query(query);
 			result.next();
 			int newId = result.getInt(1);
