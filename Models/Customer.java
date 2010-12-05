@@ -1,7 +1,11 @@
 package Models;
 
+import java.sql.ResultSet;
 import java.util.List;
 import java.util.Map;
+
+import Util.Logger;
+import Util.MySQLConnection;
 
 /**
  * Model - Customer
@@ -15,6 +19,9 @@ public class Customer extends Model {
 	 * is returned on success.
 	 * 
 	 * @param createVars Map containing data to be stored.
+	 * 			key				=> description
+	 * 			name			=> The full name of the customer.
+	 * 			phone			=> The customer's phone-number.
 	 * @return ID on success; -1 on failure.
 	 */
 	public int create (Map<String, Object> createVars) {
@@ -29,12 +36,34 @@ public class Customer extends Model {
 	 * the data given in the Map. The ID of the new entry 
 	 * is returned on success.
 	 * 
-	 * @param createVars Map containing data to be stored.
+	 * @param name The full name of the customer.
+	 * @param phone The customer's phone-number.
 	 * @return ID on success; -1 on failure.
 	 */
-	public int create (String name, int phone) { return -1; }
+	public int create (String name, int phone) {
+		if (name == null || name.length() <= 0 || phone <= 0)
+				throw new NullPointerException();
+			
+		try {
+			MySQLConnection conn = MySQLConnection.getInstance();
+			String query = 	"INSERT INTO Customer " +
+							"SET name = '" + name + "', " + 
+							"phone = '" + phone + "'";
+			ResultSet result = conn.query(query);
+			result.next();
+			int newId = result.getInt(1);
+			if (newId > 0) {
+				return newId;
+			}
+		} catch (Exception e) {
+			Logger.write("Couldn't insert row to database: " + e.getMessage());
+		}
+		
+		return -1;
+	}
 	
 	/**
+	 * TODO: Edit this text
 	 * Reads and returns the data with the provided Id in 
 	 * a Map, with data-names as keys. If an entry with 
 	 * the provided ID cannot be found in the data-source, 
@@ -43,7 +72,9 @@ public class Customer extends Model {
 	 * @param id The id of the entry to read.
 	 * @return Map containing data on success; null on failure.
 	 */
-	public Map<String, Object> read (int id) { return null; }
+	public Map<String, Object> read (int id) {
+		return read (id, false);
+	}
 	
 	/**
 	 * TODO: Edit this text

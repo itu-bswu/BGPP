@@ -42,6 +42,7 @@ public class CustomerTest {
 		
 		assertTrue(poulKrebs > 0); // Test #1
 		assertNotNull(customer.read(poulKrebs)); // Test #2
+		// Update
 		assertTrue(customer.delete(poulKrebs)); // Test #3
 	}
 	
