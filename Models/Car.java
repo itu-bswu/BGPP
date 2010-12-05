@@ -142,15 +142,6 @@ public class Car extends Model {
 	 * @param id The ID of the entry to be deleted.
 	 * @return true on success; false on failure.
 	 */
-	/**
-	 * Deletes the entry with the provided ID in the data-
-	 * source. On success true will be returned. If the 
-	 * deletion failed (invalid ID or similar), false 
-	 * will be returned.
-	 * 
-	 * @param id The ID of the entry to be deleted.
-	 * @return true on success; false on failure.
-	 */
 	public boolean delete (int id) {
 		if (id <= 0)
 			throw new NullPointerException();
