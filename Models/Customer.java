@@ -10,6 +10,8 @@ import Util.Logger;
 import Util.MySQLConnection;
 
 /**
+ * TODO: Write class description
+ * TODO: Rewrite javadoc
  * Model - Customer
  *
  */
@@ -136,9 +138,51 @@ public class Customer extends Model {
 	 * 
 	 * @param id The ID of the entry to be updated.
 	 * @param updateVars Map containing the data to be updated.
+	 * 			key		=> description
+	 * 			name	=> The updated name
+	 * 			phone	=> The new phone-number
 	 * @return true on success; false on failure.
 	 */
-	public boolean update(int id, Map<String, Object> updateVars) { return false; }
+	public boolean update(int id, Map<String, Object> updateVars) {
+		String newName = updateVars.get("name").toString();
+		int newPhone = Integer.parseInt(updateVars.get("phone").toString());
+		return update (id, newName, newPhone);
+	}
+	
+	/**
+	 * Updates the entry with the provided ID in the data-
+	 * source. The data to be updated is the keys in the map, 
+	 * and the values are the new data. If then entry is 
+	 * successfully updated, true will be returned. If the 
+	 * update failed (invalid ID or similar), false will 
+	 * be returned.
+	 * 
+	 * @param id The ID of the entry to be updated.
+	 * @param newName The updated name.
+	 * @param newPhone The updated phone-number.
+	 * @return true on success; false on failure.
+	 */
+	public boolean update(int id, String newName, int newPhone) {
+		if (id <= 0 || newName == null || newPhone <= 0)
+			throw new NullPointerException();
+		
+		try {
+			String query =	"UPDATE Customer " +
+							"SET name = '" + newName + "', " +
+							"phone = '" + newPhone + "' " +
+							"WHERE customerId = " + id;
+			MySQLConnection conn = MySQLConnection.getInstance();
+			ResultSet result = conn.query(query);
+			result.next();
+			if (result != null) {
+				return true;
+			}
+		} catch (SQLException e) {
+			Logger.write("Couldn't update row: " + e.getMessage());
+		}
+		
+		return false;
+	}
 	
 	/**
 	 * Deletes the entry with the provided ID in the data-
