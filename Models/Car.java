@@ -163,6 +163,7 @@ public class Car extends Model {
 	}
 	
 	/**
+	 * TODO: Future release: Implement this
 	 * Gives the amount of entries in the data-source, 
 	 * i.e. the amount of customers in the database.
 	 * 
