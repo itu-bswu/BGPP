@@ -237,18 +237,19 @@ public class Customer extends Model {
 	}
 	
 	/**
-	 * TODO: list(coloumnSort) & list(coloumnSort,sortOrder)
 	 * Lists the customers from the database.
 	 * 
+	 * @param sortColumn The column to sort by.
+	 * @param sortOrder The sorting direction (ASC for ascending; DESC for descending).
 	 * @return A list with all data from the data-source.
 	 */
-	public List<Map<String, Object>> list () {
+	public List<Map<String, Object>> list (String sortColumn, String sortOrder) {
 		List<Map<String, Object>> list = new LinkedList<Map<String, Object>>();
 		
 		try {
 			String query =	"SELECT customerId, name, phone " +
 							"FROM Customer " +
-							"ORDER BY name ASC";
+							"ORDER BY " + sortColumn + " " + sortOrder;
 			MySQLConnection conn = MySQLConnection.getInstance();
 			ResultSet result = conn.query(query);
 			Map<String, Object> curr = new HashMap<String, Object>();
@@ -265,4 +266,19 @@ public class Customer extends Model {
 		
 		return list;
 	}
+	
+	/**
+	 * Lists the customers from the database.
+	 * 
+	 * @param sortColumn The column to sort by.
+	 * @return A list with all data from the data-source.
+	 */
+	public List<Map<String, Object>> list (String sortColumn) { return list(sortColumn, "ASC"); }
+	
+	/**
+	 * Lists the customers from the database.
+	 * 
+	 * @return A list with all data from the data-source.
+	 */
+	public List<Map<String, Object>> list () { return list("name", "ASC"); }
 }
