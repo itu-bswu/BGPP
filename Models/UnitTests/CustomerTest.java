@@ -64,12 +64,11 @@ public class CustomerTest {
 		int customer1 = Integer.parseInt(customer.read(12345678, true).get("id").toString());
 		assertTrue(customer.delete(customer1)); // Test #7
 		assertNotNull(customer.read(87654321, true)); // Test #8
-		assertFalse(customer.delete(customer1)); // Test #9
 		int customer2 = Integer.parseInt(customer.read(87654321, true).get("id").toString());
-		assertTrue(customer.delete(customer2)); // Test #10
-		assertNull(customer.read(87654321, true)); // Test #11
-		assertTrue(customer.create("Søren Banjomus", 87654321) > 0); // Test #12
-		assertNotNull(customer.read(87654321, true));
+		assertTrue(customer.delete(customer2)); // Test #9
+		assertNull(customer.read(87654321, true)); // Test #10
+		assertTrue(customer.create("Søren Banjomus", 87654321) > 0); // Test #11
+		assertNotNull(customer.read(87654321, true)); // Test #11
 		
 		customer2 = Integer.parseInt(customer.read(87654321, true).get("id").toString());
 		customer.delete(customer2);
