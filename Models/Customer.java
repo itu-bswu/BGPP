@@ -149,7 +149,25 @@ public class Customer extends Model {
 	 * @param id The ID of the entry to be deleted.
 	 * @return true on success; false on failure.
 	 */
-	public boolean delete (int id) { return false; }
+	public boolean delete (int id) {
+		if (id <= 0)
+			throw new NullPointerException();
+		
+		try {
+			MySQLConnection conn = MySQLConnection.getInstance();
+			String query = "DELETE FROM Customer " +
+						   "WHERE customerId = " + id;
+			ResultSet result = conn.query(query);
+			result.next();
+			if (result != null) {
+				return true;
+			}
+		} catch (Exception e) {
+			Logger.write("Couldn't delete row from database: " + e.getMessage());
+		}
+		
+		return false;
+	}
 	
 	/**
 	 * Gives the amount of entries in the data-source, 
