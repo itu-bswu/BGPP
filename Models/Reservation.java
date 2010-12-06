@@ -138,7 +138,7 @@ public class Reservation extends Model {
 	 * @param updateVars Map containing the data to be updated.
 	 * 			key			=> description
 	 * 			customer	=> The ID of the customer to book a car.
-	 * 			carType		=> The ID of the car-type to be booked.
+	 * 			car			=> The ID of the car to be booked.
 	 * 			startType	=> The start date of the booking.
 	 * 			endDate		=> The end date of the booking.
 	 * @return true on success; false on failure.
@@ -147,6 +147,7 @@ public class Reservation extends Model {
 	
 	/**
 	 * TODO: Implement this
+	 * TODO: Rewrite to use specific cars, and make checks on availability
 	 * Updates the entry with the provided ID in the data-
 	 * source. The data to be updated is the keys in the map, 
 	 * and the values are the new data. If then entry is 
@@ -161,7 +162,29 @@ public class Reservation extends Model {
 	 * @param endDate The end date of the booking.
 	 * @return true on success; false on failure.
 	 */
-	public boolean update (int id, int customer, int carType, Date startDate, Date endDate) { return false; }
+	public boolean update (int id, int customer, int car, Date startDate, Date endDate) {
+		if (id <= 0 || customer <= 0 || car <= 0 || startDate == null || endDate == null)
+			throw new NullPointerException();
+		
+		try {
+			String query =	"UPDATE Reservation " +
+							"SET customerId = '" + customer + "', " +
+							"carId = '" + car + "', " +
+							"startDate = '" + startDate + "', " +
+							"endDate = '" + endDate + "' " +
+							"WHERE reservationId = " + id;
+			MySQLConnection conn = MySQLConnection.getInstance();
+			ResultSet result = conn.query(query);
+			result.next();
+			if (result != null) {
+				return true;
+			}
+		} catch (SQLException e) {
+			Logger.write("Couldn't update row: " + e.getMessage());
+		}
+		
+		return false;
+	}
 	
 	/**
 	 * Deletes the entry with the provided ID in the data-
