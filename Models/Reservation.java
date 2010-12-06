@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -198,22 +199,71 @@ public class Reservation extends Model {
 	}
 	
 	/**
-	 * TODO: Implement this
-	 * Lists the entries of the data-source.
+	 * Lists the reservations from the database.
 	 * 
 	 * @return A list with all data from the data-source.
 	 */
-	public List<Map<String, Object>> list () { return null; }
+	public List<Map<String, Object>> list () { return list ("startDate", "ASC"); }
 	
 	/**
-	 * TODO: Implement this
-	 * TODO: More list()-methods
-	 * Lists the entries of the data-source, from the user 
-	 * with the provided ID.
+	 * Lists the reservations from the database.
 	 * 
+	 * @param sortColumn The column to sort by.
+	 * @param sortOrder The sorting direction (ASC for ascending; DESC for descending).
 	 * @return A list with all data from the data-source.
 	 */
-	public List<Map<String, Object>> list (int id) { return null; }
+	public List<Map<String, Object>> list (String sortColumn, String sortOrder) { 
+		return list ("startDate", "ASC", 0);
+	}
+	
+	/**
+	 * Lists the reservations from the database, from the customer with the 
+	 * provided ID.
+	 * 
+	 * @param id The ID of the customer.
+	 * @return A list with all data from the database.
+	 */
+	public List<Map<String, Object>> list (int id) { return list ("startDate", "ASC", id); }
+	
+	/**
+	 * Lists the reservations from the database.
+	 * 
+	 * @param sortColumn The column to sort by.
+	 * @param sortOrder The sorting direction (ASC for ascending; DESC for descending).
+	 * @param customerId The ID of the customer to find reservations from.
+	 * @return A list with all data from the data-source.
+	 */
+	public List<Map<String, Object>> list (String sortColumn, String sortOrder, int customerId) {
+		List<Map<String, Object>> list = new LinkedList<Map<String, Object>>();
+		
+		try {
+			String  customerQuery = "";
+			if (customerId > 0)	
+					customerQuery = "WHERE customerId = " + customerId + " ";
+			
+			String query =	"SELECT reservationId, carId, customerId, " +
+							"startDate, endDate " +
+							"FROM Reservation " +
+							 customerQuery + 
+							"ORDER BY " + sortColumn + " " + sortOrder;
+			MySQLConnection conn = MySQLConnection.getInstance();
+			ResultSet result = conn.query(query);
+			Map<String, Object> curr = new HashMap<String, Object>();
+			while (result.next()) {
+				curr.put("id", 			result.getInt	("reservationId"));
+				curr.put("carId", 		result.getInt	("carId"));
+				curr.put("customerId", 	result.getInt	("customerId"));
+				curr.put("startDate", 	result.getDate	("startDate"));
+				curr.put("endDate", 	result.getDate	("endDate"));
+				
+				list.add(curr);
+			}
+		} catch (SQLException e) {
+			Logger.write("Failed to list items from database: " + e.getMessage());
+		}
+		
+		return list;
+	}
 	
 	/**
 	 * Finds a free car in the specified period, with the specified car-type. 
