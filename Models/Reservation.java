@@ -180,7 +180,22 @@ public class Reservation extends Model {
 	 * 
 	 * @return The amount of entries in the data-source.
 	 */
-	public int amountOfEntries () { return 0; }
+	public int amountOfEntries () {
+		try {
+			MySQLConnection conn = MySQLConnection.getInstance();
+			String query = "SELECT count(*) AS entryAmount " +
+						   "FROM Reservation";
+			ResultSet result = conn.query(query);
+			if (result == null)
+				return 0;
+			result.next();
+			return result.getInt(1);
+		} catch (SQLException e) {
+			Logger.write("Couldn't read from database: " + e.getMessage());
+		}
+		
+		return 0;
+	}
 	
 	/**
 	 * TODO: Implement this
