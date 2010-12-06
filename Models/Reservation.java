@@ -236,7 +236,7 @@ public class Reservation extends Model {
 				"AND NOT EXISTS ( " + 
 					"SELECT reservationId " + 
 					"FROM Reservation " + 
-					"WHERE Reservation.carId = car.carId " +
+					"WHERE Reservation.carId = Car.carId " +
 					   "AND (('"+startDate+"' 	>= startDate && '"+startDate+"' <= endDate) " + 
 					     "OR ('"+endDate+"' 	>= startDate && '"+endDate+"' 	<= endDate) " + 
 					     "OR ('"+startDate+"' 	<= startDate && '"+endDate+"' 	>= endDate)) " + 
