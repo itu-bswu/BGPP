@@ -12,6 +12,7 @@ import Util.MySQLConnection;
 /**
  * TODO: Write class description
  * TODO: Rewrite javadoc
+ * TODO: Review error-handling with SQL queries.
  * Model - Car
  *
  */
