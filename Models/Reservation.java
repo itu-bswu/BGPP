@@ -126,7 +126,6 @@ public class Reservation extends Model {
 	}
 	
 	/**
-	 * TODO: Implement this
 	 * Updates the entry with the provided ID in the data-
 	 * source. The data to be updated is the keys in the map, 
 	 * and the values are the new data. If then entry is 
@@ -143,7 +142,13 @@ public class Reservation extends Model {
 	 * 			endDate		=> The end date of the booking.
 	 * @return true on success; false on failure.
 	 */
-	public boolean update (int id, Map<String, Object> updateVars) { return false; }
+	public boolean update (int id, Map<String, Object> updateVars) {
+		int customer	= Integer.parseInt(updateVars.get("customer").toString());
+		int car 		= Integer.parseInt(updateVars.get("car").toString());
+		Date startDate	= (Date) updateVars.get("startType");
+		Date endDate	= (Date) updateVars.get("startType");
+		return update (id, customer, car, startDate, endDate);
+	}
 	
 	/**
 	 * TODO: Implement this
