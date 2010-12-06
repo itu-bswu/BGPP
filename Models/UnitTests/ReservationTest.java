@@ -110,6 +110,12 @@ public class ReservationTest {
 		assertTrue(reservation.delete(reservationToDelete)); // Test #5
 		
 		assertEquals(reservation.list(customer1).size(), 1); // Test #6
+		
+		// Cleanup - delete last reservation and delete customer.
+		reservationList = reservation.list(customer1);
+		reservationToDelete = Integer.parseInt(reservationList.get(0).get("id").toString());
+		assertTrue(reservation.delete(reservationToDelete));
+		assertTrue(customer.delete(customer1));
 	}
 	
 	/**
@@ -141,13 +147,14 @@ public class ReservationTest {
 		assertEquals(prevAmount+1, customer.list().size()); // Test #8
 		
 		reservation.delete(res1); // Cleanup
+		customer.delete(customer1); // Cleanup
 	}
 	
 	/**
 	 * Test - Reservation #9
 	 */
 	@Test
-	public void testCreationAndDeletion () {
+	public void testUpdateReservation () {
 		int  cus1 		= customer.createIfNew("Jens Ole", 43218765);
 		Date startDate	= Date.valueOf("2010-12-16");
 		Date endDate	= Date.valueOf("2010-12-19");
