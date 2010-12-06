@@ -55,29 +55,9 @@ public class Reservation extends Model {
 			throw new NullPointerException();
 		
 		try {
-			String query =	
-				"SELECT carId " + 
-				"FROM Car " + 
-				"WHERE carType = " + carType + " " + 
-				"AND NOT EXISTS ( " + 
-					"SELECT reservationId " + 
-					"FROM Reservation " + 
-					"WHERE Reservation.carId = car.carId " +
-					   "AND (('"+startDate+"' 	>= startDate && '"+startDate+"' <= endDate) " + 
-					     "OR ('"+endDate+"' 	>= startDate && '"+endDate+"' 	<= endDate) " + 
-					     "OR ('"+startDate+"' 	<= startDate && '"+endDate+"' 	>= endDate)) " + 
-				") " +
-				"AND EXISTS ( " +
-					"SELECT customerId " +
-					"FROM Customer " +
-					"WHERE customerId = " + customerId + " " + 
-				")";
-			MySQLConnection conn = MySQLConnection.getInstance();
-			ResultSet result = conn.query(query);
-			if (result != null) {
-				result.next();
-				return result.getInt(1);
-			}
+			int freeCar = findFreeCar(customerId, carType, startDate, endDate);
+			if (freeCar <= 0)
+				return -1;
 		} catch (SQLException e) {
 			Logger.write("Couldn't book car: " + e.getMessage());
 		}
@@ -172,4 +152,39 @@ public class Reservation extends Model {
 	 * @return A list with all data from the data-source.
 	 */
 	public List<Map<String, Object>> list (int id) { return null; }
+	
+	public int findFreeCar (int customerId, int carType, Date startDate, Date endDate) {
+		if (customerId <= 0 || carType <= 0 || startDate == null || endDate == null)
+			throw new NullPointerException();
+		
+		try {
+			String query =	
+				"SELECT carId " + 
+				"FROM Car " + 
+				"WHERE carType = " + carType + " " + 
+				"AND NOT EXISTS ( " + 
+					"SELECT reservationId " + 
+					"FROM Reservation " + 
+					"WHERE Reservation.carId = car.carId " +
+					   "AND (('"+startDate+"' 	>= startDate && '"+startDate+"' <= endDate) " + 
+					     "OR ('"+endDate+"' 	>= startDate && '"+endDate+"' 	<= endDate) " + 
+					     "OR ('"+startDate+"' 	<= startDate && '"+endDate+"' 	>= endDate)) " + 
+				") " +
+				"AND EXISTS ( " +
+					"SELECT customerId " +
+					"FROM Customer " +
+					"WHERE customerId = " + customerId + " " + 
+				")";
+			MySQLConnection conn = MySQLConnection.getInstance();
+			ResultSet result = conn.query(query);
+			if (result != null) {
+				result.next();
+				return result.getInt(1);
+			}
+		} catch (SQLException e) {
+			Logger.write("Couldn't book car: " + e.getMessage());
+		}
+		
+		return -1;
+	}
 }
