@@ -68,6 +68,26 @@ public class Customer extends Model {
 	}
 	
 	/**
+	 * Creates a new customer in the database. This method differs from create(), 
+	 * as this returns the ID of an existing customer in the database, if 
+	 * another customer with the given phone-number is found.
+	 * 
+	 * @param name The name of the customer (is overlooked if a customer with 
+	 * 			   the same phone-number is found in the database).
+	 * @param phone The phone-number of the customer. This is also used to 
+	 * 				look through the database, in order to find an existing 
+	 * 				customer with the same phone-number.
+	 * @return The ID number of the new or existing customer.
+	 */
+	public int createIfNew (String name, int phone) {
+		Map<String, Object> existingCustomer = read (phone, true);
+		if (existingCustomer != null)
+			return Integer.parseInt(existingCustomer.get("id").toString());
+		
+		return create (name, phone);
+	}
+	
+	/**
 	 * TODO: Edit this text
 	 * Reads and returns the data with the provided Id in 
 	 * a Map, with data-names as keys. If an entry with 
