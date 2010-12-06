@@ -24,7 +24,14 @@ public class Reservation extends Model {
 	 * 			endDate		=> The end date of the booking.
 	 * @return ID on success; -1 on failure.
 	 */
-	public int create (Map<String, Object> createVars) { return -1; }
+	public int create (Map<String, Object> createVars) {
+		int customer = Integer.parseInt(createVars.get("customer").toString());
+		int carType = Integer.parseInt(createVars.get("carType").toString());
+		Date startDate = (Date) createVars.get("startDate");
+		Date endDate = (Date) createVars.get("endDate");
+		
+		return create (customer, carType, startDate, endDate);
+	}
 	
 	/**
 	 * TODO: Implement this
