@@ -56,7 +56,7 @@ public class Customer extends Model {
 							"phone = '" + phone + "'";
 			ResultSet result = conn.query(query);
 			if (result == null)
-				return null;
+				return -1;
 			result.next();
 			int newId = result.getInt(1);
 			if (newId > 0) {
