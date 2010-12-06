@@ -33,9 +33,9 @@ public class ReservationOverviewController implements ActionListener, MouseListe
 		} else if (e.getActionCommand().equals(window.customerListItemTitle)) {
 			new CustomerOverviewController(new CustomerOverview());
 		} else if (e.getActionCommand().equals(window.prevWeekItemTitle)) {
-			
+			window.goToWeek(window.getWeek()-1, window.getYear());
 		} else if (e.getActionCommand().equals(window.nextWeekItemTitle)) {
-			
+			window.goToWeek(window.getWeek()+1, window.getYear());
 		} else if (e.getActionCommand().equals(window.gotoItemTitle)) {
 			Object[] weeks = new Object[52];
 			
@@ -44,7 +44,9 @@ public class ReservationOverviewController implements ActionListener, MouseListe
 				weeks[i] = "" + i;
 			}
 			
-			String result = (String)JOptionPane.showInputDialog(window, "Choose week number:", "Go to week", JOptionPane.PLAIN_MESSAGE, null, weeks, "49");
+			String result = (String)JOptionPane.showInputDialog(window, "Choose week number:", "Go to week", JOptionPane.PLAIN_MESSAGE, null, weeks, ""+window.getWeek());
+			
+			window.goToWeek(Integer.parseInt(result), window.getYear());
 		}
 	}
 	

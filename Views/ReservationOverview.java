@@ -4,6 +4,11 @@ import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.*;
+import Models.*;
+import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * View - Reservation Overview
@@ -35,6 +40,11 @@ public class ReservationOverview extends JFrame {
 	public final String gotoItemTitle = "Go to week...";
 	
 	private JTable table;
+	
+	private int week;
+	private int year;
+	
+	private JLabel currentDateLabel;
 	
 	/**
 	 * ReservationOverview contructor
@@ -74,6 +84,8 @@ public class ReservationOverview extends JFrame {
 		customerListItem = new JMenuItem(customerListItemTitle);
 		viewMenu.add(customerListItem);
 		
+		currentDateLabel = new JLabel("", SwingConstants.CENTER);
+		
 		//TODO: Load number of cars from database
 		carsStates = new CellState[15][7];
 		
@@ -94,6 +106,7 @@ public class ReservationOverview extends JFrame {
 		table.setShowGrid(true);
 		table.setGridColor(Color.GRAY);
 		table.setRowHeight(25);
+		table.getTableHeader().setReorderingAllowed(false);
 		
 		for (int i = 0; i < table.getColumnModel().getColumnCount(); i++) {
 			if (i == 0) {
@@ -107,6 +120,7 @@ public class ReservationOverview extends JFrame {
 		this.setLayout(new BorderLayout());
 		this.add(table.getTableHeader(), BorderLayout.NORTH);
 		this.add(new JScrollPane(table), BorderLayout.CENTER);
+		this.add(currentDateLabel, BorderLayout.SOUTH);
 		
 		this.setVisible(true);
 	}
@@ -203,43 +217,103 @@ public class ReservationOverview extends JFrame {
 	
 	
 	/**
+	 * getWeek
+	 * gets the current week number displayed in the table
+	 * @return the current week number
+	 */
+	public int getWeek() {
+		return week;
+	}
+	
+	
+	/**
+	 * gets the current year displayed in the table
+	 * @return the current year
+	 */
+	public int getYear() {
+		return year;
+	}
+	
+	
+	/**
+	 * goToWeek
+	 * changes the table to display data for the specified week number
+	 * @param weekNr the week number to change to
+	 * @param yearNr the year to change to
+	 */
+	public void goToWeek(int weekNr, int yearNr) {
+		CustomTableModel model = (CustomTableModel)table.getModel();
+		model.goToWeek(weekNr, yearNr);
+	}
+	
+	
+	/**
 	 * CustomTableModel
 	 * 
 	 */
 	private class CustomTableModel extends AbstractTableModel {
-		String[] columns = {
-		"Car",
-		"1/12",
-		"2/12",
-		"3/12",
-		"4/12",
-		"5/12",
-		"6/12",
-		"7/12"
-		};
+		private List<Map<String, Object>> cars;
+		private List<Map<String, Object>> reservations;
+		private String[] columns;
+		
+		public CustomTableModel() {
+			columns = new String[8];
+			columns[0] = "Car";
+			
+			Car carModel = new Car();
+			int nCars = carModel.amountOfEntries();
+			cars = new ArrayList<Map<String, Object>>();
+			
+			int i;
+			for (i = 0; i < nCars; i++) {
+				cars.add(carModel.read(i));
+			}
+			
+			Reservation reservationModel = new Reservation();
+			int nReservations = reservationModel.amountOfEntries();
+			reservations = new ArrayList<Map<String, Object>>();
+			
+			for (i = 0; i < nReservations; i++) {
+				reservations.add(reservationModel.read(i));
+			}
+			
+			Calendar cal = Calendar.getInstance();
+			cal.setFirstDayOfWeek(Calendar.MONDAY);
+			goToWeek(cal.get(Calendar.WEEK_OF_YEAR)-1, cal.get(Calendar.YEAR));
+		}
 		
 		
-		String[] cars = {
-		"Lastbil 1",
-		"Lastbil 2",
-		"Lastbil 3",
-		"Sportsvogn 1",
-		"Sportsvogn 2",
-		"Sportsvogn 2",
-		"Sportsvogn 3",
-		"Sportsvogn 4",
-		"Sportsvogn 5",
-		"Varevogn 1",
-		"Varevogn 2",
-		"Varevogn 3",
-		"hundesl\u00E6de 1",
-		"hundesl\u00E6de 2",
-		"Din mor"
-		};
+		/**
+		 * goToWeek
+		 * changes the table to display data for the specified week number
+		 * @param weekNr the week number to change to
+		 * @param yearNr the year to change to
+		 */
+		public void goToWeek(int weekNr, int yearNr) {
+			week = weekNr;
+			year = yearNr;
+			
+			Calendar cal = Calendar.getInstance();
+			cal.setFirstDayOfWeek(Calendar.MONDAY);
+			cal.clear();
+			cal.set(Calendar.YEAR, yearNr);
+			cal.set(Calendar.WEEK_OF_YEAR, weekNr+1);
+			cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+			
+			int i;
+			for (i = 0; i < 7; i++) {
+				columns[i+1] = "" + cal.get(Calendar.DAY_OF_MONTH) + "/" + (cal.get(Calendar.MONTH)+1);
+				cal.add(Calendar.DAY_OF_YEAR, 1);
+			}
+			
+			this.fireTableStructureChanged();
+			
+			currentDateLabel.setText("week " + weekNr + ", " + yearNr);
+		}
 		
 		
 		public int getRowCount() {
-			return cars.length;
+			return cars.size();
 		}
 		
 		public int getColumnCount() {
@@ -250,7 +324,7 @@ public class ReservationOverview extends JFrame {
 			if (column > 0) {
 				return null;
 			} else {
-				return cars[row];
+				return cars.get(row);
 			}
 		}
 		
