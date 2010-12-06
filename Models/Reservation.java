@@ -151,8 +151,6 @@ public class Reservation extends Model {
 	}
 	
 	/**
-	 * TODO: Implement this
-	 * TODO: Rewrite to use specific cars, and make checks on availability
 	 * Updates the entry with the provided ID in the data-
 	 * source. The data to be updated is the keys in the map, 
 	 * and the values are the new data. If then entry is 
@@ -170,6 +168,9 @@ public class Reservation extends Model {
 	public boolean update (int id, int customer, int car, Date startDate, Date endDate) {
 		if (id <= 0 || customer <= 0 || car <= 0 || startDate == null || endDate == null)
 			throw new NullPointerException();
+		
+		if (!checkAvailability(car, startDate, endDate))
+			return false;
 		
 		try {
 			String query =	"UPDATE Reservation " +
@@ -347,5 +348,35 @@ public class Reservation extends Model {
 		}
 		
 		return -1;
+	}
+	
+	/**
+	 * Checks whether or not a car is available in the provided period.
+	 * 
+	 * @param carId The ID of the car.
+	 * @param startDate The start date of the booking.
+	 * @param endDate The end date of the booking.
+	 * @return true on available; false on unavailable.
+	 */
+	public boolean checkAvailability (int carId, Date startDate, Date endDate) {
+		String query =	
+			"SELECT carId " + 
+			"FROM Car " + 
+			"WHERE carId = " + carId + " " + 
+			"AND NOT EXISTS ( " + 
+				"SELECT reservationId " + 
+				"FROM Reservation " + 
+				"WHERE Reservation.carId = Car.carId " +
+				   "AND (('"+startDate+"' 	>= startDate && '"+startDate+"' <= endDate) " + 
+				     "OR ('"+endDate+"' 	>= startDate && '"+endDate+"' 	<= endDate) " + 
+				     "OR ('"+startDate+"' 	<= startDate && '"+endDate+"' 	>= endDate)) " + 
+			")";
+		MySQLConnection conn = MySQLConnection.getInstance();
+		ResultSet result = conn.query(query);
+		if (result != null) {
+			return true;
+		}
+		
+		return false;
 	}
 }
