@@ -17,7 +17,6 @@ import Util.MySQLConnection;
 public class Reservation extends Model {
 	
 	/**
-	 * TODO: Implement this
 	 * Creates an entry in the particular data-source, with 
 	 * the data given in the Map. The ID of the new entry 
 	 * is returned on success.
@@ -40,7 +39,6 @@ public class Reservation extends Model {
 	}
 	
 	/**
-	 * TODO: Implement this
 	 * Creates an entry in the particular data-source, with 
 	 * the data given in the Map. The ID of the new entry 
 	 * is returned on success.
@@ -81,7 +79,6 @@ public class Reservation extends Model {
 	}
 	
 	/**
-	 * TODO: Implement this
 	 * Reads and returns the data with the provided Id in 
 	 * a Map, with data-names as keys. If an entry with 
 	 * the provided ID cannot be found in the data-source, 
@@ -89,8 +86,43 @@ public class Reservation extends Model {
 	 * 
 	 * @param id The id of the entry to read.
 	 * @return Map containing data on success; null on failure.
+	 * 			key			=> Description
+	 * 			id			=> The ID of the reservation.
+	 * 			car			=> The ID of the car booked.
+	 * 			customer	=> The ID of the customer booking the car.
+	 * 			startDate	=> Start date of reservation (YYYY-MM-DD).
+	 * 			endDate		=> End date of reservation (YYYY-MM-DD).
 	 */
-	public Map<String, Object> read (int id) { return null; }
+	public Map<String, Object> read (int id) {
+		if (id <= 0)
+			throw new NullPointerException();
+		
+		try {
+			String query =	"SELECT reservationId, carId, customerId, startDate, endDate " +
+							"FROM Reservation " +
+							"WHERE reservationId = " + id + " " +
+							"LIMIT 1";
+			MySQLConnection conn = MySQLConnection.getInstance();
+			ResultSet result = conn.query(query);
+			if (result == null)
+				return null;
+			
+			result.next();
+			
+			Map<String, Object> returnMap = new HashMap<String, Object>();
+			returnMap.put("id", 			result.getInt	("reservationId"));
+			returnMap.put("car", 			result.getInt	("carId"));
+			returnMap.put("customer",		result.getInt	("customerId"));
+			returnMap.put("startDate",		result.getDate	("startDate"));
+			returnMap.put("endDate",		result.getDate	("endDate"));
+			
+			return returnMap;
+		} catch (SQLException e) {
+			Logger.write("Couldn't read from the database: " + e.getMessage());
+		}
+		
+		return null;
+	}
 	
 	/**
 	 * TODO: Implement this
