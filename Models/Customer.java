@@ -131,9 +131,9 @@ public class Customer extends Model {
 		try {
 			MySQLConnection conn = MySQLConnection.getInstance();
 			ResultSet result = conn.query(query);
-			if (result == null) {
-				throw new SQLException();
-			}
+			if (result == null)
+				return null;
+			
 			result.next();
 			
 			Map<String, Object> returnMap = new HashMap<String, Object>();
