@@ -62,9 +62,10 @@ public class Reservation extends Model {
 				"AND NOT EXISTS ( " + 
 					"SELECT * " + 
 					"FROM Reservation " + 
-					"WHERE ('"+startDate+"' >= startDate && '"+startDate+"' <= endDate) " + 
-					   "OR ('"+endDate+"' 	>= startDate && '"+endDate+"' 	<= endDate) " + 
-					   "OR ('"+startDate+"' <= startDate && '"+endDate+"' 	>= endDate) " + 
+					"WHERE Reservation.carId = car.carId " +
+					   "AND (('"+startDate+"' >= startDate && '"+startDate+"' <= endDate) " + 
+					     "OR ('"+endDate+"' 	>= startDate && '"+endDate+"' 	<= endDate) " + 
+					     "OR ('"+startDate+"' <= startDate && '"+endDate+"' 	>= endDate)) " + 
 				")";
 			MySQLConnection conn = MySQLConnection.getInstance();
 			ResultSet result = conn.query(query);
