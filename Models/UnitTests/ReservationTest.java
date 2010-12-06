@@ -98,7 +98,7 @@ public class ReservationTest {
 	}
 	
 	/**
-	 * Test - Reservation #4-7
+	 * Test - Reservation #4-6
 	 */
 	@Test
 	public void testFindReservations () {
@@ -113,7 +113,7 @@ public class ReservationTest {
 	}
 	
 	/**
-	 * Test - Reservation #8
+	 * Test - Reservation #7
 	 */
 	@Test
 	public void testUnknown () {
@@ -127,7 +127,7 @@ public class ReservationTest {
 	}
 	
 	/**
-	 * Test - Reservation #9
+	 * Test - Reservation #8
 	 */
 	@Test
 	public void testDoubleReservation () {
@@ -144,18 +144,20 @@ public class ReservationTest {
 	}
 	
 	/**
-	 * Test - Reservation #10-11
+	 * Test - Reservation #9
 	 */
 	@Test
 	public void testCreationAndDeletion () {
-		Map<String, Object> createVars = new HashMap<String, Object>();
-		createVars.put("car", varevogn);
-		createVars.put("customerPhone", 45612378);
-		createVars.put("customerName", "Børge Karlsen");
-		createVars.put("startDate", Date.valueOf("2010-12-16"));
-		createVars.put("startDate", Date.valueOf("2010-12-19"));
-		int reservation1 = reservation.create(createVars);
-		assertTrue(reservation1 > 0); // Test #9
-		assertTrue(reservation.delete(reservation1)); // Test #10
+		int  cus1 		= customer.createIfNew("Jens Ole", 43218765);
+		Date startDate	= Date.valueOf("2010-12-16");
+		Date endDate	= Date.valueOf("2010-12-19");
+		int  res1 		= reservation.create(cus1, varevogn, startDate, endDate);
+		
+		assertTrue(res1 > 0);
+		startDate		= Date.valueOf("2010-12-15");
+		endDate			= Date.valueOf("2010-12-20");
+		assertTrue(reservation.update(res1, cus1, varevogn, startDate, endDate)); // Test #9
+		assertTrue(reservation.delete(res1));
+		assertTrue(customer.delete(cus1));
 	}
 }
