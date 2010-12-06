@@ -110,10 +110,6 @@ public class ReservationTest {
 		assertTrue(reservation.delete(reservationToDelete)); // Test #5
 		
 		assertEquals(reservation.list(customer1).size(), 1); // Test #6
-		
-		int customer2 = Integer.parseInt(customer.read(99999999, true).get("id").toString());
-		assertNull(reservation.list(customer2)); // Test #7
-		assertEquals(reservation.list(customer2).size(), 0); // Test #7
 	}
 	
 	/**
@@ -121,14 +117,13 @@ public class ReservationTest {
 	 */
 	@Test
 	public void testUnknown () {
-		int unknownCar = 1337;
+		int unknownCarType = 1337;
 		Map<String, Object> createVars = new HashMap<String, Object>();
-		createVars.put("car", unknownCar);
-		createVars.put("customerPhone", 43218765);
-		createVars.put("customerName", "Jens Ole");
+		createVars.put("carType", unknownCarType);
+		createVars.put("customer", customer.createIfNew("Jens Ole", 43218765));
 		createVars.put("startDate", Date.valueOf("2010-12-16"));
-		createVars.put("startDate", Date.valueOf("2010-12-19"));
-		assertFalse(reservation.create(createVars) > 0); // Test #8
+		createVars.put("endDate", Date.valueOf("2010-12-19"));
+		assertFalse(reservation.create(createVars) > 0); // Test #7
 	}
 	
 	/**
@@ -138,14 +133,11 @@ public class ReservationTest {
 	public void testDoubleReservation () {
 		int prevAmount = customer.list().size();
 		
-		Map<String, Object> createVars = new HashMap<String, Object>();
-		createVars.put("car", sportsvogn);
-		createVars.put("customerPhone", 45612378);
-		createVars.put("customerName", "Børge Karlsen");
-		createVars.put("startDate", Date.valueOf("2010-12-17"));
-		createVars.put("startDate", Date.valueOf("2010-12-18"));
-		assertFalse(reservation.create(createVars) > 0); // Test #9
-		assertEquals(prevAmount, customer.list().size()); // Test #9
+		int customer1	= customer.createIfNew("Børge Karlsen", 45612378);
+		Date startDate 	= Date.valueOf("2010-12-17");
+		Date endDate 	= Date.valueOf("2010-12-18");
+		assertFalse(reservation.create(customer1, sportsvogn, startDate, endDate) > 0); // Test #8
+		assertEquals(prevAmount, customer.list().size()); // Test #8
 	}
 	
 	/**
@@ -160,7 +152,7 @@ public class ReservationTest {
 		createVars.put("startDate", Date.valueOf("2010-12-16"));
 		createVars.put("startDate", Date.valueOf("2010-12-19"));
 		int reservation1 = reservation.create(createVars);
-		assertTrue(reservation1 > 0); // Test #10
-		assertTrue(reservation.delete(reservation1));
+		assertTrue(reservation1 > 0); // Test #9
+		assertTrue(reservation.delete(reservation1)); // Test #10
 	}
 }
