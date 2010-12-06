@@ -42,23 +42,12 @@ public class ReservationTest {
 		this.carType = new CarType();
 		this.car = new Car();
 		
-		this.varevogn = carType.create("Varevogn");
+		this.varevogn 	= carType.create("Varevogn");
 		this.sportsvogn = carType.create("Sportsvogn");
 		
-		Map<String, Object> createVars = new HashMap<String, Object>();
-		createVars.put("type", varevogn);
-		createVars.put("car", "Ford Transit");
-		createVars.put("licenseplate", "SV 12 345");
-		this.SV12345 = car.create(createVars);
-		
-		createVars.put("licenseplate", "SV 23 456");
-		this.SV23456 = car.create(createVars);
-		
-		createVars = new HashMap<String, Object>();
-		createVars.put("type", sportsvogn);
-		createVars.put("car", "Mazda MX-5");
-		createVars.put("licenseplate", "XS 98 654");
-		this.XS98654 = car.create(createVars);
+		this.SV12345 = car.create("Ford Transit", "SV 12 345", varevogn);
+		this.SV23456 = car.create("Ford Transit", "SV 23 456", varevogn);
+		this.XS98654 = car.create("Mazda MX-5", "XS 98 654", sportsvogn);
 		
 		this.reservation = new Reservation();
 		this.customer = new Customer();
@@ -75,11 +64,6 @@ public class ReservationTest {
 		
 		carType.delete(varevogn);
 		carType.delete(sportsvogn);
-		
-		int customer1 = Integer.parseInt(customer.read(43218765, true).get("id").toString());
-		reservation.delete(Integer.parseInt(reservation.list(customer1).get(0).get("id").toString()));
-		customer.delete(customer1);
-		customer.delete(Integer.parseInt(customer.read(45612378, true).get("id").toString()));
 	}
 
 	/**
@@ -87,28 +71,30 @@ public class ReservationTest {
 	 */
 	@Test
 	public void testCreateReservations () {
-		Map<String, Object> createVars = new HashMap<String, Object>();
-		createVars.put("car", varevogn);
-		createVars.put("customerPhone", 43218765);
-		createVars.put("customerName", "Jens Ole");
-		createVars.put("startDate", Date.valueOf("2010-12-16"));
-		createVars.put("startDate", Date.valueOf("2010-12-19"));
-		assertTrue(reservation.create(createVars) > 0); // Test #1
+		int  customer1		= customer.createIfNew("Jens Ole", 43218765);
+		Date startDate 		= Date.valueOf("2010-12-16");
+		Date endDate		= Date.valueOf("2010-12-19");
+		int  reservation1	= reservation.create(customer1, varevogn, startDate, endDate);
+		assertTrue(reservation1 > 0); // Test #1
 		
-		int prevAmount = customer.amountOfEntries();
+		int prevAmountCustomer 		= customer.amountOfEntries();
+		int prevAmountReservation	= reservation.amountOfEntries();
 		
-		createVars.put("car", sportsvogn);
-		createVars.put("startDate", Date.valueOf("2010-12-17"));
-		createVars.put("startDate", Date.valueOf("2010-12-23"));
-		assertTrue(reservation.create(createVars) > 0); // Test #2
-		assertEquals(prevAmount, customer.amountOfEntries()); // Test #2
+		int customer2		= customer.createIfNew("Jens Ole", 43218765);
+			startDate 		= Date.valueOf("2010-12-17");
+			endDate			= Date.valueOf("2010-12-23");
+		int reservation2	= reservation.create(customer1, varevogn, startDate, endDate);
+		assertTrue	(reservation2 > 0); // Test #2
+		assertEquals(prevAmountCustomer, customer.amountOfEntries()); // Test #2
+		assertEquals(customer1, customer2); // Test #2
+		assertEquals(prevAmountReservation+1, reservation.amountOfEntries()); // Test #2
 		
-		createVars = new HashMap<String, Object>();
-		createVars.put("car", varevogn);
-		createVars.put("customerPhone", 99999999);
-		createVars.put("startDate", Date.valueOf("2010-12-18"));
-		createVars.put("startDate", Date.valueOf("2010-12-19"));
-		assertFalse(reservation.create(createVars) > 0); // Test #3
+		int customer3		= 1337;
+			startDate 		= Date.valueOf("2010-12-18");
+			endDate			= Date.valueOf("2010-12-19");
+		int reservation3	= reservation.create(customer3, varevogn, startDate, endDate);
+		assertFalse	(reservation3 > 0); // Test #3
+		assertEquals(prevAmountReservation+1, reservation.amountOfEntries()); // Test #3
 	}
 	
 	/**
