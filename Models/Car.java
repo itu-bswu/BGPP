@@ -98,9 +98,8 @@ public class Car extends Model {
 						   "AND CarType.typeId = Car.carType " + 
 						   "LIMIT 1";
 			ResultSet result = conn.query(query);
-			if (result == null) {
-				throw new SQLException();
-			}
+			if (result == null)
+				return null;
 			result.next();
 			
 			Map<String, Object> returnMap = new TreeMap<String, Object>();

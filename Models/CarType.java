@@ -82,6 +82,8 @@ public class CarType extends Model {
 						   "WHERE typeId = '" + id + "' " +
 						   "LIMIT 1";
 			ResultSet result = conn.query(query);
+			if (result == null)
+				return null;
 			result.next();
 			
 			Map<String, Object> returnMap = new TreeMap<String, Object>();
@@ -116,6 +118,8 @@ public class CarType extends Model {
 						   "WHERE title = '" + title + "' " +
 						   "LIMIT 1";
 			ResultSet result = conn.query(query);
+			if (result == null)
+				return null;
 			result.next();
 			
 			Map<String, Object> returnMap = new TreeMap<String, Object>();
