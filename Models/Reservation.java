@@ -164,7 +164,6 @@ public class Reservation extends Model {
 	public boolean update (int id, int customer, int carType, Date startDate, Date endDate) { return false; }
 	
 	/**
-	 * TODO: Implement this
 	 * Deletes the entry with the provided ID in the data-
 	 * source. On success true will be returned. If the 
 	 * deletion failed (invalid ID or similar), false 
@@ -173,7 +172,25 @@ public class Reservation extends Model {
 	 * @param id The ID of the entry to be deleted.
 	 * @return true on success; false on failure.
 	 */
-	public boolean delete (int id) { return false; }
+	public boolean delete (int id) {
+		if (id <= 0)
+			throw new NullPointerException();
+		
+		try {
+			MySQLConnection conn = MySQLConnection.getInstance();
+			String query = "DELETE FROM Reservation " +
+						   "WHERE reservationId = " + id;
+			ResultSet result = conn.query(query);
+			result.next();
+			if (result != null) {
+				return true;
+			}
+		} catch (Exception e) {
+			Logger.write("Couldn't delete row from database: " + e.getMessage());
+		}
+		
+		return false;
+	}
 	
 	/**
 	 * Gives the amount of entries in the data-source, 
