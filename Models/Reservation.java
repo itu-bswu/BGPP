@@ -153,8 +153,17 @@ public class Reservation extends Model {
 	 */
 	public List<Map<String, Object>> list (int id) { return null; }
 	
-	public int findFreeCar (int customerId, int carType, Date startDate, Date endDate) {
-		if (customerId <= 0 || carType <= 0 || startDate == null || endDate == null)
+	/**
+	 * Finds a free car in the specified period, with the specified car-type. 
+	 * Car ID is returned if car is found; Otherwise -1 is returned.
+	 * 
+	 * @param carType The ID of the car-type to be booked.
+	 * @param startDate The start date of the booking.
+	 * @param endDate The end date of the booking.
+	 * @return Car ID on success; -1 on failure.
+	 */
+	public int findFreeCar (int carType, Date startDate, Date endDate) {
+		if (carType <= 0 || startDate == null || endDate == null)
 			throw new NullPointerException();
 		
 		try {
@@ -169,11 +178,6 @@ public class Reservation extends Model {
 					   "AND (('"+startDate+"' 	>= startDate && '"+startDate+"' <= endDate) " + 
 					     "OR ('"+endDate+"' 	>= startDate && '"+endDate+"' 	<= endDate) " + 
 					     "OR ('"+startDate+"' 	<= startDate && '"+endDate+"' 	>= endDate)) " + 
-				") " +
-				"AND EXISTS ( " +
-					"SELECT customerId " +
-					"FROM Customer " +
-					"WHERE customerId = " + customerId + " " + 
 				")";
 			MySQLConnection conn = MySQLConnection.getInstance();
 			ResultSet result = conn.query(query);
@@ -182,7 +186,7 @@ public class Reservation extends Model {
 				return result.getInt(1);
 			}
 		} catch (SQLException e) {
-			Logger.write("Couldn't book car: " + e.getMessage());
+			Logger.write("Couldn't find free car: " + e.getMessage());
 		}
 		
 		return -1;
