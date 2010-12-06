@@ -3,6 +3,7 @@ package Models;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,8 +47,8 @@ public class Reservation extends Model {
 	 * 
 	 * @param customer The ID of the customer to book a car.
 	 * @param carType The ID of the car-type to be booked.
-	 * @param startDate The start date of the booking.
-	 * @param endDate The end date of the booking.
+	 * @param startDate The start date of the booking (format: YYYY-MM-DD).
+	 * @param endDate The end date of the booking (format: YYYY-MM-DD).
 	 * @return ID on success; -1 on failure.
 	 */
 	public int create (int customerId, int carType, Date startDate, Date endDate) {
@@ -55,9 +56,23 @@ public class Reservation extends Model {
 			throw new NullPointerException();
 		
 		try {
-			int freeCar = findFreeCar(customerId, carType, startDate, endDate);
-			if (freeCar <= 0)
+			int freeCar = findFreeCar(carType, startDate, endDate); // Find available car
+			Customer Customer = new Customer(); // Verify customer-ID
+			if (freeCar <= 0 || Customer.read(customerId) == null)
 				return -1;
+			
+			String query =	"INSERT INTO Reservation " +
+							"SET " +
+							"customerId =  " + customerId 	+ ", " +
+							"carId 		=  " + freeCar 		+ ", " +
+							"startDate 	= '" + startDate 	+ "', " +
+							"endDate 	= '" + endDate 		+ "'";
+			MySQLConnection conn = MySQLConnection.getInstance();
+			ResultSet result = conn.query(query);
+			if (result != null) {
+				result.next();
+				return result.getInt(1);
+			}
 		} catch (SQLException e) {
 			Logger.write("Couldn't book car: " + e.getMessage());
 		}
