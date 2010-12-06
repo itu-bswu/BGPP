@@ -83,7 +83,7 @@ public class ReservationTest {
 		int customer2		= customer.createIfNew("Jens Ole", 43218765);
 			startDate 		= Date.valueOf("2010-12-17");
 			endDate			= Date.valueOf("2010-12-23");
-		int reservation2	= reservation.create(customer1, varevogn, startDate, endDate);
+		int reservation2	= reservation.create(customer1, sportsvogn, startDate, endDate);
 		assertTrue	(reservation2 > 0); // Test #2
 		assertEquals(prevAmountCustomer, customer.amountOfEntries()); // Test #2
 		assertEquals(customer1, customer2); // Test #2
@@ -136,8 +136,11 @@ public class ReservationTest {
 		int customer1	= customer.createIfNew("Børge Karlsen", 45612378);
 		Date startDate 	= Date.valueOf("2010-12-17");
 		Date endDate 	= Date.valueOf("2010-12-18");
+		int res1 		= reservation.create(customer1, sportsvogn, startDate, endDate);
 		assertFalse(reservation.create(customer1, sportsvogn, startDate, endDate) > 0); // Test #8
-		assertEquals(prevAmount, customer.list().size()); // Test #8
+		assertEquals(prevAmount+1, customer.list().size()); // Test #8
+		
+		reservation.delete(res1); // Cleanup
 	}
 	
 	/**
