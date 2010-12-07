@@ -259,18 +259,45 @@ public class Customer extends Model {
 	}
 	
 	/**
-	 * Lists the customers from the database.
+	 * Lists the customers from the database, matching the name and phone-number 
+	 * provided. Also works on partial inputs.
 	 * 
+	 * @param name The name to search for.
+	 * @param phone The phone-number to search for.
+	 * @return A list with all matching entries in the database.
+	 */
+	public List<Map<String, Object>> search (String name, int phone) {
+		return search (name, phone, "name", "ASC");
+	}
+	
+	/**
+	 * Lists the customers from the database, matching the name and phone-number 
+	 * provided. Also works on partial inputs.
+	 * 
+	 * @param name The name to search for.
+	 * @param phone The phone-number to search for.
 	 * @param sortColumn The column to sort by.
 	 * @param sortOrder The sorting direction (ASC for ascending; DESC for descending).
-	 * @return A list with all data from the data-source.
+	 * @return A list with all matching entries in the database.
 	 */
-	public List<Map<String, Object>> list (String sortColumn, String sortOrder) {
+	public List<Map<String, Object>> search (String name, int phone, String sortColumn, String sortOrder) {
+		String phoneSQL	= phone == 0	? "" : phone + "";
+		String nameSQL	= name 	== null	? "" : name;
+		
+		if (sortColumn == null)
+			sortColumn = "name";
+		if (sortOrder == null || 
+		   (!sortOrder.toUpperCase().equals("ASC") && 
+			!sortOrder.toUpperCase().equals("DESC")))
+				sortOrder = "ASC";
+		
 		List<Map<String, Object>> list = new LinkedList<Map<String, Object>>();
 		
 		try {
 			String query =	"SELECT customerId, name, phone " +
 							"FROM Customer " +
+							"WHERE name LIKE '%" + nameSQL + "%' " +
+							"AND phone LIKE '%" + phoneSQL + "%' " +
 							"ORDER BY " + sortColumn + " " + sortOrder;
 			MySQLConnection conn = MySQLConnection.getInstance();
 			ResultSet result = conn.query(query);
@@ -287,6 +314,17 @@ public class Customer extends Model {
 		}
 		
 		return list;
+	}
+	
+	/**
+	 * Lists the customers from the database.
+	 * 
+	 * @param sortColumn The column to sort by.
+	 * @param sortOrder The sorting direction (ASC for ascending; DESC for descending).
+	 * @return A list with all data from the data-source.
+	 */
+	public List<Map<String, Object>> list (String sortColumn, String sortOrder) {
+		return search(null, 0, sortColumn, sortOrder);
 	}
 	
 	/**
