@@ -198,7 +198,7 @@ public class Car extends Model {
 			Map<String, Object> curr;
 			while (result.next()) {
 				curr = new HashMap<String, Object>();
-				curr.put("id", 				result.getString("carId"));
+				curr.put("id", 				result.getInt	("carId"));
 				curr.put("title", 			result.getString("title"));
 				curr.put("licensePlate", 	result.getString("licensePlate"));
 				curr.put("carTypeId", 		result.getInt	("carType"));
