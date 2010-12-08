@@ -26,10 +26,7 @@ public abstract class Model {
 	 */
 	public int create (Map<String, Object> createVars) {
 		try {
-			String setSQL 		= "";
-			for (Map.Entry<String, Object> item : createVars.entrySet()) {
-				setSQL = setSQL.concat(item.getKey() + " = '" + item.getValue() + "', ");
-			}
+			String setSQL = buildQuery(createVars);
 			setSQL = setSQL.substring(0, setSQL.lastIndexOf(','));
 			String query =	"INSERT INTO " + getClassName() + " " + 
 							"SET " + setSQL;
@@ -150,5 +147,21 @@ public abstract class Model {
 		className = className.substring(className.lastIndexOf('.')+1, className.length());
 		
 		return className;
+	}
+	
+	/**
+	 * Takes a Map<String, Object> and returns a String ready for SQL queries 
+	 * (for INSERT and UPDATE).
+	 * 
+	 * @param vars A Map of values.
+	 * @return A string ready for SQL queries.
+	 */
+	private String buildQuery (Map<String, Object> vars) {
+		String query = "";
+		for (Map.Entry<String, Object> item : vars.entrySet()) {
+			query = query.concat(item.getKey() + " = '" + item.getValue() + "', ");
+		}
+		
+		return query;
 	}
 }
