@@ -10,7 +10,9 @@ import Util.Logger;
 import Util.MySQLConnection;
 
 /**
+ * TODO: Review error-handling with SQL queries.
  * TODO: Write class description
+ * TODO: Rewrite javadoc
  * Model - Car Type
  *
  */

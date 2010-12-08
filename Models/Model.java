@@ -4,6 +4,8 @@ import java.util.Map;
 import java.util.List;
 
 /**
+ * TODO: Write class description
+ * TODO: Rewrite javadoc
  * Model
  * Basic abstract super-class for models. With this certain 
  * basic methods are guaranteed in all models. This is based 
