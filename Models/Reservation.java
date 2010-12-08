@@ -24,19 +24,30 @@ public class Reservation extends Model {
 	 * 
 	 * @param createVars Map containing data to be stored.
 	 * 			key			=> description
-	 * 			customer	=> The ID of the customer to book a car.
+	 * 			customerId	=> The ID of the customer to book a car.
 	 * 			carType		=> The ID of the car-type to be booked.
 	 * 			startDate	=> The start date of the booking.
 	 * 			endDate		=> The end date of the booking.
 	 * @return ID on success; -1 on failure.
 	 */
 	public int create (Map<String, Object> createVars) {
-		int customer = Integer.parseInt(createVars.get("customer").toString());
+		int customerId = Integer.parseInt(createVars.get("customerId").toString());
 		int carType = Integer.parseInt(createVars.get("carType").toString());
 		Date startDate = (Date) createVars.get("startDate");
 		Date endDate = (Date) createVars.get("endDate");
 		
-		return create (customer, carType, startDate, endDate);
+		if (customerId <= 0 || carType <= 0 || startDate == null || endDate == null)
+			throw new NullPointerException();
+		
+		int freeCar = findFreeCar(carType, startDate, endDate); // Find available car
+		Customer Customer = new Customer(); // Verify customer-ID
+		if (freeCar <= 0 || Customer.read(customerId) == null)
+			return -1;
+		
+		createVars.remove("carType");
+		createVars.put("carId", freeCar);
+		
+		return super.create (createVars);
 	}
 	
 	/**
@@ -51,21 +62,13 @@ public class Reservation extends Model {
 	 * @return ID on success; -1 on failure.
 	 */
 	public int create (int customerId, int carType, Date startDate, Date endDate) {
-		if (customerId <= 0 || carType <= 0 || startDate == null || endDate == null)
-			throw new NullPointerException();
-		
-		int freeCar = findFreeCar(carType, startDate, endDate); // Find available car
-		Customer Customer = new Customer(); // Verify customer-ID
-		if (freeCar <= 0 || Customer.read(customerId) == null)
-			return -1;
-		
 		Map<String, Object> createVars = new HashMap<String, Object>();
 		createVars.put("customerId", 	customerId);
-		createVars.put("carId", 		freeCar);
+		createVars.put("carType", 		carType);
 		createVars.put("startDate", 	startDate);
 		createVars.put("endDate", 		endDate);
 		
-		return super.create(createVars);
+		return this.create(createVars);
 	}
 	
 	/**
