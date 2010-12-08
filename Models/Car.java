@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
+import java.util.HashMap;
 
 import Util.Logger;
 import Util.MySQLConnection;
@@ -103,7 +103,7 @@ public class Car extends Model {
 				return null;
 			result.next();
 			
-			Map<String, Object> returnMap = new TreeMap<String, Object>();
+			Map<String, Object> returnMap = new HashMap<String, Object>();
 			returnMap.put("id", 			result.getInt("Car.carId"));
 			returnMap.put("name", 			result.getString("Car.title"));
 			returnMap.put("typeId", 		result.getInt("Car.carType"));
