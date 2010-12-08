@@ -29,10 +29,13 @@ public class Customer extends Model {
 	 * 			phone			=> The customer's phone-number.
 	 * @return ID on success; -1 on failure.
 	 */
-	public int create (Map<String, Object> createVars) {
-		String name = createVars.get("name").toString();
-		int phone = Integer.parseInt(createVars.get("phone").toString());
-		return create(name, phone);
+	public int create (Map<String, Object> createVars) {		
+		if (createVars.get("name").toString() == null || 
+			createVars.get("name").toString().length() <= 0 || 
+			Integer.parseInt(createVars.get("phone").toString()) <= 0)
+				throw new NullPointerException();
+		
+		return super.create(createVars);
 	}
 	
 	/**
@@ -46,27 +49,10 @@ public class Customer extends Model {
 	 * @return ID on success; -1 on failure.
 	 */
 	public int create (String name, int phone) {
-		if (name == null || name.length() <= 0 || phone <= 0)
-				throw new NullPointerException();
-			
-		try {
-			MySQLConnection conn = MySQLConnection.getInstance();
-			String query = 	"INSERT INTO Customer " +
-							"SET name = '" + name + "', " + 
-							"phone = '" + phone + "'";
-			ResultSet result = conn.query(query);
-			if (result == null)
-				return -1;
-			result.next();
-			int newId = result.getInt(1);
-			if (newId > 0) {
-				return newId;
-			}
-		} catch (Exception e) {
-			Logger.write("Couldn't insert row to database: " + e.getMessage());
-		}
-		
-		return -1;
+		Map<String, Object> createVars = new HashMap<String, Object>();
+		createVars.put("name", name);
+		createVars.put("phone", phone);
+		return this.create(createVars);
 	}
 	
 	/**
