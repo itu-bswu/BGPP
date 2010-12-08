@@ -2,6 +2,7 @@ package Models;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -206,5 +207,29 @@ public class CarType extends Model {
 	 * 
 	 * @return A list with all data from the data-source.
 	 */
-	public List<Map<String, Object>> list () { return null; }
+	public List<Map<String, Object>> list () {
+List<Map<String, Object>> list = new LinkedList<Map<String, Object>>();
+		
+		try {
+			String query =	"SELECT typeId, title " +
+							"FROM CarType " +
+							"ORDER BY title ASC ";
+			MySQLConnection conn = MySQLConnection.getInstance();
+			ResultSet result = conn.query(query);
+			if (result == null)
+				return null;
+			Map<String, Object> curr;
+			while (result.next()) {
+				curr = new HashMap<String, Object>();
+				curr.put("id", 				result.getInt	("typeId"));
+				curr.put("title", 			result.getString("title"));
+				
+				list.add(curr);
+			}
+		} catch (SQLException e) {
+			Logger.write("Failed to list items from database: " + e.getMessage());
+		}
+		
+		return list;
+	}
 }
