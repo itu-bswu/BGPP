@@ -316,8 +316,9 @@ public class Customer extends Model {
 			ResultSet result = conn.query(query);
 			if (result == null)
 				return null;
-			Map<String, Object> curr = new HashMap<String, Object>();
+			Map<String, Object> curr;
 			while (result.next()) {
+				curr = new HashMap<String, Object>();
 				curr.put("id", result.getString("customerId"));
 				curr.put("name", result.getString("name"));
 				curr.put("phone", result.getInt("phone"));
