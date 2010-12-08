@@ -314,6 +314,47 @@ public class Reservation extends Model {
 	}
 	
 	/**
+	 * Lists the reservations from the database.
+	 * 
+	 * @param sortColumn The column to sort by.
+	 * @param sortOrder The sorting direction (ASC for ascending; DESC for descending).
+	 * @param customerId The ID of the customer to find reservations from.
+	 * @return A list with all data from the data-source.
+	 */
+	public List<Map<String, Object>> list (Date startDate, Date endDate) {
+		List<Map<String, Object>> list = new LinkedList<Map<String, Object>>();
+		
+		try {	
+			String query =	"SELECT reservationId, carId, customerId, " +
+							"startDate, endDate " +
+							"FROM Reservation " +
+							"WHERE " +
+								"(('"+startDate+"' 	>= startDate && '"+startDate+"' <= endDate) " + 
+								"OR ('"+endDate+"' 	>= startDate && '"+endDate+"' 	<= endDate) " + 
+								"OR ('"+startDate+"' 	<= startDate && '"+endDate+"' 	>= endDate)) " + 
+							"ORDER BY startDate ASC ";
+			MySQLConnection conn = MySQLConnection.getInstance();
+			ResultSet result = conn.query(query);
+			if (result == null)
+				return null;
+			Map<String, Object> curr = new HashMap<String, Object>();
+			while (result.next()) {
+				curr.put("id", 			result.getInt	("reservationId"));
+				curr.put("carId", 		result.getInt	("carId"));
+				curr.put("customerId", 	result.getInt	("customerId"));
+				curr.put("startDate", 	result.getDate	("startDate"));
+				curr.put("endDate", 	result.getDate	("endDate"));
+				
+				list.add(curr);
+			}
+		} catch (SQLException e) {
+			Logger.write("Failed to list items from database: " + e.getMessage());
+		}
+		
+		return list;
+	}
+	
+	/**
 	 * Finds a free car in the specified period, with the specified car-type. 
 	 * Car ID is returned if car is found; Otherwise -1 is returned.
 	 * 
