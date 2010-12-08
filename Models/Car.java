@@ -195,8 +195,9 @@ public class Car extends Model {
 			ResultSet result = conn.query(query);
 			if (result == null)
 				return null;
-			Map<String, Object> curr = new HashMap<String, Object>();
+			Map<String, Object> curr;
 			while (result.next()) {
+				curr = new HashMap<String, Object>();
 				curr.put("id", 				result.getString("carId"));
 				curr.put("title", 			result.getString("title"));
 				curr.put("licensePlate", 	result.getString("licensePlate"));
