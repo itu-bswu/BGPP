@@ -90,7 +90,7 @@ public abstract class Model {
 	 * @param id The ID of the entry to be deleted.
 	 * @return true on success; false on failure.
 	 */
-	public boolean delete (int id, String idColumn) {
+	protected boolean delete (int id, String idColumn) {
 		if (id <= 0 || idColumn == null)
 			throw new NullPointerException();
 		
