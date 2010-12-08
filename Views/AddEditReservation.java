@@ -2,19 +2,40 @@ package Views;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Date;
+import java.awt.event.ActionListener;
+import Models.*;
+import java.text.SimpleDateFormat;
 
 /**
  * View - Add/Edit Reservation
  *
  */
 public class AddEditReservation extends JFrame {
+	private int thisReservation;
+	
+	private JComboBox carTypeSelect;
+	private JTextField fromDateInput;
+	private JTextField toDateInput;
+	private JTextField customerNameInput;
+	private JTextField customerPhoneInput;
+	
+	public final String cancelButtonTitle = "Cancel";
+	public final String saveButtonTitle = "Save";
+	
+	JButton cancelButton;
+	JButton saveButton;
+	
 	/**
 	 * AddEditReservation constructor
 	 * creates a new reservation window
 	 */
 	public AddEditReservation() {
 		super("Reservation");
-		this.setupInterface(-1);
+		setupInterface();
+		thisReservation = -1;
 	}
 	
 	/**
@@ -24,14 +45,14 @@ public class AddEditReservation extends JFrame {
 	 */
 	public AddEditReservation(int reservationID) {
 		super("Reservation");
-		this.setupInterface(reservationID);
+		setupInterface();
+		thisReservation = reservationID;
 	}
 	
 	/**
 	 * sets up the interface
-	 * @param reservationID the reservation ID to get data from. Can be -1 for no reservation ID
 	 */
-	private void setupInterface(int reservationID) {
+	private void setupInterface() {
 		this.setLayout(new BorderLayout());
 		
 		JPanel panel = new JPanel();
@@ -60,36 +81,63 @@ public class AddEditReservation extends JFrame {
 		JPanel inputPanel = new JPanel(new GridLayout(5, 0));
 		panel.add(inputPanel, BorderLayout.CENTER);
 		
-		String[] items = {
-			"Lastbil",
-			"Sportsvogn",
-			"Slæde"
-		};
-		JComboBox carTypeSelect = new JComboBox(items);
+		carTypeSelect = new JComboBox();
 		inputPanel.add(carTypeSelect);
 		
-		JTextField fromDateInput = new JTextField();
+		fromDateInput = new JTextField();
 		inputPanel.add(fromDateInput);
 		
-		JTextField toDateInput = new JTextField();
+		toDateInput = new JTextField();
 		inputPanel.add(toDateInput);
 		
-		JTextField customerNameInput = new JTextField();
+		customerNameInput = new JTextField();
 		inputPanel.add(customerNameInput);
 		
-		JTextField customerPhoneInput = new JTextField();
+		customerPhoneInput = new JTextField();
 		inputPanel.add(customerPhoneInput);
 		
 		JPanel buttonsPanel = new JPanel(new GridLayout(1, 2));
 		this.add(buttonsPanel, BorderLayout.SOUTH);
 		
-		JButton cancelButton = new JButton("Cancel");
+		cancelButton = new JButton(cancelButtonTitle);
 		buttonsPanel.add(cancelButton);
 		
-		JButton saveButton = new JButton("Save");
+		saveButton = new JButton(saveButtonTitle);
 		buttonsPanel.add(saveButton);
 		
 		this.setSize(275, 220);
 		this.setVisible(true);
+	}
+	
+	
+	public void setCarTypes(String[] carTypes) {
+		for (String s : carTypes) {
+			carTypeSelect.addItem(s);
+		}
+	}
+	
+	
+	public void setData(String customerName, String customerPhone, Date fromDate, Date toDate, int carType) {
+		SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM-yy");
+		fromDateInput.setText(dateFormatter.format(fromDate));
+		toDateInput.setText(dateFormatter.format(toDate));
+		customerNameInput.setText(customerName);
+		customerPhoneInput.setText(customerPhone);
+		carTypeSelect.setSelectedIndex(carType);
+	}
+	
+	
+	public int getReservationId() {
+		return thisReservation;
+	}
+	
+	
+	public void addCancelListener(ActionListener a) {
+		cancelButton.addActionListener(a);
+	}
+	
+	
+	public void addSaveListener(ActionListener a) {
+		saveButton.addActionListener(a);
 	}
 }

@@ -6,8 +6,8 @@ import java.awt.*;
 import java.awt.event.*;
 import Models.*;
 import java.util.Map;
+import java.util.Date;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -25,6 +25,7 @@ public class ReservationOverview extends JFrame {
 	}
 	
 	private CellState[][] carsStates;
+	private Integer[][] cellReservationIds;
 	
 	private JMenuItem newReservationItem;
 	private JMenuItem quitItem;
@@ -50,7 +51,7 @@ public class ReservationOverview extends JFrame {
 	 * ReservationOverview contructor
 	 */
 	public ReservationOverview() {
-		super("Reservatoins overview");
+		super("Reservations overview");
 		
 		this.setSize(800, 400);
 		
@@ -86,20 +87,8 @@ public class ReservationOverview extends JFrame {
 		
 		currentDateLabel = new JLabel("", SwingConstants.CENTER);
 		
-		//TODO: Load number of cars from database
-		carsStates = new CellState[15][7];
-		
-		//inserting dummy data
-		//TODO: Load data from database
-		for (CellState[] state : carsStates) {
-			state[0] = CellState.CELL_START;
-			state[1] = CellState.CELL_MIDDLE;
-			state[2] = CellState.CELL_MIDDLE;
-			state[3] = CellState.CELL_END;
-			state[4] = CellState.CELL_NONE;
-			state[5] = CellState.CELL_START;
-			state[6] = CellState.CELL_END;
-		}
+		carsStates = new CellState[0][0];
+		cellReservationIds = new Integer[0][0];
 		
 		//creates the table
 		table = new JTable(new CustomTableModel());
@@ -107,7 +96,20 @@ public class ReservationOverview extends JFrame {
 		table.setGridColor(Color.GRAY);
 		table.setRowHeight(25);
 		table.getTableHeader().setReorderingAllowed(false);
+		CustomTableModel model = (CustomTableModel)table.getModel();
 		
+		updateTableCells();
+		
+		this.getContentPane().setLayout(new BorderLayout());
+		this.getContentPane().add(table.getTableHeader(), BorderLayout.NORTH);
+		this.getContentPane().add(new JScrollPane(table), BorderLayout.CENTER);
+		this.getContentPane().add(currentDateLabel, BorderLayout.SOUTH);
+		
+		this.setVisible(true);
+	}
+	
+	
+	public void updateTableCells() {
 		for (int i = 0; i < table.getColumnModel().getColumnCount(); i++) {
 			if (i == 0) {
 				table.getColumnModel().getColumn(i).setMinWidth(150);
@@ -116,13 +118,6 @@ public class ReservationOverview extends JFrame {
 				table.getColumnModel().getColumn(i).setCellRenderer(new CustomTableCellRenderer());
 			}
 		}
-		
-		this.setLayout(new BorderLayout());
-		this.add(table.getTableHeader(), BorderLayout.NORTH);
-		this.add(new JScrollPane(table), BorderLayout.CENTER);
-		this.add(currentDateLabel, BorderLayout.SOUTH);
-		
-		this.setVisible(true);
 	}
 	
 	
@@ -248,38 +243,130 @@ public class ReservationOverview extends JFrame {
 	
 	
 	/**
+	 * setCars
+	 * sets the car-rows of the table
+	 * @param carList the List of car Maps
+	 */
+	public void setCars(List<Map<String, Object>> carList) {
+		CustomTableModel model = (CustomTableModel)table.getModel();
+		model.setCars(carList);
+	}
+	
+	
+	/**
+	 * setReservations
+	 * sets the reservations to be shown in the table
+	 * @param reservationsList the List of reservations
+	 */
+	public void setReservations(List<Map<String, Object>> reservationList) {
+		CustomTableModel model = (CustomTableModel)table.getModel();
+		model.setReservations(reservationList);
+	}
+	
+	
+	/**
+	 * resetReservationsStates
+	 * resets the cell states for the table
+	 */
+	private void resetReservationStates() {
+		int i, j;
+		for (i = 0; i < carsStates.length; i++) {
+			for (j = 0; j < 7; j++) {
+				carsStates[i][j] = CellState.CELL_NONE;
+				cellReservationIds[i][j] = -1;
+			}
+		}
+	}
+	
+	
+	/**
+	 * get the reservation for the selected tablecell
+	 * @return the reservation ID
+	 */
+	public int getReservationForSelectedCell() {
+		return cellReservationIds[getSelectedRow()][getSelectedColumn()-1];
+	}
+	
+	
+	/**
 	 * CustomTableModel
 	 * 
 	 */
 	private class CustomTableModel extends AbstractTableModel {
-		private List<Map<String, Object>> cars;
-		private List<Map<String, Object>> reservations;
+		private List<Map<String, Object>> cars = null;
+		private List<Map<String, Object>> reservations = null;
+		private Date firstWeekDay = null;
+		private Date lastWeekDay = null;
 		private String[] columns;
 		
+		/**
+		 * CustomTableModel contructor
+		 * sets up the table model
+		 */
 		public CustomTableModel() {
 			columns = new String[8];
 			columns[0] = "Car";
 			
-			Car carModel = new Car();
-			int nCars = carModel.amountOfEntries();
-			cars = new ArrayList<Map<String, Object>>();
-			
 			int i;
-			for (i = 0; i < nCars; i++) {
-				cars.add(carModel.read(i));
+			for (i = 1; i < 8; i++) {
+				columns[i] = "";
+			}
+		}
+		
+		
+		/**
+		 * setCars
+		 * sets the car-rows of the table
+		 * @param carList the List of car Maps
+		 */
+		public void setCars(List<Map<String, Object>> carList) {
+			cars = carList;
+			
+			carsStates = new CellState[cars.size()][7];
+			cellReservationIds = new Integer[cars.size()][7];
+			resetReservationStates();
+			updateTableCells();
+		}
+		
+		
+		/**
+		 * setReservations
+		 * sets the reservations to be shown in the table
+		 * @param reservationsList the List of reservations
+		 */
+		public void setReservations(List<Map<String, Object>> reservationList) {
+			reservations = reservationList;
+			
+			resetReservationStates();
+			
+			for (Map<String, Object> reservation : reservationList) {
+				Date startDate = (Date)(reservation.get("startDate"));
+				Date endDate = (Date)(reservation.get("endDate"));
+				int reservationId = ((Integer)reservation.get("id")).intValue();
+				int carId = ((Integer)reservation.get("carId")).intValue();
+				
+				int carIndex = -1;
+				int i;
+				for (i = 0; i < cars.size(); i++) {
+					int currentCar = (Integer)(cars.get(i).get("id"));
+					if (currentCar == carId) {
+						carIndex = i;
+						break;
+					}
+				}
+				
+				int startDayIndex = (int)(startDate.getTime()-firstWeekDay.getTime())/(1000*60*60*24);
+				
+				int endDayIndex = (int)(endDate.getTime()-firstWeekDay.getTime())/(1000*60*60*24);
+				
+				for (i = (startDayIndex < 0? 0: startDayIndex); i <= (endDayIndex > 6? 6: endDayIndex); i++) {
+					carsStates[carIndex][i] = (i == startDayIndex? CellState.CELL_START: i == endDayIndex? CellState.CELL_END: CellState.CELL_MIDDLE);
+					cellReservationIds[carIndex][i] = reservationId;
+				}
 			}
 			
-			Reservation reservationModel = new Reservation();
-			int nReservations = reservationModel.amountOfEntries();
-			reservations = new ArrayList<Map<String, Object>>();
-			
-			for (i = 0; i < nReservations; i++) {
-				reservations.add(reservationModel.read(i));
-			}
-			
-			Calendar cal = Calendar.getInstance();
-			cal.setFirstDayOfWeek(Calendar.MONDAY);
-			goToWeek(cal.get(Calendar.WEEK_OF_YEAR)-1, cal.get(Calendar.YEAR));
+			ReservationOverview.this.invalidate();
+			ReservationOverview.this.validate();
 		}
 		
 		
@@ -300,37 +387,50 @@ public class ReservationOverview extends JFrame {
 			cal.set(Calendar.WEEK_OF_YEAR, weekNr+1);
 			cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 			
+			firstWeekDay = cal.getTime();
+			
 			int i;
 			for (i = 0; i < 7; i++) {
 				columns[i+1] = "" + cal.get(Calendar.DAY_OF_MONTH) + "/" + (cal.get(Calendar.MONTH)+1);
 				cal.add(Calendar.DAY_OF_YEAR, 1);
 			}
 			
+			lastWeekDay = cal.getTime();
+			
 			this.fireTableStructureChanged();
+			updateTableCells();
 			
 			currentDateLabel.setText("week " + weekNr + ", " + yearNr);
 		}
 		
 		
 		public int getRowCount() {
+			if (cars == null) {
+				return 0;
+			}
+			
 			return cars.size();
 		}
+		
 		
 		public int getColumnCount() {
 			return columns.length;
 		}
 		
+		
 		public Object getValueAt(int row, int column) {
 			if (column > 0) {
 				return null;
 			} else {
-				return cars.get(row);
+				return cars.get(row).get("title");
 			}
 		}
+		
 		
 		public String getColumnName(int column) {
 			return columns[column];
 		}
+		
 		
 		public boolean isCellEditable(int rowIndex, int columnIndex) {
 			return false;
@@ -343,7 +443,7 @@ public class ReservationOverview extends JFrame {
 	 * custom renderer class for the cells in the table
 	 * extends JPanel instead of the default JLabel, since no text is needed
 	 */
-	private class CustomTableCellRenderer extends JPanel implements TableCellRenderer {
+	private class CustomTableCellRenderer extends DefaultTableCellRenderer {
 		private int row;
 		private int column;
 		
@@ -371,23 +471,25 @@ public class ReservationOverview extends JFrame {
 		 * @param g the Graphics object
 		 */
 		@Override public void paintComponent(Graphics g) {
-			super.paintComponent(g);
-			
 			g.setColor(Color.BLUE);
 			
-			switch (carsStates[row][column-1]) {
-				case CELL_START:
-					g.fillRect(5, 5, this.getWidth()-5, this.getHeight()-10);
-					break;
-				case CELL_MIDDLE:
-					g.fillRect(0, 5, this.getWidth(), this.getHeight()-10);
-					break;
-				case CELL_END:
-					g.fillRect(0, 5, this.getWidth()-5, this.getHeight()-10);
-					break;
-				default:
-					break;
+			if (carsStates != null) {
+				switch (carsStates[row][column-1]) {
+					case CELL_START:
+						g.fillRect(5, 5, this.getWidth()-5, this.getHeight()-10);
+						break;
+					case CELL_MIDDLE:
+						g.fillRect(0, 5, this.getWidth(), this.getHeight()-10);
+						break;
+					case CELL_END:
+						g.fillRect(0, 5, this.getWidth()-5, this.getHeight()-10);
+						break;
+					default:
+						break;
+				}
 			}
+			
+			super.paintComponent(g);
 		}
 	}
 }
