@@ -301,6 +301,8 @@ public class Customer extends Model {
 							"ORDER BY " + sortColumn + " " + sortOrder;
 			MySQLConnection conn = MySQLConnection.getInstance();
 			ResultSet result = conn.query(query);
+			if (result == null)
+				return null;
 			Map<String, Object> curr = new HashMap<String, Object>();
 			while (result.next()) {
 				curr.put("id", result.getString("customerId"));

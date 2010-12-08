@@ -47,9 +47,8 @@ public class CarType extends Model {
 			String query = "INSERT INTO CarType " +
 			   			   "SET title = '" + typeName + "'";
 			ResultSet result = conn.query(query);
-			if (result == null) {
-				throw new SQLException();
-			}
+			if (result == null)
+				return -1;
 			result.next();
 			int newId = result.getInt(1);
 			if (newId > 0) {
@@ -167,8 +166,8 @@ public class CarType extends Model {
 			String query = "DELETE FROM CarType " +
 						   "WHERE typeId = " + id;
 			ResultSet result = conn.query(query);
-			result.next();
 			if (result != null) {
+				result.next();
 				return true;
 			}
 		} catch (Exception e) {
@@ -191,8 +190,10 @@ public class CarType extends Model {
 						   "FROM CarType";
 			ResultSet result = conn.query(query);
 			
-			result.next();
-			return result.getInt(1);
+			if (result != null) {
+				result.next();
+				return result.getInt(1);
+			}
 		} catch (SQLException e) {
 			Logger.write("Couldn't read from database: " + e.getMessage());
 		}
