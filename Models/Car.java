@@ -2,6 +2,7 @@ package Models;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -172,10 +173,40 @@ public class Car extends Model {
 	public int amountOfEntries () { return 0; }
 	
 	/**
-	 * TODO: Future release: Implement this
 	 * Lists the entries of the data-source.
 	 * 
 	 * @return A list with all data from the data-source.
+	 * 			key				=> description
+	 * 			id				=> The ID of the car.
+	 * 			title			=> The title of the car (eg. Ford Fiesta).
+	 * 			licensePlate	=> The license plate of the car (eg. SV32765).
+	 * 			carTypeId		=> The ID of the type of the car.
+	 * 			carType			=> The title of the car-type.
 	 */
-	public List<Map<String, Object>> list () { return null; }
+	public List<Map<String, Object>> list () {
+		List<Map<String, Object>> list = new LinkedList<Map<String, Object>>();
+		
+		try {
+			String query =	"SELECT carId, title, licensePlate, carType, CarType.title " +
+							"FROM Car, CarType " +
+							"WHERE Car.carType = CarType.typeId " +
+							"ORDER BY carType ASC ";
+			MySQLConnection conn = MySQLConnection.getInstance();
+			ResultSet result = conn.query(query);
+			Map<String, Object> curr = new HashMap<String, Object>();
+			while (result.next()) {
+				curr.put("id", 				result.getString("carId"));
+				curr.put("title", 			result.getString("title"));
+				curr.put("licensePlate", 	result.getString("licensePlate"));
+				curr.put("carTypeId", 		result.getInt	("carType"));
+				curr.put("carType", 		result.getString("CarType.title"));
+				
+				list.add(curr);
+			}
+		} catch (SQLException e) {
+			Logger.write("Failed to list items from database: " + e.getMessage());
+		}
+		
+		return list;
+	}
 }
