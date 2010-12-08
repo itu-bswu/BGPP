@@ -39,7 +39,7 @@ public class Logger {
 	 */
 	public Logger () {
 		try {
-			this.writer = new FileWriter("error.log");
+			this.writer = new FileWriter("error.log", true);
 		} catch (IOException e) {
 			System.err.println("Couldn't open file: " + e.getMessage());
 		}
