@@ -11,7 +11,6 @@ import Util.Logger;
 import Util.MySQLConnection;
 
 /**
- * TODO: Review error-handling with SQL queries.
  * Model - Car Type
  * As data-representation of car-types in the database, this class provides 
  * several methods for dealing with car-types, i.e. creating car-types, listing 
@@ -174,7 +173,6 @@ public class CarType extends Model {
 						   "WHERE typeId = " + id;
 			ResultSet result = conn.query(query);
 			if (result != null) {
-				result.next();
 				return true;
 			}
 		} catch (Exception e) {
