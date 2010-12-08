@@ -221,28 +221,6 @@ public class Customer extends Model {
 	}
 	
 	/**
-	 * Counts the amount of existing customers in the database, and returns 
-	 * that amount.
-	 * 
-	 * @return The amount of entries in the data-source.
-	 */
-	public int amountOfEntries () {
-		try {
-			MySQLConnection conn = MySQLConnection.getInstance();
-			String query = "SELECT count(*) AS entryAmount " +
-						   "FROM Customer";
-			ResultSet result = conn.query(query);
-			
-			result.next();
-			return result.getInt(1);
-		} catch (SQLException e) {
-			Logger.write("Couldn't read from database: " + e.getMessage());
-		}
-		
-		return 0;
-	}
-	
-	/**
 	 * Lists the customers from the database, matching the name and phone-number 
 	 * provided. Also works on partial inputs.
 	 * 

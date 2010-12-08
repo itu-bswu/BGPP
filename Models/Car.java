@@ -138,15 +138,6 @@ public class Car extends Model {
 	}
 	
 	/**
-	 * TODO: Future release: Implement this
-	 * Counts the amount of existing cars in the database, and returns that 
-	 * amount.
-	 * 
-	 * @return The amount of entries in the data-source.
-	 */
-	public int amountOfEntries () { return 0; }
-	
-	/**
 	 * Returns a List of all cars in the database. Every car is represented 
 	 * with a Map<String, Object> containing the data about that car.
 	 * 

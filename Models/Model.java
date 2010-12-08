@@ -26,14 +26,12 @@ public abstract class Model {
 	 */
 	public int create (Map<String, Object> createVars) {
 		try {
-			String className	= this.getClass().getName();
-			className			= className.substring(className.lastIndexOf('.')+1, className.length());
 			String setSQL 		= "";
 			for (Map.Entry<String, Object> item : createVars.entrySet()) {
 				setSQL = setSQL.concat(item.getKey() + " = '" + item.getValue() + "', ");
 			}
 			setSQL = setSQL.substring(0, setSQL.lastIndexOf(','));
-			String query =	"INSERT INTO " + className + " " + 
+			String query =	"INSERT INTO " + getClassName() + " " + 
 							"SET " + setSQL;
 			MySQLConnection conn = MySQLConnection.getInstance();
 			ResultSet result = conn.query(query);
@@ -96,12 +94,9 @@ public abstract class Model {
 		if (id <= 0 || idColumn == null)
 			throw new NullPointerException();
 		
-		try {
-			String className	= this.getClass().getName();
-			className			= className.substring(className.lastIndexOf('.')+1, className.length());
-			
+		try {			
 			MySQLConnection conn = MySQLConnection.getInstance();
-			String query = "DELETE FROM " + className + " " + 
+			String query = "DELETE FROM " + getClassName() + " " + 
 						   "WHERE " + idColumn + " = " + id;
 			ResultSet result = conn.query(query);
 			if (result != null) {
@@ -120,7 +115,22 @@ public abstract class Model {
 	 * 
 	 * @return The amount of entries in the data-source.
 	 */
-	abstract public int amountOfEntries ();
+	public int amountOfEntries () {
+		try {
+			MySQLConnection conn = MySQLConnection.getInstance();
+			String query = "SELECT count(*) AS entryAmount " +
+						   "FROM " + getClassName();
+			ResultSet result = conn.query(query);
+			if (result == null)
+				return 0;
+			result.next();
+			return result.getInt(1);
+		} catch (SQLException e) {
+			Logger.write("Couldn't read from database: " + e.getMessage());
+		}
+		
+		return 0;
+	}
 	
 	/**
 	 * Lists the entries of the data-source.
@@ -128,4 +138,17 @@ public abstract class Model {
 	 * @return A list with all data from the data-source.
 	 */
 	abstract public List<Map<String, Object>> list ();
+	
+	/**
+	 * Get the name of the current class. Used in SQL queries to manipulate 
+	 * data in the correct tables.
+	 * 
+	 * @return The name of the class.
+	 */
+	private String getClassName () {
+		String className = this.getClass().getName();
+		className = className.substring(className.lastIndexOf('.')+1, className.length());
+		
+		return className;
+	}
 }

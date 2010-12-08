@@ -202,29 +202,6 @@ public class Reservation extends Model {
 	}
 	
 	/**
-	 * Counts the amount of existing reservations in the database, and returns 
-	 * that amount.
-	 * 
-	 * @return The amount of entries in the data-source.
-	 */
-	public int amountOfEntries () {
-		try {
-			MySQLConnection conn = MySQLConnection.getInstance();
-			String query = "SELECT count(*) AS entryAmount " +
-						   "FROM Reservation";
-			ResultSet result = conn.query(query);
-			if (result == null)
-				return 0;
-			result.next();
-			return result.getInt(1);
-		} catch (SQLException e) {
-			Logger.write("Couldn't read from database: " + e.getMessage());
-		}
-		
-		return 0;
-	}
-	
-	/**
 	 * Lists the reservations from the database, ordered by start date.
 	 * 
 	 * @return A list with all data from the data-source.

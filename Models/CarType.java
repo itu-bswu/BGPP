@@ -155,30 +155,6 @@ public class CarType extends Model {
 	}
 	
 	/**
-	 * Counts the amount of existing car-types in the database, and returns that 
-	 * amount.
-	 * 
-	 * @return The amount of entries in the data-source.
-	 */
-	public int amountOfEntries () {
-		try {
-			MySQLConnection conn = MySQLConnection.getInstance();
-			String query = "SELECT count(*) AS entryAmount " +
-						   "FROM CarType";
-			ResultSet result = conn.query(query);
-			
-			if (result != null) {
-				result.next();
-				return result.getInt(1);
-			}
-		} catch (SQLException e) {
-			Logger.write("Couldn't read from database: " + e.getMessage());
-		}
-		
-		return 0;
-	}
-	
-	/**
 	 * Returns a List of all car-types in the database. Every car-type is 
 	 * represented with a Map<String, Object> containing the data about that car-type.
 	 * 
