@@ -18,9 +18,8 @@ import Util.MySQLConnection;
 public abstract class Model {
 	
 	/**
-	 * Creates an entry in the particular data-source, with 
-	 * the data given in the Map. The ID of the new entry 
-	 * is returned on success.
+	 * Creates an entry in the database, with the data given in the Map. The 
+	 * ID of the new entry is returned on success; -1 on failure.
 	 * 
 	 * @param createVars Map containing data to be stored.
 	 * @return ID on success; -1 on failure.
@@ -50,9 +49,8 @@ public abstract class Model {
 	}
 	
 	/**
-	 * Reads and returns the data with the provided Id in 
-	 * a Map, with data-names as keys. If an entry with 
-	 * the provided ID cannot be found in the data-source, 
+	 * Reads and returns the data with the provided Id in a Map, with data-names 
+	 * as keys. If an entry with the provided ID cannot be found in the database, 
 	 * null will be returned.
 	 * 
 	 * @param id The id of the entry to read.
@@ -61,12 +59,10 @@ public abstract class Model {
 	abstract public Map<String, Object> read (int id);
 	
 	/**
-	 * Updates the entry with the provided ID in the data-
-	 * source. The data to be updated is the keys in the map, 
-	 * and the values are the new data. If then entry is 
-	 * successfully updated, true will be returned. If the 
-	 * update failed (invalid ID or similar), false will 
-	 * be returned.
+	 * Updates the entry with the provided ID in the database. The data to be 
+	 * updated is the keys in the map, and the values are the new data. If the 
+	 * entry is successfully updated, true will be returned. If the update 
+	 * failed (eg. invalid ID), false will be returned.
 	 * 
 	 * @param id The ID of the entry to be updated.
 	 * @param updateVars Map containing the data to be updated.
@@ -75,10 +71,11 @@ public abstract class Model {
 	abstract public boolean update(int id, Map<String, Object> updateVars);
 	
 	/**
-	 * Deletes the entry with the provided ID in the data-
-	 * source. On success true will be returned. If the 
-	 * deletion failed (invalid ID or similar), false 
-	 * will be returned.
+	 * Deletes the entry with the provided ID in the database. On success 
+	 * true will be returned. If the deletion failed, false will be returned. 
+	 * Please note: If no entry is found with the provided ID, true will still 
+	 * be returned, as an entry with that ID isn't in the database after this 
+	 * method-call.
 	 * 
 	 * @param id The ID of the entry to be deleted.
 	 * @return true on success; false on failure.
@@ -86,8 +83,8 @@ public abstract class Model {
 	abstract public boolean delete (int id);
 	
 	/**
-	 * Gives the amount of entries in the data-source, 
-	 * i.e. the amount of customers in the database.
+	 * Gives the amount of entries in the database, 
+	 * eg. the amount of customers in the database.
 	 * 
 	 * @return The amount of entries in the data-source.
 	 */

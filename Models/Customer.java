@@ -11,17 +11,29 @@ import Util.Logger;
 import Util.MySQLConnection;
 
 /**
- * TODO: Write class description
- * TODO: Rewrite javadoc
- * Model - Customer
- *
+ * Model - Customer.
+ * As data-representation of customers in the database, this class provides 
+ * several methods for dealing with customers, i.e. creating customers, listing 
+ * customers, updating and deleting customer.
+ * 
+ * <code>
+ * 	Customer customer = new Customer();
+ * 	// Create a new customer, with the name "Ole Hansen" and phone-number 43569874.
+ * 	int newCustomer = customer.create("Ole Hansen", 43569874);
+ * 	// Update a customer. Set the name to "Ole S. Hansen" and phone-number to 47172817.
+ * 	customer.update(newCustomer, "Ole S. Hansen", 47172817);
+ * 	// Delete a customer.
+ * 	customer.delete(newCustomer);
+ * </code>
  */
 public class Customer extends Model {
 	
 	/**
-	 * Creates an entry in the particular data-source, with 
-	 * the data given in the Map. The ID of the new entry 
-	 * is returned on success.
+	 * Creates a new customer in the database, using the name and the phone 
+	 * provided. Phone-numbers are unique, so creation of a new customer will 
+	 * fail if a customer with the provided phone-number already exists in the 
+	 * database. In that case -1 will be returned. Otherwise the ID-number 
+	 * of the new customer is returned.
 	 * 
 	 * @param createVars Map containing data to be stored.
 	 * 			key				=> description
@@ -39,10 +51,11 @@ public class Customer extends Model {
 	}
 	
 	/**
-	 * TODO: Edit this text
-	 * Creates an entry in the particular data-source, with 
-	 * the data given in the Map. The ID of the new entry 
-	 * is returned on success.
+	 * Creates a new customer in the database, using the name and the phone 
+	 * provided. Phone-numbers are unique, so creation of a new customer will 
+	 * fail if a customer with the provided phone-number already exists in the 
+	 * database. In that case -1 will be returned. Otherwise the ID-number 
+	 * of the new customer is returned.
 	 * 
 	 * @param name The full name of the customer.
 	 * @param phone The customer's phone-number.
@@ -56,9 +69,11 @@ public class Customer extends Model {
 	}
 	
 	/**
-	 * Creates a new customer in the database. This method differs from create(), 
-	 * as this returns the ID of an existing customer in the database, if 
-	 * another customer with the given phone-number is found.
+	 * Creates a new customer in the database, using the name and the phone 
+	 * provided. Phone-numbers are unique, so you can't create a new customer 
+	 * if the provided phone-number already exists in the database. In that 
+	 * case the ID of the user with the phone-number is returned. Otherwise 
+	 * the ID of the new customer created is returned.
 	 * 
 	 * @param name The name of the customer (is overlooked if a customer with 
 	 * 			   the same phone-number is found in the database).
@@ -76,28 +91,34 @@ public class Customer extends Model {
 	}
 	
 	/**
-	 * TODO: Edit this text
-	 * Reads and returns the data with the provided Id in 
-	 * a Map, with data-names as keys. If an entry with 
-	 * the provided ID cannot be found in the data-source, 
-	 * null will be returned.
+	 * Reads the customer with the provided ID, and returns a 
+	 * Map containing the data about that customer. If no customer is found, 
+	 * null is returned.
 	 * 
 	 * @param id The id of the entry to read.
 	 * @return Map containing data on success; null on failure.
+	 * 			key			=> description
+	 * 			id			=> The ID-number of the customer.
+	 * 			name		=> The name of the customer.
+	 * 			phone		=> The phone-number of the customer.
 	 */
 	public Map<String, Object> read (int id) {
 		return read (id, false);
 	}
 	
 	/**
-	 * TODO: Edit this text
-	 * Reads and returns the data with the provided Id in 
-	 * a Map, with data-names as keys. If an entry with 
-	 * the provided ID cannot be found in the data-source, 
-	 * null will be returned.
+	 * Reads the customer with the provided ID or phone-number, and returns a 
+	 * Map containing the data about that customer. If second parameter 
+	 * is true, the number will be handled as a phone-number. Otherwise it 
+	 * will be handled like an ID-number. If no customer is found, null is 
+	 * returned.
 	 * 
 	 * @param id The id of the entry to read.
 	 * @return Map containing data on success; null on failure.
+	 * 			key			=> description
+	 * 			id			=> The ID-number of the customer.
+	 * 			name		=> The name of the customer.
+	 * 			phone		=> The phone-number of the customer.
 	 */
 	public Map<String, Object> read (int phoneId, boolean phone) {
 		if (phoneId <= 0)
@@ -138,12 +159,9 @@ public class Customer extends Model {
 	}
 	
 	/**
-	 * Updates the entry with the provided ID in the data-
-	 * source. The data to be updated is the keys in the map, 
-	 * and the values are the new data. If then entry is 
-	 * successfully updated, true will be returned. If the 
-	 * update failed (invalid ID or similar), false will 
-	 * be returned.
+	 * Updates the customer with the provided ID-number. The fields to be updated, 
+	 * are the keys in the map, and the new data is the values in the map. Both 
+	 * "name" and "phone" are expected when updated.
 	 * 
 	 * @param id The ID of the entry to be updated.
 	 * @param updateVars Map containing the data to be updated.
@@ -159,12 +177,8 @@ public class Customer extends Model {
 	}
 	
 	/**
-	 * Updates the entry with the provided ID in the data-
-	 * source. The data to be updated is the keys in the map, 
-	 * and the values are the new data. If then entry is 
-	 * successfully updated, true will be returned. If the 
-	 * update failed (invalid ID or similar), false will 
-	 * be returned.
+	 * Updates the customer with the provided ID-number. Both "name" and "phone" 
+	 * are expected when updating.
 	 * 
 	 * @param id The ID of the entry to be updated.
 	 * @param newName The updated name.
@@ -194,10 +208,10 @@ public class Customer extends Model {
 	}
 	
 	/**
-	 * Deletes the entry with the provided ID in the data-
-	 * source. On success true will be returned. If the 
-	 * deletion failed (invalid ID or similar), false 
-	 * will be returned.
+	 * Deletes the customer with the provided ID-number. If the deletion fails, 
+	 * false is returned. Otherwise true is returned. Please note: If no customer 
+	 * is found with the provided ID, true will still be returned, as an entry 
+	 * with that ID isn't in the database after this method-call.
 	 * 
 	 * @param id The ID of the entry to be deleted.
 	 * @return true on success; false on failure.
@@ -211,7 +225,6 @@ public class Customer extends Model {
 			String query = "DELETE FROM Customer " +
 						   "WHERE customerId = " + id;
 			ResultSet result = conn.query(query);
-			result.next();
 			if (result != null) {
 				return true;
 			}
@@ -223,8 +236,8 @@ public class Customer extends Model {
 	}
 	
 	/**
-	 * Gives the amount of entries in the data-source, 
-	 * i.e. the amount of customers in the database.
+	 * Counts the amount of existing customers in the database, and returns 
+	 * that amount.
 	 * 
 	 * @return The amount of entries in the data-source.
 	 */
@@ -262,20 +275,20 @@ public class Customer extends Model {
 	 * 
 	 * @param name The name to search for.
 	 * @param phone The phone-number to search for.
-	 * @param sortColumn The column to sort by.
-	 * @param sortOrder The sorting direction (ASC for ascending; DESC for descending).
+	 * @param orderColumn The column to order by.
+	 * @param orderDirection The ordering direction (ASC for ascending; DESC for descending).
 	 * @return A list with all matching entries in the database.
 	 */
-	public List<Map<String, Object>> search (String name, int phone, String sortColumn, String sortOrder) {
+	public List<Map<String, Object>> search (String name, int phone, String orderColumn, String orderDirection) {
 		String phoneSQL	= phone == 0	? "" : phone + "";
 		String nameSQL	= name 	== null	? "" : name;
 		
-		if (sortColumn == null)
-			sortColumn = "name";
-		if (sortOrder == null || 
-		   (!sortOrder.toUpperCase().equals("ASC") && 
-			!sortOrder.toUpperCase().equals("DESC")))
-				sortOrder = "ASC";
+		if (orderColumn == null)
+			orderColumn = "name";
+		if (orderDirection == null || 
+		   (!orderDirection.toUpperCase().equals("ASC") && 
+			!orderDirection.toUpperCase().equals("DESC")))
+				orderDirection = "ASC";
 		
 		List<Map<String, Object>> list = new LinkedList<Map<String, Object>>();
 		
@@ -284,11 +297,14 @@ public class Customer extends Model {
 							"FROM Customer " +
 							"WHERE name LIKE '%" + nameSQL + "%' " +
 							"AND phone LIKE '%" + phoneSQL + "%' " +
-							"ORDER BY " + sortColumn + " " + sortOrder;
+							"ORDER BY " + orderColumn + " " + orderDirection;
 			MySQLConnection conn = MySQLConnection.getInstance();
 			ResultSet result = conn.query(query);
-			Map<String, Object> curr = new HashMap<String, Object>();
+			if (result == null)
+				return null;
+			Map<String, Object> curr;
 			while (result.next()) {
+				curr = new HashMap<String, Object>();
 				curr.put("id", result.getString("customerId"));
 				curr.put("name", result.getString("name"));
 				curr.put("phone", result.getInt("phone"));
@@ -303,26 +319,26 @@ public class Customer extends Model {
 	}
 	
 	/**
-	 * Lists the customers from the database.
+	 * Lists the customers from the database, ordered by the column provided.
 	 * 
-	 * @param sortColumn The column to sort by.
-	 * @param sortOrder The sorting direction (ASC for ascending; DESC for descending).
+	 * @param orderColumn The column to order by.
+	 * @param orderDirection The ordering direction (ASC for ascending; DESC for descending).
 	 * @return A list with all data from the data-source.
 	 */
-	public List<Map<String, Object>> list (String sortColumn, String sortOrder) {
-		return search(null, 0, sortColumn, sortOrder);
+	public List<Map<String, Object>> list (String orderColumn, String orderDirection) {
+		return search(null, 0, orderColumn, orderDirection);
 	}
 	
 	/**
-	 * Lists the customers from the database.
+	 * Lists the customers from the database, ordered by the provided column.
 	 * 
-	 * @param sortColumn The column to sort by.
+	 * @param orderColumn The column to order by.
 	 * @return A list with all data from the data-source.
 	 */
-	public List<Map<String, Object>> list (String sortColumn) { return list(sortColumn, "ASC"); }
+	public List<Map<String, Object>> list (String orderColumn) { return list(orderColumn, "ASC"); }
 	
 	/**
-	 * Lists the customers from the database.
+	 * Lists the customers from the database in alphabetical order.
 	 * 
 	 * @return A list with all data from the data-source.
 	 */
