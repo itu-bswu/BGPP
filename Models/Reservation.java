@@ -54,29 +54,18 @@ public class Reservation extends Model {
 		if (customerId <= 0 || carType <= 0 || startDate == null || endDate == null)
 			throw new NullPointerException();
 		
-		try {
-			int freeCar = findFreeCar(carType, startDate, endDate); // Find available car
-			Customer Customer = new Customer(); // Verify customer-ID
-			if (freeCar <= 0 || Customer.read(customerId) == null)
-				return -1;
-			
-			String query =	"INSERT INTO Reservation " +
-							"SET " +
-							"customerId =  " + customerId 	+ ", " +
-							"carId 		=  " + freeCar 		+ ", " +
-							"startDate 	= '" + startDate 	+ "', " +
-							"endDate 	= '" + endDate 		+ "'";
-			MySQLConnection conn = MySQLConnection.getInstance();
-			ResultSet result = conn.query(query);
-			if (result != null) {
-				result.next();
-				return result.getInt(1);
-			}
-		} catch (SQLException e) {
-			Logger.write("Couldn't book car: " + e.getMessage());
-		}
+		int freeCar = findFreeCar(carType, startDate, endDate); // Find available car
+		Customer Customer = new Customer(); // Verify customer-ID
+		if (freeCar <= 0 || Customer.read(customerId) == null)
+			return -1;
 		
-		return -1;
+		Map<String, Object> createVars = new HashMap<String, Object>();
+		createVars.put("customerId", 	customerId);
+		createVars.put("carId", 		freeCar);
+		createVars.put("startDate", 	startDate);
+		createVars.put("endDate", 		endDate);
+		
+		return super.create(createVars);
 	}
 	
 	/**

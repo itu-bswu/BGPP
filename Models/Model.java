@@ -1,7 +1,12 @@
 package Models;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Map;
 import java.util.List;
+
+import Util.Logger;
+import Util.MySQLConnection;
 
 /**
  * Model
@@ -20,7 +25,29 @@ public abstract class Model {
 	 * @param createVars Map containing data to be stored.
 	 * @return ID on success; -1 on failure.
 	 */
-	abstract public int create (Map<String, Object> createVars);
+	public int create (Map<String, Object> createVars) {
+		try {
+			String className	= this.getClass().getName();
+			className			= className.substring(className.lastIndexOf('.')+1, className.length());
+			String setSQL 		= "";
+			for (Map.Entry<String, Object> item : createVars.entrySet()) {
+				setSQL = setSQL.concat(item.getKey() + " = '" + item.getValue() + "', ");
+			}
+			setSQL = setSQL.substring(0, setSQL.lastIndexOf(','));
+			String query =	"INSERT INTO " + className + " " + 
+							"SET " + setSQL;
+			MySQLConnection conn = MySQLConnection.getInstance();
+			ResultSet result = conn.query(query);
+			if (result != null) {
+				result.next();
+				return result.getInt(1);
+			}
+		} catch (SQLException e) {
+			Logger.write("Couldn't insert data to database: " + e.getMessage());
+		}
+		
+		return -1;
+	}
 	
 	/**
 	 * Reads and returns the data with the provided Id in 
