@@ -11,7 +11,6 @@ import Util.Logger;
 import Util.MySQLConnection;
 
 /**
- * TODO: Review error-handling with SQL queries.
  * Model - Car.
  * As data-representation of car in the database, this class provides several 
  * methods for dealing with cars, i.e. creating cars, listing cars, updating 
@@ -71,6 +70,8 @@ public class Car extends Model {
 								carType + " " + 
 								"FROM CarType WHERE typeId = " + carType;
 			ResultSet result = conn.query(query);
+			if (result == null)
+				return -1;
 			result.next();
 			int newId = result.getInt(1);
 			if (newId > 0) {
