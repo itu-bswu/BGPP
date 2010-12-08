@@ -151,22 +151,7 @@ public class CarType extends Model {
 	 * @return true on success; false on failure.
 	 */
 	public boolean delete (int id) {
-		if (id <= 0)
-			throw new NullPointerException();
-		
-		try {
-			MySQLConnection conn = MySQLConnection.getInstance();
-			String query = "DELETE FROM CarType " +
-						   "WHERE typeId = " + id;
-			ResultSet result = conn.query(query);
-			if (result != null) {
-				return true;
-			}
-		} catch (Exception e) {
-			Logger.write("Couldn't delete row from database: " + e.getMessage());
-		}
-		
-		return false;
+		return super.delete(id, "typeId");
 	}
 	
 	/**

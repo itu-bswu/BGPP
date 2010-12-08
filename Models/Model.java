@@ -83,6 +83,38 @@ public abstract class Model {
 	abstract public boolean delete (int id);
 	
 	/**
+	 * Deletes the entry with the provided ID in the database. On success 
+	 * true will be returned. If the deletion failed, false will be returned. 
+	 * Please note: If no entry is found with the provided ID, true will still 
+	 * be returned, as an entry with that ID isn't in the database after this 
+	 * method-call.
+	 * 
+	 * @param id The ID of the entry to be deleted.
+	 * @return true on success; false on failure.
+	 */
+	public boolean delete (int id, String idColumn) {
+		if (id <= 0 || idColumn == null)
+			throw new NullPointerException();
+		
+		try {
+			String className	= this.getClass().getName();
+			className			= className.substring(className.lastIndexOf('.')+1, className.length());
+			
+			MySQLConnection conn = MySQLConnection.getInstance();
+			String query = "DELETE FROM " + className + " " + 
+						   "WHERE " + idColumn + " = " + id;
+			ResultSet result = conn.query(query);
+			if (result != null) {
+				return true;
+			}
+		} catch (Exception e) {
+			Logger.write("Couldn't delete row from database: " + e.getMessage());
+		}
+		
+		return false;
+	}
+	
+	/**
 	 * Gives the amount of entries in the database, 
 	 * eg. the amount of customers in the database.
 	 * 
