@@ -2,6 +2,7 @@ package Models;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -31,9 +32,14 @@ public class Car extends Model {
 	 * @return ID on success; -1 on failure.
 	 */
 	public int create (Map<String, Object> createVars) {
-		return create (createVars.get("name").toString(), 
-					   createVars.get("licensePlate").toString(), 
-					   Integer.parseInt(createVars.get("carType").toString()));
+		if (createVars.get("title").toString() == null || 
+			createVars.get("title").toString().length() <= 0 || // Review javadoc
+			createVars.get("licensePlate").toString() == null || 
+			createVars.get("licensePlate").toString().length() <= 0 || 
+			Integer.parseInt(createVars.get("carType").toString()) <= 0)
+				throw new NullPointerException();
+		
+		return super.create(createVars);
 	}
 	
 	/**
@@ -47,29 +53,11 @@ public class Car extends Model {
 	 * @return ID on success; -1 on failure.
 	 */
 	public int create (String title, String licensePlate, int carType) {
-		if (title == null || title.length() <= 0 || 
-			licensePlate == null || licensePlate.length() <= 0 || 
-			carType <= 0)
-				throw new NullPointerException();
-		
-		try {
-			MySQLConnection conn = MySQLConnection.getInstance();
-			String query = 	"INSERT INTO Car (title, licensePlate, carType) " +
-								"SELECT '" + title + "', " + 
-								"'" + licensePlate.replaceAll(" ", "") + "', " + 
-								carType + " " + 
-								"FROM CarType WHERE typeId = " + carType;
-			ResultSet result = conn.query(query);
-			result.next();
-			int newId = result.getInt(1);
-			if (newId > 0) {
-				return newId;
-			}
-		} catch (Exception e) {
-			Logger.write("Couldn't insert row to database: " + e.getMessage());
-		}
-		
-		return -1;
+		Map<String, Object> createVars = new HashMap<String, Object>();
+		createVars.put("title", title);
+		createVars.put("licensePlate", licensePlate);
+		createVars.put("carType", carType);
+		return this.create(createVars);
 	}
 	
 	/**

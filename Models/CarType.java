@@ -2,6 +2,7 @@ package Models;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -27,7 +28,11 @@ public class CarType extends Model {
 	 * @return ID on success; -1 on failure.
 	 */
 	public int create (Map<String, Object> createVars) {
-		return create (createVars.get("name").toString());
+		if (createVars.get("title").toString() == null || 
+			createVars.get("title").toString().length() <= 0) // TODO: Review javadoc
+				throw new NullPointerException();
+		
+		return super.create (createVars);
 	}
 	
 	/**
@@ -39,27 +44,9 @@ public class CarType extends Model {
 	 * @return ID on success; -1 on failure.
 	 */
 	public int create (String typeName) {
-		if (typeName == null || typeName.length() <= 0)
-			throw new NullPointerException();
-		
-		try {
-			MySQLConnection conn = MySQLConnection.getInstance();
-			String query = "INSERT INTO CarType " +
-			   			   "SET title = '" + typeName + "'";
-			ResultSet result = conn.query(query);
-			if (result == null) {
-				throw new SQLException();
-			}
-			result.next();
-			int newId = result.getInt(1);
-			if (newId > 0) {
-				return newId;
-			}
-		} catch (Exception e) {
-			Logger.write("Couldn't insert row to database: " + e.getMessage());
-		}
-		
-		return -1;
+		Map<String, Object> createVars = new HashMap<String, Object>();
+		createVars.put("title", typeName);
+		return this.create(createVars);
 	}
 	
 	/**
