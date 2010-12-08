@@ -193,6 +193,8 @@ public class Car extends Model {
 							"ORDER BY carType ASC ";
 			MySQLConnection conn = MySQLConnection.getInstance();
 			ResultSet result = conn.query(query);
+			if (result == null)
+				return null;
 			Map<String, Object> curr = new HashMap<String, Object>();
 			while (result.next()) {
 				curr.put("id", 				result.getString("carId"));
