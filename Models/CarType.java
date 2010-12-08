@@ -19,9 +19,10 @@ import Util.MySQLConnection;
 public class CarType extends Model {
 	
 	/**
-	 * Creates an entry in the particular data-source, with 
-	 * the data given in the Map. The ID of the new entry 
-	 * is returned on success.
+	 * Creates a new car-type in the database, with the name provided. Names are 
+	 * unique, so if a car-type with the provided name already exists in the 
+	 * database, -1 will be returned. Otherwise the ID-number of the new 
+	 * car-type is returned.
 	 * 
 	 * @param createVars Map containing data to be stored.
 	 * 			key		=> description
@@ -33,11 +34,12 @@ public class CarType extends Model {
 	}
 	
 	/**
-	 * Creates a car-type in the database, with the data
-	 * given in the Map. The ID of the new entry is returned
-	 * on success; -1 on failure.
+	 * Creates a new car-type in the database, with the name provided. Names are 
+	 * unique, so if a car-type with the provided name already exists in the 
+	 * database, -1 will be returned. Otherwise the ID-number of the new 
+	 * car-type is returned.
 	 * 
-	 * @param createVars Map containing data to be stored.
+	 * @param typeName The title of the car-type.
 	 * @return ID on success; -1 on failure.
 	 */
 	public int create (String typeName) {
@@ -64,10 +66,9 @@ public class CarType extends Model {
 	}
 	
 	/**
-	 * Reads and returns the car-type, with the provided ID, 
-	 * in a Map, with data-names as keys. If a car-type with 
-	 * the provided ID cannot be found in the database, 
-	 * null will be returned.
+	 * Reads the car-type with the specified ID-number, and returns a Map 
+	 * containing the data about that car-type. If no car-type exists with 
+	 * that ID-number, null will be returned.
 	 * 
 	 * @param id The id of the car-type to read.
 	 * @return Map containing data on success; null on failure.
@@ -100,10 +101,9 @@ public class CarType extends Model {
 	}
 	
 	/**
-	 * Reads and returns the car-type, with the provided ID, 
-	 * in a Map, with data-names as keys. If a car-type with 
-	 * the provided ID cannot be found in the database, 
-	 * null will be returned.
+	 * Reads the car-type with the specified title, and returns a Map 
+	 * containing the data about that car-type. If no car-type exists with 
+	 * that title, null will be returned.
 	 * 
 	 * @param title The title of the car-type to read.
 	 * @return Map containing data on success; null on failure.
@@ -137,12 +137,8 @@ public class CarType extends Model {
 	
 	/**
 	 * TODO: Future release: Implement this
-	 * Updates the entry with the provided ID in the data-
-	 * source. The data to be updated is the keys in the map, 
-	 * and the values are the new data. If then entry is 
-	 * successfully updated, true will be returned. If the 
-	 * update failed (invalid ID or similar), false will 
-	 * be returned.
+	 * Updates the car-type with the provided ID-number. The fields to be updated, 
+	 * are the keys in the map, and the new data is the values in the map.
 	 * 
 	 * @param id The ID of the entry to be updated.
 	 * @param updateVars Map containing the data to be updated.
@@ -151,10 +147,10 @@ public class CarType extends Model {
 	public boolean update(int id, Map<String, Object> updateVars) { return false; }
 	
 	/**
-	 * Deletes the entry with the provided ID in the data-
-	 * source. On success true will be returned. If the 
-	 * deletion failed (invalid ID or similar), false 
-	 * will be returned.
+	 * Deletes the car-type with the provided ID-number. If the deletion fails, 
+	 * false is returned. Otherwise true is returned. Please note: If no car-type 
+	 * is found with the provided ID, true will still be returned, as an entry 
+	 * with that ID isn't in the database after this method-call.
 	 * 
 	 * @param id The ID of the entry to be deleted.
 	 * @return true on success; false on failure.
@@ -180,8 +176,8 @@ public class CarType extends Model {
 	}
 	
 	/**
-	 * Gives the amount of entries in the data-source, 
-	 * i.e. the amount of customers in the database.
+	 * Counts the amount of existing car-types in the database, and returns that 
+	 * amount.
 	 * 
 	 * @return The amount of entries in the data-source.
 	 */
@@ -204,8 +200,9 @@ public class CarType extends Model {
 	}
 	
 	/**
-	 * TODO: Future release: Implement this
-	 * Lists the entries of the data-source.
+	 * TODO: Implement this
+	 * Returns a List of all car-types in the database. Every car-type is 
+	 * represented with a Map<String, Object> containing the data about that car-type.
 	 * 
 	 * @return A list with all data from the data-source.
 	 */
