@@ -12,7 +12,6 @@ import Util.Logger;
 import Util.MySQLConnection;
 
 /**
- * TODO: Review error-handling with SQL queries.
  * Model - Reservation.
  * As data-representation of reservations in the database, this class provides 
  * several methods for dealing with reservations, i.e. creating reservations, 
