@@ -11,18 +11,28 @@ import Util.Logger;
 import Util.MySQLConnection;
 
 /**
- * TODO: Write class description
- * TODO: Rewrite javadoc
  * TODO: Review error-handling with SQL queries.
- * Model - Car
- *
+ * Model - Car.
+ * As data-representation of car in the database, this class provides several 
+ * methods for dealing with cars, i.e. creating cars, listing cars, updating 
+ * and deleting cars.
+ * 
+ * <code>
+ * 	Car car = new Car();
+ * 	// Create a new car (Ford Transit), with the license-plate "SV 12 345".
+ * 	CarType carType = new CarType();
+ * 	int varevogn = carType.create("Varevogn");
+ * 	int newCar = car.create("Ford Transit", "SV 12 345", varevogn);
+ * 	// Delete a car.
+ * 	car.delete(newCar);
+ * </code>
  */
 public class Car extends Model {
 	
 	/**
-	 * Creates an entry in the particular data-source, with 
-	 * the data given in the Map. The ID of the new entry 
-	 * is returned on success.
+	 * Creates a new car in the database with the provided informations. If the 
+	 * creation of the car is successful, the ID-number of the new car is 
+	 * returned; otherwise -1 is returned.
 	 * 
 	 * @param createVars Map containing data to be stored.
 	 * 			key				=> description
@@ -38,9 +48,9 @@ public class Car extends Model {
 	}
 	
 	/**
-	 * Creates an entry in the particular data-source, with 
-	 * the data given in the Map. The ID of the new entry 
-	 * is returned on success.
+	 * Creates a new car in the database with the provided informations. If the 
+	 * creation of the car is successful, the ID-number of the new car is 
+	 * returned; otherwise -1 is returned.
 	 * 
 	 * @param title The title of the car; eg. Ford Fiesta
 	 * @param licensePlate The licenseplate of the car; eg. SV 21 435 (spaces unnecessary)
@@ -74,10 +84,8 @@ public class Car extends Model {
 	}
 	
 	/**
-	 * Reads and returns the data with the provided Id in 
-	 * a Map, with data-names as keys. If an entry with 
-	 * the provided ID cannot be found in the data-source, 
-	 * null will be returned.
+	 * Reads the car with the provided ID, and returns a Map containing the data 
+	 * of the car. If no car is found, null will be returned.
 	 * 
 	 * @param id The id of the entry to read.
 	 * @return Map containing data on success; null on failure.
@@ -121,12 +129,8 @@ public class Car extends Model {
 	
 	/**
 	 * TODO: Future release: Implement this
-	 * Updates the entry with the provided ID in the data-
-	 * source. The data to be updated is the keys in the map, 
-	 * and the values are the new data. If then entry is 
-	 * successfully updated, true will be returned. If the 
-	 * update failed (invalid ID or similar), false will 
-	 * be returned.
+	 * Updates the car with the provided ID-number. The fields to be updated, 
+	 * are the keys in the map, and the new data is the values in the map.
 	 * 
 	 * @param id The ID of the entry to be updated.
 	 * @param updateVars Map containing the data to be updated.
@@ -135,10 +139,10 @@ public class Car extends Model {
 	public boolean update(int id, Map<String, Object> updateVars) { return false; }
 	
 	/**
-	 * Deletes the entry with the provided ID in the data-
-	 * source. On success true will be returned. If the 
-	 * deletion failed (invalid ID or similar), false 
-	 * will be returned.
+	 * Deletes the car with the provided ID-number. If the deletion fails, 
+	 * false is returned. Otherwise true is returned. Please note: If no car 
+	 * is found with the provided ID, true will still be returned, as an entry 
+	 * with that ID isn't in the database after this method-call.
 	 * 
 	 * @param id The ID of the entry to be deleted.
 	 * @return true on success; false on failure.
@@ -152,7 +156,6 @@ public class Car extends Model {
 			String query = "DELETE FROM Car " +
 						   "WHERE carId = " + id;
 			ResultSet result = conn.query(query);
-			result.next();
 			if (result != null) {
 				return true;
 			}
@@ -165,15 +168,16 @@ public class Car extends Model {
 	
 	/**
 	 * TODO: Future release: Implement this
-	 * Gives the amount of entries in the data-source, 
-	 * i.e. the amount of customers in the database.
+	 * Counts the amount of existing cars in the database, and returns that 
+	 * amount.
 	 * 
 	 * @return The amount of entries in the data-source.
 	 */
 	public int amountOfEntries () { return 0; }
 	
 	/**
-	 * Lists the entries of the data-source.
+	 * Returns a List of all cars in the database. Every car is represented 
+	 * with a Map<String, Object> containing the data about that car.
 	 * 
 	 * @return A list with all data from the data-source.
 	 * 			key				=> description
