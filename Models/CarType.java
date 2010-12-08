@@ -11,7 +11,7 @@ import Util.Logger;
 import Util.MySQLConnection;
 
 /**
- * Model - Car Type
+ * Model - Car Type.
  * As data-representation of car-types in the database, this class provides 
  * several methods for dealing with car-types, i.e. creating car-types, listing 
  * car-types, updating and deleting car-types.
@@ -214,7 +214,7 @@ public class CarType extends Model {
 	 * @return A list with all data from the data-source.
 	 */
 	public List<Map<String, Object>> list () {
-List<Map<String, Object>> list = new LinkedList<Map<String, Object>>();
+		List<Map<String, Object>> list = new LinkedList<Map<String, Object>>();
 		
 		try {
 			String query =	"SELECT typeId, title " +
