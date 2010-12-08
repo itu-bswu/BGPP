@@ -187,7 +187,7 @@ public class Car extends Model {
 		List<Map<String, Object>> list = new LinkedList<Map<String, Object>>();
 		
 		try {
-			String query =	"SELECT carId, title, licensePlate, carType, CarType.title " +
+			String query =	"SELECT carId, Car.title, licensePlate, carType, CarType.title " +
 							"FROM Car, CarType " +
 							"WHERE Car.carType = CarType.typeId " +
 							"ORDER BY carType ASC ";
