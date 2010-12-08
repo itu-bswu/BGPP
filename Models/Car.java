@@ -12,7 +12,7 @@ import Util.MySQLConnection;
 
 /**
  * Model - Car.
- * As data-representation of car in the database, this class provides several 
+ * As data-representation of cars in the database, this class provides several 
  * methods for dealing with cars, i.e. creating cars, listing cars, updating 
  * and deleting cars.
  * 

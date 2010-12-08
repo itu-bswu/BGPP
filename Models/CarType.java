@@ -12,10 +12,18 @@ import Util.MySQLConnection;
 
 /**
  * TODO: Review error-handling with SQL queries.
- * TODO: Write class description
- * TODO: Rewrite javadoc
  * Model - Car Type
+ * As data-representation of car-types in the database, this class provides 
+ * several methods for dealing with car-types, i.e. creating car-types, listing 
+ * car-types, updating and deleting car-types.
  *
+ * <code>
+ * 	CarType carType = new CarType();
+ *	// Create a new car-type (Van)
+ *	int van = carType.create("Van");
+ *	// Delete a car-type
+ *	carType.delete(van);
+ * </code>
  */
 public class CarType extends Model {
 	
