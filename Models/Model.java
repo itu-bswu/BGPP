@@ -27,7 +27,6 @@ public abstract class Model {
 	public int create (Map<String, Object> createVars) {
 		try {
 			String setSQL = buildQuery(createVars);
-			setSQL = setSQL.substring(0, setSQL.lastIndexOf(','));
 			String query =	"INSERT INTO " + getClassName() + " " + 
 							"SET " + setSQL;
 			MySQLConnection conn = MySQLConnection.getInstance();
@@ -65,7 +64,7 @@ public abstract class Model {
 	 */
 	protected boolean update(int id, Map<String, Object> updateVars, String idColumn) {	
 		String query =	"UPDATE " + getClassName() + " " + 
-						"SET " + buildQuery(updateVars) + 
+						"SET " + buildQuery(updateVars) + " " + 
 						"WHERE " + idColumn + " = " + id;
 		MySQLConnection conn = MySQLConnection.getInstance();
 		ResultSet result = conn.query(query);
@@ -172,6 +171,7 @@ public abstract class Model {
 		for (Map.Entry<String, Object> item : vars.entrySet()) {
 			query = query.concat(item.getKey() + " = '" + item.getValue() + "', ");
 		}
+		query = query.substring(0, query.lastIndexOf(','));
 		
 		return query;
 	}
