@@ -16,8 +16,6 @@ import Models.CarType;
 import Models.Car;
 
 /**
- * TODO: Write unit test javadoc.
- * TODO: Review unit tests based on CRUD-model.
  * @author Niklas Hansen
  *
  */

@@ -47,8 +47,16 @@ public class CarTypeTest {
 		assertTrue(reindeer > 0); // Test #1
 		assertTrue(toboggan > 0); // Test #2
 		assertEquals(prevAmount+2, carType.amountOfEntries()); // Test #2
-		assertTrue(carType.delete(toboggan)); // Test #3
-		assertEquals(prevAmount+1, carType.amountOfEntries()); // Test #3
+		
+		assertTrue(carType.update(toboggan, "Vinterkælk")); // Test #3
+		assertNotNull(carType.read("Vinterkælk")); // Test #3
+		assertNull(carType.read("Kælk")); // Test #3
+		
+		assertFalse(carType.update(toboggan, "Rensdyrslæde")); // Test #4
+		assertNotNull(carType.read("Vinterkælk")); // Test #4
+		
+		assertTrue(carType.delete(toboggan)); // Test #5
+		assertEquals(prevAmount+1, carType.amountOfEntries()); // Test #5
 	}
 	
 	/**
@@ -56,8 +64,8 @@ public class CarTypeTest {
 	 */
 	@Test
 	public void testFindType () {
-		assertNotNull(carType.read("Rensdyrslæde")); // Test #4
-		assertNull(carType.read("Ukendt biltype")); // Test #5
+		assertNotNull(carType.read("Rensdyrslæde")); // Test #6
+		assertNull(carType.read("Ukendt biltype")); // Test #7
 	}
 	
 	/**
@@ -65,14 +73,14 @@ public class CarTypeTest {
 	 */
 	@Test
 	public void testMultipleTypes () {
-		assertFalse(carType.create("Rensdyrslæde") > 0); // Test #6
+		assertFalse(carType.create("Rensdyrslæde") > 0); // Test #8
 		
 		Map<String, Object> reindeer = carType.read("Rensdyrslæde");
 		int id = Integer.parseInt(reindeer.get("id").toString());
-		assertTrue(carType.delete(id)); // Test #7
+		assertTrue(carType.delete(id)); // Test #9
 		
 		int typeReindeer = carType.create("Rensdyrslæde");
-		assertTrue(typeReindeer > 0); // Test #8
+		assertTrue(typeReindeer > 0); // Test #10
 		
 		// Clean-up after tests
 		Map<String, Object> toboggan = carType.read("Rensdyrslæde");

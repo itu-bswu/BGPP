@@ -143,6 +143,22 @@ public class CarType extends Model {
 	}
 	
 	/**
+	 * Updates the car-type with the provided ID-number. Names are unique, and 
+	 * if the name already exists in the database, false will be returned. 
+	 * Otherwise true will be returned.
+	 * 
+	 * @param id The ID of the entry to be updated.
+	 * @param updateVars Map containing the data to be updated.
+	 * @return true on success; false on failure.
+	 */
+	public boolean update(int id, String name) {
+		Map<String, Object> updateVars = new HashMap<String, Object>();
+		updateVars.put("title", name);
+		
+		return super.update(id, updateVars, "typeId");
+	}
+	
+	/**
 	 * Deletes the car-type with the provided ID-number. If the deletion fails, 
 	 * false is returned. Otherwise true is returned. Please note: If no car-type 
 	 * is found with the provided ID, true will still be returned, as an entry 

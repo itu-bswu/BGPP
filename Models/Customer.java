@@ -171,10 +171,8 @@ public class Customer extends Model {
 	 * @return true on success; false on failure.
 	 */
 	public boolean update(int id, Map<String, Object> updateVars) {
-		if (id <= 0 ||
-			updateVars.get("name") == null || 
-			Integer.parseInt(updateVars.get("phone").toString()) <= 0)
-				throw new NullPointerException();
+		if (id <= 0)
+			throw new NullPointerException();
 		
 		return super.update(id, updateVars, "customerId");
 	}

@@ -5,6 +5,9 @@ package Models.UnitTests;
 
 import static org.junit.Assert.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -59,7 +62,14 @@ public class CustomerTest {
 	public void testMultipleCustomers () {
 		assertTrue(customer.create("Poul Krebs", 12345678) > 0); // Test #6
 		assertFalse(customer.create("Søren Banjomus", 12345678) > 0); // Test #7
-		assertTrue(customer.create("Søren Banjomus", 87654321) > 0); // Test #8
+		
+		int banjomus = customer.create("Søren Banjomus", 87654321);
+		assertTrue(banjomus > 0); // Test #8
+		
+		Map<String, Object> updateVars = new HashMap<String, Object>();
+		updateVars.put("phone", 12345678);
+		assertFalse(customer.update(banjomus, updateVars)); // Test #9
+		assertNotNull(customer.read(87654321, true)); // Test #9
 	}
 	
 	/**
@@ -68,13 +78,13 @@ public class CustomerTest {
 	@Test
 	public void testFindAndDeleteCustomers () {
 		int customer1 = Integer.parseInt(customer.read(12345678, true).get("id").toString());
-		assertTrue(customer.delete(customer1)); // Test #9
-		assertNotNull(customer.read(87654321, true)); // Test #10
+		assertTrue(customer.delete(customer1)); // Test #10
+		assertNotNull(customer.read(87654321, true)); // Test #11
 		int customer2 = Integer.parseInt(customer.read(87654321, true).get("id").toString());
-		assertTrue(customer.delete(customer2)); // Test #11
-		assertNull(customer.read(87654321, true)); // Test #12
-		assertTrue(customer.create("Søren Banjomus", 87654321) > 0); // Test #13
-		assertNotNull(customer.read(87654321, true)); // Test #13
+		assertTrue(customer.delete(customer2)); // Test #12
+		assertNull(customer.read(87654321, true)); // Test #13
+		assertTrue(customer.create("Søren Banjomus", 87654321) > 0); // Test #14
+		assertNotNull(customer.read(87654321, true)); // Test #14
 		
 		customer2 = Integer.parseInt(customer.read(87654321, true).get("id").toString());
 		customer.delete(customer2);
