@@ -96,7 +96,6 @@ public class ReservationOverview extends JFrame {
 		table.setGridColor(Color.GRAY);
 		table.setRowHeight(25);
 		table.getTableHeader().setReorderingAllowed(false);
-		CustomTableModel model = (CustomTableModel)table.getModel();
 		
 		updateTableCells();
 		
@@ -111,10 +110,7 @@ public class ReservationOverview extends JFrame {
 	
 	public void updateTableCells() {
 		for (int i = 0; i < table.getColumnModel().getColumnCount(); i++) {
-			if (i == 0) {
-				table.getColumnModel().getColumn(i).setMinWidth(150);
-				table.getColumnModel().getColumn(i).setMaxWidth(150);
-			} else {
+			if (i > 0) {
 				table.getColumnModel().getColumn(i).setCellRenderer(new CustomTableCellRenderer());
 			}
 		}
@@ -297,7 +293,7 @@ public class ReservationOverview extends JFrame {
 		private List<Map<String, Object>> reservations = null;
 		private Date firstWeekDay = null;
 		private Date lastWeekDay = null;
-		private String[] columns;
+		private String[] columns = null;
 		
 		/**
 		 * CustomTableModel contructor
@@ -355,9 +351,8 @@ public class ReservationOverview extends JFrame {
 					}
 				}
 				
-				int startDayIndex = (int)(startDate.getTime()-firstWeekDay.getTime())/(1000*60*60*24);
-				
-				int endDayIndex = (int)(endDate.getTime()-firstWeekDay.getTime())/(1000*60*60*24);
+				int startDayIndex = (int)((startDate.getTime()-firstWeekDay.getTime())/(1000*60*60*24));
+				int endDayIndex = (int)((endDate.getTime()-firstWeekDay.getTime())/(1000*60*60*24));
 				
 				for (i = (startDayIndex < 0? 0: startDayIndex); i <= (endDayIndex > 6? 6: endDayIndex); i++) {
 					carsStates[carIndex][i] = (i == startDayIndex? CellState.CELL_START: i == endDayIndex? CellState.CELL_END: CellState.CELL_MIDDLE);
@@ -414,6 +409,10 @@ public class ReservationOverview extends JFrame {
 		
 		
 		public int getColumnCount() {
+			if (columns == null) {
+				return 0;
+			}
+			
 			return columns.length;
 		}
 		
