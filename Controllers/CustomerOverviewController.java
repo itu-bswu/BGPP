@@ -1,8 +1,12 @@
 package Controllers;
 
-import Views.*;
+import Views.EditCustomer;
+import Controllers.EditCustomerController;
 import java.awt.event.*;
 import Models.Customer;
+import Views.CustomerOverview;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Controller - Customer Overview
@@ -10,6 +14,7 @@ import Models.Customer;
  */
 public class CustomerOverviewController implements MouseListener, ActionListener {
 	CustomerOverview window;
+	List<Map<String, Object>> customers;
 	
 	public CustomerOverviewController(CustomerOverview window) {
 		this.window = window;
@@ -18,7 +23,8 @@ public class CustomerOverviewController implements MouseListener, ActionListener
 		window.addSearchListener(this);
 		
 		Customer customerModel = new Customer();
-		window.setValues(customerModel.list());
+		customers = customerModel.list();
+		window.setValues(customers);
 	}
 	
 	public void actionPerformed(ActionEvent e) {
@@ -27,14 +33,15 @@ public class CustomerOverviewController implements MouseListener, ActionListener
 		if (window.getPhoneString().equals("") == false) {
 			phone = Integer.parseInt(window.getPhoneString());
 		}
-		window.setValues(customerModel.search(window.getNameString(), phone, "name", "ASC"));
+		customers = customerModel.search(window.getNameString(), phone, "name", "ASC");
+		window.setValues(customers);
 	}
 	
 	public void mouseClicked(MouseEvent e) {
 		if (e.getClickCount() == 2) {
 			int row = window.getSelectedRow();
 			int column = window.getSelectedColumn();
-			new EditCustomer();
+			new EditCustomerController(new EditCustomer((Integer)customers.get(row).get("id")));
 		}
 	}
 	

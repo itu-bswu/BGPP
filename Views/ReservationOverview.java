@@ -437,7 +437,7 @@ public class ReservationOverview extends JFrame {
 			if (column > 0) {
 				return null;
 			} else {
-				return cars.get(row).get("title");
+				return cars.get(row).get("licensePlate");
 			}
 		}
 		
