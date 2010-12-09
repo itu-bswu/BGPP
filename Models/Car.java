@@ -114,10 +114,10 @@ public class Car extends Model {
 			result.next();
 			
 			Map<String, Object> returnMap = new HashMap<String, Object>();
-			returnMap.put("id", 			result.getInt("Car.carId"));
+			returnMap.put("id", 			result.getInt	("Car.carId"));
 			returnMap.put("name", 			result.getString("Car.title"));
-			returnMap.put("typeId", 		result.getInt("Car.carType"));
-			returnMap.put("typeName", 		result.getString("CarType.title"));
+			returnMap.put("carTypeId", 		result.getInt	("Car.carType"));
+			returnMap.put("carTypeName", 	result.getString("CarType.title"));
 			returnMap.put("licensePlate", 	result.getString("Car.licensePlate"));
 			
 			return returnMap;
