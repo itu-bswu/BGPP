@@ -355,22 +355,26 @@ public class Reservation extends Model {
 	 * @return true on available; false on unavailable.
 	 */
 	public boolean checkAvailability (int carId, Date startDate, Date endDate) {
-		String query =	
-			"SELECT carId " + 
-			"FROM Car " + 
-			"WHERE carId = " + carId + " " + 
-			"AND NOT EXISTS ( " + 
-				"SELECT reservationId " + 
-				"FROM Reservation " + 
-				"WHERE Reservation.carId = Car.carId " +
-				   "AND (('"+startDate+"' 	>= startDate && '"+startDate+"' <= endDate) " + 
-				     "OR ('"+endDate+"' 	>= startDate && '"+endDate+"' 	<= endDate) " + 
-				     "OR ('"+startDate+"' 	<= startDate && '"+endDate+"' 	>= endDate)) " + 
-			")";
-		MySQLConnection conn = MySQLConnection.getInstance();
-		ResultSet result = conn.query(query);
-		if (result != null) {
-			return true;
+		try {
+			String query =	
+				"SELECT carId " + 
+				"FROM Car " + 
+				"WHERE carId = " + carId + " " + 
+				"AND NOT EXISTS ( " + 
+					"SELECT reservationId " + 
+					"FROM Reservation " + 
+					"WHERE Reservation.carId = Car.carId " +
+					   "AND (('"+startDate+"' 	>= startDate && '"+startDate+"' <= endDate) " + 
+					     "OR ('"+endDate+"' 	>= startDate && '"+endDate+"' 	<= endDate) " + 
+					     "OR ('"+startDate+"' 	<= startDate && '"+endDate+"' 	>= endDate)) " + 
+				")";
+			MySQLConnection conn = MySQLConnection.getInstance();
+			ResultSet result = conn.query(query);
+			if (result != null && result.next()) {
+				return true;
+			}
+		} catch (SQLException e) {
+			Logger.write("Couldn't check availability of car: " + e.getMessage());
 		}
 		
 		return false;
