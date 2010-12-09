@@ -2,18 +2,32 @@ package Controllers;
 
 import Views.*;
 import java.awt.event.*;
+import Models.Customer;
 
 /**
  * Controller - Customer Overview
  *
  */
-public class CustomerOverviewController implements MouseListener {
+public class CustomerOverviewController implements MouseListener, ActionListener {
 	CustomerOverview window;
 	
 	public CustomerOverviewController(CustomerOverview window) {
 		this.window = window;
 		
 		window.addTableMouseListener(this);
+		window.addSearchListener(this);
+		
+		Customer customerModel = new Customer();
+		window.setValues(customerModel.list());
+	}
+	
+	public void actionPerformed(ActionEvent e) {
+		Customer customerModel = new Customer();
+		int phone = 0;
+		if (window.getPhoneString().equals("") == false) {
+			phone = Integer.parseInt(window.getPhoneString());
+		}
+		window.setValues(customerModel.search(window.getNameString(), phone, "name", "ASC"));
 	}
 	
 	public void mouseClicked(MouseEvent e) {

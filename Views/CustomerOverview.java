@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.table.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * View - Customer Overview
@@ -11,6 +13,11 @@ import javax.swing.table.*;
  */
 public class CustomerOverview extends JFrame {
 	private JTable table;
+	
+	JButton search;
+	
+	JTextField nameInput;
+	JTextField phoneInput;
 	
 	public CustomerOverview() {
 		super("Customers list");
@@ -33,13 +40,13 @@ public class CustomerOverview extends JFrame {
 		JPanel inputPanel = new JPanel(new GridLayout(2, 0));
 		topPanel.add(inputPanel, BorderLayout.CENTER);
 		
-		JTextField nameInput = new JTextField();
+		nameInput = new JTextField();
 		inputPanel.add(nameInput);
 		
-		JTextField phoneInput = new JTextField();
+		phoneInput = new JTextField();
 		inputPanel.add(phoneInput);
 		
-		JButton search = new JButton("Search");
+		search = new JButton("Search");
 		topPanel.add(search, BorderLayout.EAST);
 		
 		JPanel tablePanel = new JPanel(new BorderLayout());
@@ -59,6 +66,21 @@ public class CustomerOverview extends JFrame {
 	}
 	
 	
+	public String getNameString() {
+		return nameInput.getText();
+	}
+	
+	
+	public String getPhoneString() {
+		return phoneInput.getText();
+	}
+	
+	
+	public void addSearchListener(ActionListener a) {
+		search.addActionListener(a);
+	}
+	
+	
 	public void addTableMouseListener(MouseListener m) {
 		table.addMouseListener(m);
 	}
@@ -74,49 +96,47 @@ public class CustomerOverview extends JFrame {
 	}
 	
 	
+	public void setValues(List<Map<String, Object>> content) {
+		CustomTableModel model = (CustomTableModel)table.getModel();
+		model.setValues(content);
+		model.fireTableDataChanged();
+	}
+	
+	
 	private class CustomTableModel extends AbstractTableModel {
-		String[] columns = {
-		"Name",
-		"Phone"
-		};
+		private String[] columns = { "Name", "Phone" };
 		
-		String[][] values = {
-		{
-		"Name",
-		"Phone"
-		},
-		{
-		"Name",
-		"Phone"
-		},
-		{
-		"Name",
-		"Phone"
-		},
-		{
-		"Name",
-		"Phone"
-		},
-		{
-		"Name",
-		"Phone"
-		},
-		{
-		"Name",
-		"Phone"
+		private List<Map<String, Object>> values;
+		
+		public void setValues(List<Map<String, Object>> content) {
+			values = content;
 		}
-		};
 		
 		public int getRowCount() {
-			return values.length;
+			if (values == null) {
+				return 0;
+			}
+			
+			return values.size();
 		}
 		
 		public int getColumnCount() {
+			if (columns == null) {
+				return 0;
+			}
+			
 			return columns.length;
 		}
 		
 		public Object getValueAt(int row, int column) {
-			return values[row][column];
+			switch (column) {
+				case 0:
+					return values.get(row).get("name");
+				case 1:
+					return values.get(row).get("phone");
+				default:
+					return null;
+			}
 		}
 		
 		public String getColumnName(int column) {

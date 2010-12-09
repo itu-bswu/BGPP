@@ -34,6 +34,7 @@ public class ReservationOverviewController implements ActionListener, MouseListe
 		window.addPrevWeekListener(this);
 		window.addNextWeekListener(this);
 		window.addGotoListener(this);
+		window.addUpdateListener(this);
 		
 		Car carModel = new Car();
 		List<Map<String, Object>> carList = carModel.list();
@@ -87,6 +88,8 @@ public class ReservationOverviewController implements ActionListener, MouseListe
 			String result = (String)JOptionPane.showInputDialog(window, "Choose week number:", "Go to week", JOptionPane.PLAIN_MESSAGE, null, weeks, ""+window.getWeek());
 			
 			window.goToWeek(Integer.parseInt(result), window.getYear());
+			loadReservations();
+		} else if (e.getActionCommand().equals(window.updateReservationsTitle)) {
 			loadReservations();
 		}
 	}
