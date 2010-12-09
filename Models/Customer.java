@@ -171,9 +171,12 @@ public class Customer extends Model {
 	 * @return true on success; false on failure.
 	 */
 	public boolean update(int id, Map<String, Object> updateVars) {
-		String newName = updateVars.get("name").toString();
-		int newPhone = Integer.parseInt(updateVars.get("phone").toString());
-		return update (id, newName, newPhone);
+		if (id <= 0 ||
+			updateVars.get("name") == null || 
+			Integer.parseInt(updateVars.get("phone").toString()) <= 0)
+				throw new NullPointerException();
+		
+		return super.update(id, updateVars, "customerId");
 	}
 	
 	/**
@@ -186,25 +189,11 @@ public class Customer extends Model {
 	 * @return true on success; false on failure.
 	 */
 	public boolean update(int id, String newName, int newPhone) {
-		if (id <= 0 || newName == null || newPhone <= 0)
-			throw new NullPointerException();
+		Map<String, Object> update = new HashMap<String, Object>();
+		update.put("name", newName);
+		update.put("phone", newPhone);
 		
-		try {
-			String query =	"UPDATE Customer " +
-							"SET name = '" + newName + "', " +
-							"phone = '" + newPhone + "' " +
-							"WHERE customerId = " + id;
-			MySQLConnection conn = MySQLConnection.getInstance();
-			ResultSet result = conn.query(query);
-			result.next();
-			if (result != null) {
-				return true;
-			}
-		} catch (SQLException e) {
-			Logger.write("Couldn't update row: " + e.getMessage());
-		}
-		
-		return false;
+		return this.update(id, update);
 	}
 	
 	/**

@@ -136,18 +136,24 @@ public class Reservation extends Model {
 	 * @param id The ID of the entry to be updated.
 	 * @param updateVars Map containing the data to be updated.
 	 * 			key			=> description
-	 * 			customer	=> The ID of the customer to book a car.
-	 * 			car			=> The ID of the car to be booked.
-	 * 			startType	=> The start date of the booking.
+	 * 			customerId	=> The ID of the customer to book a car.
+	 * 			carId		=> The ID of the car to be booked.
+	 * 			startDate	=> The start date of the booking.
 	 * 			endDate		=> The end date of the booking.
 	 * @return true on success; false on failure.
 	 */
 	public boolean update (int id, Map<String, Object> updateVars) {
-		int customer	= Integer.parseInt(updateVars.get("customer").toString());
-		int car 		= Integer.parseInt(updateVars.get("car").toString());
-		Date startDate	= (Date) updateVars.get("startType");
-		Date endDate	= (Date) updateVars.get("startType");
-		return update (id, customer, car, startDate, endDate);
+		int customer	= Integer.parseInt(updateVars.get("customerId").toString());
+		int car 		= Integer.parseInt(updateVars.get("carId").toString());
+		Date startDate	= (Date) updateVars.get("startDate");
+		Date endDate	= (Date) updateVars.get("endDate");
+		
+		if (id <= 0 || customer <= 0 || car <= 0 || startDate == null || endDate == null)
+			throw new NullPointerException();
+		if (!checkAvailability(car, startDate, endDate))
+			return false;
+		
+		return super.update(id, updateVars, "reservationId");
 	}
 	
 	/**
@@ -162,30 +168,13 @@ public class Reservation extends Model {
 	 * @return true on success; false on failure.
 	 */
 	public boolean update (int id, int customer, int car, Date startDate, Date endDate) {
-		if (id <= 0 || customer <= 0 || car <= 0 || startDate == null || endDate == null)
-			throw new NullPointerException();
+		Map<String, Object> updateVars = new HashMap<String, Object>();
+		updateVars.put("customerId", customer);
+		updateVars.put("carId", 	 car);
+		updateVars.put("startDate",  startDate);
+		updateVars.put("endDate", 	 endDate);
 		
-		if (!checkAvailability(car, startDate, endDate))
-			return false;
-		
-		try {
-			String query =	"UPDATE Reservation " +
-							"SET customerId = '" + customer + "', " +
-							"carId = '" + car + "', " +
-							"startDate = '" + startDate + "', " +
-							"endDate = '" + endDate + "' " +
-							"WHERE reservationId = " + id;
-			MySQLConnection conn = MySQLConnection.getInstance();
-			ResultSet result = conn.query(query);
-			result.next();
-			if (result != null) {
-				return true;
-			}
-		} catch (SQLException e) {
-			Logger.write("Couldn't update row: " + e.getMessage());
-		}
-		
-		return false;
+		return this.update(id, updateVars);
 	}
 	
 	/**

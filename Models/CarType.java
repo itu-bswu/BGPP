@@ -131,7 +131,6 @@ public class CarType extends Model {
 	}
 	
 	/**
-	 * TODO: Future release: Implement this
 	 * Updates the car-type with the provided ID-number. The fields to be updated, 
 	 * are the keys in the map, and the new data is the values in the map.
 	 * 
@@ -139,7 +138,9 @@ public class CarType extends Model {
 	 * @param updateVars Map containing the data to be updated.
 	 * @return true on success; false on failure.
 	 */
-	public boolean update(int id, Map<String, Object> updateVars) { return false; }
+	public boolean update(int id, Map<String, Object> updateVars) {
+		return super.update(id, updateVars, "typeId");
+	}
 	
 	/**
 	 * Deletes the car-type with the provided ID-number. If the deletion fails, 

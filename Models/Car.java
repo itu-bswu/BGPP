@@ -99,9 +99,9 @@ public class Car extends Model {
 			result.next();
 			
 			Map<String, Object> returnMap = new HashMap<String, Object>();
-			returnMap.put("id", 			result.getInt("Car.carId"));
+			returnMap.put("id", 			result.getInt	("Car.carId"));
 			returnMap.put("name", 			result.getString("Car.title"));
-			returnMap.put("typeId", 		result.getInt("Car.carType"));
+			returnMap.put("typeId", 		result.getInt	("Car.carType"));
 			returnMap.put("typeName", 		result.getString("CarType.title"));
 			returnMap.put("licensePlate", 	result.getString("Car.licensePlate"));
 			
@@ -114,7 +114,6 @@ public class Car extends Model {
 	}
 	
 	/**
-	 * TODO: Future release: Implement this
 	 * Updates the car with the provided ID-number. The fields to be updated, 
 	 * are the keys in the map, and the new data is the values in the map.
 	 * 
@@ -122,7 +121,9 @@ public class Car extends Model {
 	 * @param updateVars Map containing the data to be updated.
 	 * @return true on success; false on failure.
 	 */
-	public boolean update(int id, Map<String, Object> updateVars) { return false; }
+	public boolean update(int id, Map<String, Object> updateVars) {
+		return super.update(id, updateVars, "carId");
+	}
 	
 	/**
 	 * Deletes the car with the provided ID-number. If the deletion fails, 
