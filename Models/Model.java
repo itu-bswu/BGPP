@@ -64,7 +64,7 @@ public abstract class Model {
 	 * @return true on success; false on failure.
 	 */
 	protected boolean update(int id, Map<String, Object> updateVars, String idColumn) {	
-		String query =	"UPDATE " + getClassName() + 
+		String query =	"UPDATE " + getClassName() + " " + 
 						"SET " + buildQuery(updateVars) + 
 						"WHERE " + idColumn + " = " + id;
 		MySQLConnection conn = MySQLConnection.getInstance();
