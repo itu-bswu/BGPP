@@ -33,12 +33,14 @@ public class ReservationOverview extends JFrame {
 	private JMenuItem prevWeekItem;
 	private JMenuItem nextWeekItem;
 	private JMenuItem customerListItem;
+	private JMenuItem updateReservationsItem;
 	
 	public final String customerListItemTitle = "View customer list...";
 	public final String newReservationItemTitle = "New reservation...";
 	public final String prevWeekItemTitle = "Previous week";
 	public final String nextWeekItemTitle = "Next week";
 	public final String gotoItemTitle = "Go to week...";
+	public final String updateReservationsTitle = "Reload reservations";
 	
 	private JTable table;
 	
@@ -80,6 +82,10 @@ public class ReservationOverview extends JFrame {
 		
 		gotoItem = new JMenuItem(gotoItemTitle);
 		viewMenu.add(gotoItem);
+		
+		viewMenu.addSeparator();
+		updateReservationsItem = new JMenuItem(updateReservationsTitle);
+		viewMenu.add(updateReservationsItem);
 		
 		viewMenu.addSeparator();
 		customerListItem = new JMenuItem(customerListItemTitle);
@@ -164,6 +170,16 @@ public class ReservationOverview extends JFrame {
 	 */
 	public void addNextWeekListener(ActionListener a) {
 		nextWeekItem.addActionListener(a);
+	}
+	
+	
+	/**
+	 * addUpdateListener
+	 * add a new ActionListener to the update reservations list action
+	 * @param a the ActionListener
+	 */
+	public void addUpdateListener(ActionListener a) {
+		updateReservationsItem.addActionListener(a);
 	}
 	
 	

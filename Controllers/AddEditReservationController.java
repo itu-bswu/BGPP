@@ -30,9 +30,11 @@ public class AddEditReservationController implements ActionListener {
 		
 		window.addCancelListener(this);
 		window.addSaveListener(this);
+		window.addDeleteListener(this);
 		
 		if (window.getReservationId() > -1) {
 			isEditing = true;
+			window.setIsEditing(true);
 			
 			Reservation reservationModel = new Reservation();
 			Car carModel = new Car();
@@ -125,6 +127,16 @@ public class AddEditReservationController implements ActionListener {
 				int result = reservationModel.create(customerId, carType, new java.sql.Date(startDate.getTime()), new java.sql.Date(endDate.getTime()));
 				
 				if (result > -1) {
+					window.dispose();
+				}
+			}
+		} else if (event.getActionCommand().equals(window.deleteButtonTitle)) {
+			if (isEditing) {
+				int reservationId = window.getReservationId();
+				
+				Reservation reservationModel = new Reservation();
+				
+				if (reservationModel.delete(reservationId)) {
 					window.dispose();
 				}
 			}

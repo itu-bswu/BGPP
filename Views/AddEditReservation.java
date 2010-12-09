@@ -24,9 +24,13 @@ public class AddEditReservation extends JFrame {
 	
 	public final String cancelButtonTitle = "Cancel";
 	public final String saveButtonTitle = "Save";
+	public final String deleteButtonTitle = "Delete";
 	
 	JButton cancelButton;
 	JButton saveButton;
+	JButton deleteButton;
+	
+	JLabel carTypeLabel;
 	
 	/**
 	 * AddEditReservation constructor
@@ -63,7 +67,7 @@ public class AddEditReservation extends JFrame {
 		JPanel labelsPanel = new JPanel(new GridLayout(5, 0));
 		panel.add(labelsPanel, BorderLayout.WEST);
 		
-		JLabel carTypeLabel = new JLabel("Car type: ");
+		carTypeLabel = new JLabel("Car type: ");
 		labelsPanel.add(carTypeLabel);
 		
 		JLabel fromDateLabel = new JLabel("From date: ");
@@ -96,17 +100,33 @@ public class AddEditReservation extends JFrame {
 		customerPhoneInput = new JTextField();
 		inputPanel.add(customerPhoneInput);
 		
-		JPanel buttonsPanel = new JPanel(new GridLayout(1, 2));
+		JPanel buttonsPanel = new JPanel(new GridLayout(1, 3));
 		this.add(buttonsPanel, BorderLayout.SOUTH);
 		
 		cancelButton = new JButton(cancelButtonTitle);
 		buttonsPanel.add(cancelButton);
+		
+		deleteButton = new JButton(deleteButtonTitle);
+		deleteButton.setVisible(false);
+		buttonsPanel.add(deleteButton);
 		
 		saveButton = new JButton(saveButtonTitle);
 		buttonsPanel.add(saveButton);
 		
 		this.setSize(275, 220);
 		this.setVisible(true);
+	}
+	
+	
+	public void setIsEditing(boolean isEditing) {
+		if (isEditing) {
+			deleteButton.setVisible(true);
+			carTypeLabel.setText("Car: ");
+		} else {
+			deleteButton.setVisible(false);
+			carTypeLabel.setText("Car type: ");
+		}
+
 	}
 	
 	
@@ -159,6 +179,11 @@ public class AddEditReservation extends JFrame {
 	
 	public void addCancelListener(ActionListener a) {
 		cancelButton.addActionListener(a);
+	}
+	
+	
+	public void addDeleteListener(ActionListener a) {
+		deleteButton.addActionListener(a);
 	}
 	
 	
