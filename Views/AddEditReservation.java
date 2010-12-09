@@ -110,6 +110,31 @@ public class AddEditReservation extends JFrame {
 	}
 	
 	
+	public String getCustomerName() {
+		return customerNameInput.getText();
+	}
+	
+	
+	public String getCustomerPhone() {
+		return customerPhoneInput.getText();
+	}
+	
+	
+	public int getSelectedCarTypeIndex() {
+		return carTypeSelect.getSelectedIndex();
+	}
+	
+	
+	public String getStartDate() {
+		return fromDateInput.getText();
+	}
+	
+	
+	public String getEndDate() {
+		return toDateInput.getText();
+	}
+	
+	
 	public void setCarTypes(String[] carTypes) {
 		for (String s : carTypes) {
 			carTypeSelect.addItem(s);

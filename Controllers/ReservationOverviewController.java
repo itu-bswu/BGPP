@@ -67,7 +67,7 @@ public class ReservationOverviewController implements ActionListener, MouseListe
 	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals(window.newReservationItemTitle)) {
-			new AddEditReservation();
+			new AddEditReservationController(new AddEditReservation());
 		} else if (e.getActionCommand().equals(window.customerListItemTitle)) {
 			new CustomerOverviewController(new CustomerOverview());
 		} else if (e.getActionCommand().equals(window.prevWeekItemTitle)) {
