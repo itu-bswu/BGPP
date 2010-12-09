@@ -48,6 +48,14 @@ public class Car extends Model {
 			Integer.parseInt(createVars.get("carType").toString()) <= 0)
 				throw new NullPointerException();
 		
+		createVars.put("licensePlate", createVars.get("licensePlate").toString()
+												 .replaceAll(" ", ""));
+		
+		CarType carType = new CarType();
+		int carTypeId = Integer.parseInt(createVars.get("carType").toString());
+		if (carType.read(carTypeId) == null)
+			return -1;
+		
 		return super.create(createVars);
 	}
 	
