@@ -34,11 +34,15 @@ public class CarType extends Model {
 	 * 
 	 * @param createVars Map containing data to be stored.
 	 * 			key		=> description
-	 * 			name	=> The title of the car-type
+	 * 			title	=> The title of the car-type
 	 * @return ID on success; -1 on failure.
 	 */
 	public int create (Map<String, Object> createVars) {
-		return create (createVars.get("name").toString());
+		if (createVars.get("title").toString() == null || 
+			createVars.get("title").toString().length() <= 0)
+				throw new NullPointerException();
+		
+		return super.create (createVars);
 	}
 	
 	/**
@@ -51,26 +55,9 @@ public class CarType extends Model {
 	 * @return ID on success; -1 on failure.
 	 */
 	public int create (String typeName) {
-		if (typeName == null || typeName.length() <= 0)
-			throw new NullPointerException();
-		
-		try {
-			MySQLConnection conn = MySQLConnection.getInstance();
-			String query = "INSERT INTO CarType " +
-			   			   "SET title = '" + typeName + "'";
-			ResultSet result = conn.query(query);
-			if (result == null)
-				return -1;
-			result.next();
-			int newId = result.getInt(1);
-			if (newId > 0) {
-				return newId;
-			}
-		} catch (Exception e) {
-			Logger.write("Couldn't insert row to database: " + e.getMessage());
-		}
-		
-		return -1;
+		Map<String, Object> createVars = new HashMap<String, Object>();
+		createVars.put("title", typeName);
+		return this.create(createVars);
 	}
 	
 	/**
@@ -144,7 +131,6 @@ public class CarType extends Model {
 	}
 	
 	/**
-	 * TODO: Future release: Implement this
 	 * Updates the car-type with the provided ID-number. The fields to be updated, 
 	 * are the keys in the map, and the new data is the values in the map.
 	 * 
@@ -152,7 +138,9 @@ public class CarType extends Model {
 	 * @param updateVars Map containing the data to be updated.
 	 * @return true on success; false on failure.
 	 */
-	public boolean update(int id, Map<String, Object> updateVars) { return false; }
+	public boolean update(int id, Map<String, Object> updateVars) {
+		return super.update(id, updateVars, "typeId");
+	}
 	
 	/**
 	 * Deletes the car-type with the provided ID-number. If the deletion fails, 
@@ -164,50 +152,10 @@ public class CarType extends Model {
 	 * @return true on success; false on failure.
 	 */
 	public boolean delete (int id) {
-		if (id <= 0)
-			throw new NullPointerException();
-		
-		try {
-			MySQLConnection conn = MySQLConnection.getInstance();
-			String query = "DELETE FROM CarType " +
-						   "WHERE typeId = " + id;
-			ResultSet result = conn.query(query);
-			if (result != null) {
-				return true;
-			}
-		} catch (Exception e) {
-			Logger.write("Couldn't delete row from database: " + e.getMessage());
-		}
-		
-		return false;
+		return super.delete(id, "typeId");
 	}
 	
 	/**
-	 * Counts the amount of existing car-types in the database, and returns that 
-	 * amount.
-	 * 
-	 * @return The amount of entries in the data-source.
-	 */
-	public int amountOfEntries () {
-		try {
-			MySQLConnection conn = MySQLConnection.getInstance();
-			String query = "SELECT count(*) AS entryAmount " +
-						   "FROM CarType";
-			ResultSet result = conn.query(query);
-			
-			if (result != null) {
-				result.next();
-				return result.getInt(1);
-			}
-		} catch (SQLException e) {
-			Logger.write("Couldn't read from database: " + e.getMessage());
-		}
-		
-		return 0;
-	}
-	
-	/**
-	 * TODO: Implement this
 	 * Returns a List of all car-types in the database. Every car-type is 
 	 * represented with a Map<String, Object> containing the data about that car-type.
 	 * 

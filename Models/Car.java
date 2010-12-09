@@ -35,15 +35,28 @@ public class Car extends Model {
 	 * 
 	 * @param createVars Map containing data to be stored.
 	 * 			key				=> description
-	 * 			name			=> The title of the car; eg. Ford Fiesta
+	 * 			title			=> The title of the car; eg. Ford Fiesta
 	 * 			licensePlate	=> The licenseplate of the car; eg. SV 21 435
 	 * 			carType 		=> The ID of the car-type of the car.
 	 * @return ID on success; -1 on failure.
 	 */
 	public int create (Map<String, Object> createVars) {
-		return create (createVars.get("name").toString(), 
-					   createVars.get("licensePlate").toString(), 
-					   Integer.parseInt(createVars.get("carType").toString()));
+		if (createVars.get("title").toString() == null || 
+			createVars.get("title").toString().length() <= 0 ||
+			createVars.get("licensePlate").toString() == null || 
+			createVars.get("licensePlate").toString().length() <= 0 || 
+			Integer.parseInt(createVars.get("carType").toString()) <= 0)
+				throw new NullPointerException();
+		
+		createVars.put("licensePlate", createVars.get("licensePlate").toString()
+												 .replaceAll(" ", ""));
+		
+		CarType carType = new CarType();
+		int carTypeId = Integer.parseInt(createVars.get("carType").toString());
+		if (carType.read(carTypeId) == null)
+			return -1;
+		
+		return super.create(createVars);
 	}
 	
 	/**
@@ -57,31 +70,11 @@ public class Car extends Model {
 	 * @return ID on success; -1 on failure.
 	 */
 	public int create (String title, String licensePlate, int carType) {
-		if (title == null || title.length() <= 0 || 
-			licensePlate == null || licensePlate.length() <= 0 || 
-			carType <= 0)
-				throw new NullPointerException();
-		
-		try {
-			MySQLConnection conn = MySQLConnection.getInstance();
-			String query = 	"INSERT INTO Car (title, licensePlate, carType) " +
-								"SELECT '" + title + "', " + 
-								"'" + licensePlate.replaceAll(" ", "") + "', " + 
-								carType + " " + 
-								"FROM CarType WHERE typeId = " + carType;
-			ResultSet result = conn.query(query);
-			if (result == null)
-				return -1;
-			result.next();
-			int newId = result.getInt(1);
-			if (newId > 0) {
-				return newId;
-			}
-		} catch (Exception e) {
-			Logger.write("Couldn't insert row to database: " + e.getMessage());
-		}
-		
-		return -1;
+		Map<String, Object> createVars = new HashMap<String, Object>();
+		createVars.put("title", title);
+		createVars.put("licensePlate", licensePlate);
+		createVars.put("carType", carType);
+		return this.create(createVars);
 	}
 	
 	/**
@@ -129,7 +122,6 @@ public class Car extends Model {
 	}
 	
 	/**
-	 * TODO: Future release: Implement this
 	 * Updates the car with the provided ID-number. The fields to be updated, 
 	 * are the keys in the map, and the new data is the values in the map.
 	 * 
@@ -137,7 +129,9 @@ public class Car extends Model {
 	 * @param updateVars Map containing the data to be updated.
 	 * @return true on success; false on failure.
 	 */
-	public boolean update(int id, Map<String, Object> updateVars) { return false; }
+	public boolean update(int id, Map<String, Object> updateVars) {
+		return super.update(id, updateVars, "carId");
+	}
 	
 	/**
 	 * Deletes the car with the provided ID-number. If the deletion fails, 
@@ -149,32 +143,8 @@ public class Car extends Model {
 	 * @return true on success; false on failure.
 	 */
 	public boolean delete (int id) {
-		if (id <= 0)
-			throw new NullPointerException();
-		
-		try {
-			MySQLConnection conn = MySQLConnection.getInstance();
-			String query = "DELETE FROM Car " +
-						   "WHERE carId = " + id;
-			ResultSet result = conn.query(query);
-			if (result != null) {
-				return true;
-			}
-		} catch (Exception e) {
-			Logger.write("Couldn't delete row from database: " + e.getMessage());
-		}
-		
-		return false;
+		return super.delete(id, "carId");
 	}
-	
-	/**
-	 * TODO: Future release: Implement this
-	 * Counts the amount of existing cars in the database, and returns that 
-	 * amount.
-	 * 
-	 * @return The amount of entries in the data-source.
-	 */
-	public int amountOfEntries () { return 0; }
 	
 	/**
 	 * Returns a List of all cars in the database. Every car is represented 

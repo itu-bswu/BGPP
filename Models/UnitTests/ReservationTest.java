@@ -126,7 +126,7 @@ public class ReservationTest {
 		int unknownCarType = 1337;
 		Map<String, Object> createVars = new HashMap<String, Object>();
 		createVars.put("carType", unknownCarType);
-		createVars.put("customer", customer.createIfNew("Jens Ole", 43218765));
+		createVars.put("customerId", customer.createIfNew("Jens Ole", 43218765));
 		createVars.put("startDate", Date.valueOf("2010-12-16"));
 		createVars.put("endDate", Date.valueOf("2010-12-19"));
 		assertFalse(reservation.create(createVars) > 0); // Test #7
