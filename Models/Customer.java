@@ -255,7 +255,7 @@ public class Customer extends Model {
 			Map<String, Object> curr;
 			while (result.next()) {
 				curr = new HashMap<String, Object>();
-				curr.put("id", result.getString("customerId"));
+				curr.put("id", result.getInt("customerId"));
 				curr.put("name", result.getString("name"));
 				curr.put("phone", result.getInt("phone"));
 				
