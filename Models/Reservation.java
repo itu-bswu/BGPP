@@ -48,6 +48,8 @@ public class Reservation extends Model {
 		
 		if (customerId <= 0 || carType <= 0 || startDate == null || endDate == null)
 			throw new NullPointerException();
+		if (startDate.after(endDate))
+			return -1;
 		
 		int freeCar = findFreeCar(carType, startDate, endDate); // Find available car
 		Customer Customer = new Customer(); // Verify customer-ID
@@ -150,6 +152,8 @@ public class Reservation extends Model {
 		
 		if (id <= 0 || customer <= 0 || car <= 0 || startDate == null || endDate == null)
 			throw new NullPointerException();
+		if (startDate.after(endDate))
+			return false;
 		if (!checkAvailability(car, startDate, endDate))
 			return false;
 		
