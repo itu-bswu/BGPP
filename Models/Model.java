@@ -64,18 +64,13 @@ public abstract class Model {
 	 * @return true on success; false on failure.
 	 */
 	protected boolean update(int id, Map<String, Object> updateVars, String idColumn) {	
-		try {
-			String query =	"UPDATE " + getClassName() + 
-							"SET " + buildQuery(updateVars) + 
-							"WHERE " + idColumn + " = " + id;
-			MySQLConnection conn = MySQLConnection.getInstance();
-			ResultSet result = conn.query(query);
-			result.next();
-			if (result != null) {
-				return true;
-			}
-		} catch (SQLException e) {
-			Logger.write("Couldn't update row: " + e.getMessage());
+		String query =	"UPDATE " + getClassName() + 
+						"SET " + buildQuery(updateVars) + 
+						"WHERE " + idColumn + " = " + id;
+		MySQLConnection conn = MySQLConnection.getInstance();
+		ResultSet result = conn.query(query);
+		if (result != null) {
+			return true;
 		}
 		
 		return false;
