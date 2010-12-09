@@ -154,7 +154,7 @@ public class Reservation extends Model {
 			throw new NullPointerException();
 		if (startDate.after(endDate))
 			return false;
-		if (!checkAvailability(car, startDate, endDate))
+		if (!checkAvailability(car, startDate, endDate, id))
 			return false;
 		
 		return super.update(id, updateVars, "reservationId");
@@ -355,6 +355,22 @@ public class Reservation extends Model {
 	 * @return true on available; false on unavailable.
 	 */
 	public boolean checkAvailability (int carId, Date startDate, Date endDate) {
+		return checkAvailability (carId, startDate, endDate, 0);
+	}
+	
+	/**
+	 * Checks whether or not a car is available in the provided period.
+	 * 
+	 * @param carId The ID of the car.
+	 * @param startDate The start date of the booking.
+	 * @param endDate The end date of the booking.
+	 * @return true on available; false on unavailable.
+	 */
+	public boolean checkAvailability (int carId, Date startDate, Date endDate, int reservationId) {
+		String reservationSQL = "";
+		if (reservationId > 0)
+			reservationSQL = "AND reservationId != " + reservationId + " ";
+		
 		try {
 			String query =	
 				"SELECT carId " + 
@@ -363,7 +379,8 @@ public class Reservation extends Model {
 				"AND NOT EXISTS ( " + 
 					"SELECT reservationId " + 
 					"FROM Reservation " + 
-					"WHERE Reservation.carId = Car.carId " +
+					"WHERE Reservation.carId = Car.carId " + 
+					   reservationSQL + 
 					   "AND (('"+startDate+"' 	>= startDate && '"+startDate+"' <= endDate) " + 
 					     "OR ('"+endDate+"' 	>= startDate && '"+endDate+"' 	<= endDate) " + 
 					     "OR ('"+startDate+"' 	<= startDate && '"+endDate+"' 	>= endDate)) " + 

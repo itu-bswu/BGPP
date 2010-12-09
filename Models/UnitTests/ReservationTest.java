@@ -159,11 +159,25 @@ public class ReservationTest {
 		Date startDate	= Date.valueOf("2010-12-16");
 		Date endDate	= Date.valueOf("2010-12-19");
 		int  res1 		= reservation.create(cus1, varevogn, startDate, endDate);
-		
 		assertTrue(res1 > 0);
+		
 		startDate		= Date.valueOf("2010-12-15");
 		endDate			= Date.valueOf("2010-12-20");
-		assertTrue(reservation.update(res1, cus1, varevogn, startDate, endDate)); // Test #9
+		int curCar = Integer.parseInt(reservation.read(res1).get("car").toString());
+		assertTrue(reservation.update(res1, cus1, curCar, startDate, endDate)); // Test #9
+		
+		int res2		= reservation.create(cus1, sportsvogn, startDate, endDate);
+		startDate		= Date.valueOf("2010-12-10");
+		endDate			= Date.valueOf("2010-12-14");
+		int res3		= reservation.create(cus1, sportsvogn, startDate, endDate);
+		assertTrue(res2 > 0);
+		assertTrue(res3 > 0);
+		
+		curCar = Integer.parseInt(reservation.read(res3).get("car").toString());
+		endDate			= Date.valueOf("2010-12-16");
+		assertFalse(reservation.update(res3, cus1, curCar, startDate, endDate)); // Test #10
+		
+		// Clean-up
 		assertTrue(reservation.delete(res1));
 		assertTrue(customer.delete(cus1));
 	}
