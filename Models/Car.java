@@ -130,6 +130,13 @@ public class Car extends Model {
 	 * @return true on success; false on failure.
 	 */
 	public boolean update(int id, Map<String, Object> updateVars) {
+		if (updateVars.containsKey("licensePlate")) {
+			String newLicensePlate = updateVars.get("licensePlate")
+											   .toString()
+											   .replaceAll(" ", "");
+			updateVars.put("licensePlate", newLicensePlate);
+		}
+		
 		return super.update(id, updateVars, "carId");
 	}
 	
