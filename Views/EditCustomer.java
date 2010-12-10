@@ -74,6 +74,8 @@ public class EditCustomer extends JFrame {
 		table.setRowHeight(25);
 		tablePanel.add(table.getTableHeader(), BorderLayout.NORTH);
 		
+		table.getColumnModel().getColumn(0).setMinWidth(175);
+		
 		JScrollPane tableScollPane = new JScrollPane(table);
 		tablePanel.add(tableScollPane, BorderLayout.CENTER);
 		
@@ -124,7 +126,7 @@ public class EditCustomer extends JFrame {
 	
 	
 	private class CustomTableModel extends AbstractTableModel {
-		String[] columns = { "Car", "From date", "To date" };
+		private String[] columns = { "Car", "From date", "To date" };
 		
 		private List<Map<String, Object>> values;
 		
