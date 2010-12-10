@@ -57,6 +57,31 @@ public class ReservationOverview extends JFrame {
 		
 		this.setSize(800, 400);
 		
+		setupMenuBar();
+		
+		currentDateLabel = new JLabel("", SwingConstants.CENTER);
+		
+		carsStates = new CellState[0][0];
+		cellReservationIds = new Integer[0][0];
+		
+		//creates the table
+		table = new JTable(new CustomTableModel());
+		table.setShowGrid(true);
+		table.setGridColor(Color.GRAY);
+		table.setRowHeight(25);
+		table.getTableHeader().setReorderingAllowed(false);
+		
+		updateTableCells();
+		
+		this.getContentPane().setLayout(new BorderLayout());
+		this.getContentPane().add(table.getTableHeader(), BorderLayout.NORTH);
+		this.getContentPane().add(new JScrollPane(table), BorderLayout.CENTER);
+		this.getContentPane().add(currentDateLabel, BorderLayout.SOUTH);
+		
+		this.setVisible(true);
+	}
+	
+	public void setupMenuBar () {
 		//setting up the menu bar
 		JMenuBar menuBar = new JMenuBar();
 		this.setJMenuBar(menuBar);
@@ -90,29 +115,7 @@ public class ReservationOverview extends JFrame {
 		viewMenu.addSeparator();
 		customerListItem = new JMenuItem(customerListItemTitle);
 		viewMenu.add(customerListItem);
-		
-		currentDateLabel = new JLabel("", SwingConstants.CENTER);
-		
-		carsStates = new CellState[0][0];
-		cellReservationIds = new Integer[0][0];
-		
-		//creates the table
-		table = new JTable(new CustomTableModel());
-		table.setShowGrid(true);
-		table.setGridColor(Color.GRAY);
-		table.setRowHeight(25);
-		table.getTableHeader().setReorderingAllowed(false);
-		
-		updateTableCells();
-		
-		this.getContentPane().setLayout(new BorderLayout());
-		this.getContentPane().add(table.getTableHeader(), BorderLayout.NORTH);
-		this.getContentPane().add(new JScrollPane(table), BorderLayout.CENTER);
-		this.getContentPane().add(currentDateLabel, BorderLayout.SOUTH);
-		
-		this.setVisible(true);
 	}
-	
 	
 	public void updateTableCells() {
 		for (int i = 0; i < table.getColumnModel().getColumnCount(); i++) {
