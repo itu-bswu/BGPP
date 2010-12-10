@@ -18,7 +18,7 @@ import java.text.ParsePosition;
  * Controller - Add/Edit Reservation
  *
  */
-public class AddEditReservationController implements ActionListener {
+public class AddEditReservationController {
 	AddEditReservation window;
 	
 	List<Map<String, Object>> cars;
@@ -28,9 +28,9 @@ public class AddEditReservationController implements ActionListener {
 	public AddEditReservationController(AddEditReservation window) {
 		this.window = window;
 		
-		window.addCancelListener(this);
-		window.addSaveListener(this);
-		window.addDeleteListener(this);
+		window.addCancelListener(new CancelListener());
+		window.addSaveListener(new SaveListener());
+		window.addDeleteListener(new DeleteListener());
 		
 		if (window.getReservationId() > -1) {
 			isEditing = true;
@@ -88,11 +88,28 @@ public class AddEditReservationController implements ActionListener {
 		}
 	}
 	
-	
-	public void actionPerformed(ActionEvent event) {
-		if (event.getActionCommand().equals(window.cancelButtonTitle)) {
+	private class CancelListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
 			window.dispose();
-		} else if (event.getActionCommand().equals(window.saveButtonTitle)) {
+		}
+	}
+	
+	private class DeleteListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			if (isEditing) {
+				int reservationId = window.getReservationId();
+				
+				Reservation reservationModel = new Reservation();
+				
+				if (reservationModel.delete(reservationId)) {
+					window.dispose();
+				}
+			}
+		}
+	}
+	
+	private class SaveListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
 			if (isEditing) {
 				Customer customerModel = new Customer();
 				int customerId = customerModel.createIfNew(window.getCustomerName(), Integer.parseInt(window.getCustomerPhone()));
@@ -127,16 +144,6 @@ public class AddEditReservationController implements ActionListener {
 				int result = reservationModel.create(customerId, carType, new java.sql.Date(startDate.getTime()), new java.sql.Date(endDate.getTime()));
 				
 				if (result > -1) {
-					window.dispose();
-				}
-			}
-		} else if (event.getActionCommand().equals(window.deleteButtonTitle)) {
-			if (isEditing) {
-				int reservationId = window.getReservationId();
-				
-				Reservation reservationModel = new Reservation();
-				
-				if (reservationModel.delete(reservationId)) {
 					window.dispose();
 				}
 			}
