@@ -440,7 +440,12 @@ public class ReservationOverview extends JFrame {
 			if (column > 0) {
 				return null;
 			} else {
-				return cars.get(row).get("licensePlate");
+				String licensePlate = cars.get(row).get("licensePlate").toString();
+				licensePlate = licensePlate.substring(0, 2) + " " +
+							   licensePlate.substring(2, 4) + " " +
+							   licensePlate.substring(4);
+				return cars.get(row).get("carType") + " (" + 
+					   				 licensePlate + ")";
 			}
 		}
 		
