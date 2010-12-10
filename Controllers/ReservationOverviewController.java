@@ -18,7 +18,7 @@ import java.util.Date;
  * Controller - Reservation Overview
  *
  */
-public class ReservationOverviewController implements ActionListener, MouseListener {
+public class ReservationOverviewController {
 	ReservationOverview window;
 	
 	/**
@@ -28,13 +28,13 @@ public class ReservationOverviewController implements ActionListener, MouseListe
 	public ReservationOverviewController(ReservationOverview window) {
 		this.window = window;
 		
-		window.addNewReservationListener(this);
-		window.addCustomerListListener(this);
-		window.addTableMouseListener(this);
-		window.addPrevWeekListener(this);
-		window.addNextWeekListener(this);
-		window.addGotoListener(this);
-		window.addUpdateListener(this);
+		window.addNewReservationListener(new NewReservationListener());
+		window.addCustomerListListener(new CustomerListListener());
+		window.addTableMouseListener(new TableMouseListener());
+		window.addPrevWeekListener(new PrevWeekListener());
+		window.addNextWeekListener(new NextWeekListener());
+		window.addGotoListener(new GotoWeekListener());
+		window.addUpdateListener(new UpdateListener());
 		
 		Car carModel = new Car();
 		List<Map<String, Object>> carList = carModel.list();
@@ -66,18 +66,53 @@ public class ReservationOverviewController implements ActionListener, MouseListe
 	}
 	
 	
-	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals(window.newReservationItemTitle)) {
+	private class TableMouseListener implements MouseListener {
+		public void mouseClicked(MouseEvent e) {
+			if (e.getClickCount() == 2) {
+				int reservationId = window.getReservationForSelectedCell();
+				if (reservationId > -1) {
+					new AddEditReservationController(new AddEditReservation(reservationId));
+				}
+			}
+		}
+		
+		public void mouseEntered(MouseEvent e) {}
+		
+		public void mouseExited(MouseEvent e) {}
+		
+		public void mousePressed(MouseEvent e) {}
+		
+		public void mouseReleased(MouseEvent e) {}
+	}
+	
+	private class NewReservationListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
 			new AddEditReservationController(new AddEditReservation());
-		} else if (e.getActionCommand().equals(window.customerListItemTitle)) {
+		}
+	}
+	
+	private class CustomerListListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
 			new CustomerOverviewController(new CustomerOverview());
-		} else if (e.getActionCommand().equals(window.prevWeekItemTitle)) {
+		}
+	}
+	
+	private class PrevWeekListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
 			window.goToWeek(window.getWeek()-1, window.getYear());
 			loadReservations();
-		} else if (e.getActionCommand().equals(window.nextWeekItemTitle)) {
+		}
+	}
+	
+	private class NextWeekListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
 			window.goToWeek(window.getWeek()+1, window.getYear());
 			loadReservations();
-		} else if (e.getActionCommand().equals(window.gotoItemTitle)) {
+		}
+	}
+	
+	private class GotoWeekListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
 			Object[] weeks = new Object[52];
 			
 			int i;
@@ -89,25 +124,12 @@ public class ReservationOverviewController implements ActionListener, MouseListe
 			
 			window.goToWeek(Integer.parseInt(result), window.getYear());
 			loadReservations();
-		} else if (e.getActionCommand().equals(window.updateReservationsTitle)) {
+		}
+	}
+	
+	private class UpdateListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
 			loadReservations();
 		}
 	}
-	
-	public void mouseClicked(MouseEvent e) {
-		if (e.getClickCount() == 2) {
-			int reservationId = window.getReservationForSelectedCell();
-			if (reservationId > -1) {
-				new AddEditReservationController(new AddEditReservation(reservationId));
-			}
-		}
-	}
-	
-	public void mouseEntered(MouseEvent e) {}
-	
-	public void mouseExited(MouseEvent e) {}
-	
-	public void mousePressed(MouseEvent e) {}
-	
-	public void mouseReleased(MouseEvent e) {}
 }
