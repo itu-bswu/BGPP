@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 import java.text.SimpleDateFormat;
 import java.text.ParsePosition;
+import javax.swing.JOptionPane;
 
 /**
  * Controller - Add/Edit Reservation
@@ -129,6 +130,8 @@ public class AddEditReservationController {
 				
 				if (success) {
 					window.dispose();
+				} else {
+					JOptionPane.showMessageDialog(window, "This car is not free in the specified period", "Warning", JOptionPane.WARNING_MESSAGE);
 				}
 			} else {
 				Customer customerModel = new Customer();
@@ -145,7 +148,10 @@ public class AddEditReservationController {
 				
 				if (result > -1) {
 					window.dispose();
+				} else {
+					JOptionPane.showMessageDialog(window, "There are no free cars in the specified period", "Warning", JOptionPane.WARNING_MESSAGE);
 				}
+
 			}
 		}
 	}

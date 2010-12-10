@@ -119,7 +119,9 @@ public class ReservationOverview extends JFrame {
 	
 	public void updateTableCells() {
 		for (int i = 0; i < table.getColumnModel().getColumnCount(); i++) {
-			if (i > 0) {
+			if (i == 0) {
+				table.getColumnModel().getColumn(i).setMinWidth(175);
+			} else {
 				table.getColumnModel().getColumn(i).setCellRenderer(new CustomTableCellRenderer());
 			}
 		}

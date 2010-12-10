@@ -7,6 +7,7 @@ import Models.Reservation;
 import java.util.Map;
 import java.util.List;
 import Models.Car;
+import javax.swing.JOptionPane;
 
 /**
  * Controller - Edit Customer
@@ -51,7 +52,10 @@ public class EditCustomerController {
 			
 			if (success) {
 				window.dispose();
+			} else {
+				JOptionPane.showMessageDialog(window, "Invalid name or phone number, or phone number already exists", "Warning", JOptionPane.WARNING_MESSAGE);
 			}
+
 		}
 	}
 	
