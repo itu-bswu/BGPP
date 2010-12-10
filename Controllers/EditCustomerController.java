@@ -12,14 +12,14 @@ import Models.Car;
  * Controller - Edit Customer
  *
  */
-public class EditCustomerController implements ActionListener {
+public class EditCustomerController {
 	EditCustomer window;
 	
 	public EditCustomerController(EditCustomer window) {
 		this.window = window;
 		
-		window.addSaveListener(this);
-		window.addCancelListener(this);
+		window.addSaveListener(new SaveListener());
+		window.addCancelListener(new CancelListener());
 		
 		Customer customerModel = new Customer();
 		
@@ -38,8 +38,8 @@ public class EditCustomerController implements ActionListener {
 		window.setValues(reservations);
 	}
 	
-	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals(window.saveButtonTitle)) {
+	private class SaveListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
 			Customer customerModel = new Customer();
 			
 			int phone = 0;
@@ -52,7 +52,11 @@ public class EditCustomerController implements ActionListener {
 			if (success) {
 				window.dispose();
 			}
-		} else if (e.getActionCommand().equals(window.cancelButtonTitle)) {
+		}
+	}
+	
+	private class CancelListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
 			window.dispose();
 		}
 	}
