@@ -34,7 +34,13 @@ public class EditCustomerController {
 		
 		List<Map<String, Object>> reservations = reservationModel.list(window.getCustomerId());
 		for (Map<String, Object> object : reservations) {
-			object.put("carTitle", carModel.read((Integer)object.get("carId")).get("licensePlate"));
+			Map<String, Object> car = carModel.read((Integer)object.get("carId"));
+			String licensePlate = car.get("licensePlate").toString();
+			licensePlate = licensePlate.substring(0, 2) + " " +
+			   licensePlate.substring(2, 4) + " " +
+			   licensePlate.substring(4);
+			
+			object.put("carTitle", car.get("carTypeName").toString() + " (" + licensePlate + ")");
 		}
 		window.setValues(reservations);
 	}
