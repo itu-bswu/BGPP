@@ -11,7 +11,6 @@ import java.text.SimpleDateFormat;
 
 /**
  * View - Edit Customer
- *
  */
 public class EditCustomer extends JFrame {
 	JTable table;
@@ -27,6 +26,10 @@ public class EditCustomer extends JFrame {
 	public final String saveButtonTitle = "Save";
 	public final String cancelButtonTitle = "Cancel";
 	
+	/**
+	 * constructor, sets up the interface
+	 * @param customerId the customerId to load
+	 */
 	public EditCustomer(int customerId) {
 		super("Edit customer");
 		
@@ -84,56 +87,100 @@ public class EditCustomer extends JFrame {
 	}
 	
 	
+	/**
+	 * returns the customer in this window
+	 * @return the customer id
+	 */
 	public int getCustomerId() {
 		return customerId;
 	}
 	
 	
+	/**
+	 * sets the string shown in the phone field
+	 * @param phone the phone string
+	 */
 	public void setPhoneString(String phone) {
 		phoneInput.setText(phone);
 	}
 	
 	
+	/**
+	 * sets the string shown in the name field
+	 * @param name the name string
+	 */
 	public void setNameString(String name) {
 		nameInput.setText(name);
 	}
 	
 	
+	/**
+	 * gets the phone string currently in the phone field
+	 * @return the phone string
+	 */
 	public String getPhoneString() {
 		return phoneInput.getText();
 	}
 	
 	
+	/**
+	 * gets the name string currently in the name field
+	 * @return the name string
+	 */
 	public String getNameString() {
 		return nameInput.getText();
 	}
 	
 	
+	/**
+	 * adds an actionlistener to the save button
+	 * @param a the actionlistener instance
+	 */
 	public void addSaveListener(ActionListener a) {
 		saveButton.addActionListener(a);
 	}
 	
 	
+	/**
+	 * adds an actionlistener to the cancel button
+	 * @param a the actionlistener instance
+	 */
 	public void addCancelListener(ActionListener a) {
 		cancelButton.addActionListener(a);
 	}
 	
 	
+	/**
+	 * sets the values to be shown in the table
+	 * @param values a List of reservation Maps
+	 */
 	public void setValues(List<Map<String, Object>> values) {
 		CustomTableModel model = (CustomTableModel)table.getModel();
 		model.setValues(values);
 	}
 	
 	
+	/**
+	 * CustomTableModel class
+	 * used to control the data in the table
+	 */
 	private class CustomTableModel extends AbstractTableModel {
 		private String[] columns = { "Car", "From date", "To date" };
 		
 		private List<Map<String, Object>> values;
 		
+		/**
+		 * sets the values to be shown in the table
+		 * @param values a List of reservation Maps
+		 */
 		public void setValues(List<Map<String, Object>> content) {
 			values = content;
 		}
 		
+		/**
+		 * gets the number of rows in the table
+		 * @return number of rows
+		 */
 		public int getRowCount() {
 			if (values == null) {
 				return 0;
@@ -142,6 +189,11 @@ public class EditCustomer extends JFrame {
 			return values.size();
 		}
 		
+		
+		/**
+		 * gets the number of columns in the table
+		 * @return number of columns
+		 */
 		public int getColumnCount() {
 			if (columns == null) {
 				return 0;
@@ -150,6 +202,13 @@ public class EditCustomer extends JFrame {
 			return columns.length;
 		}
 		
+		
+		/**
+		 * gets the value of the cell
+		 * @param row the row
+		 * @param column the column
+		 * @return the object at that cell
+		 */
 		public Object getValueAt(int row, int column) {
 			SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM-yy");
 			
@@ -165,10 +224,23 @@ public class EditCustomer extends JFrame {
 			}
 		}
 		
+		
+		/**
+		 * gets the name of the column
+		 * @param column the column index
+		 * @return the name of the column
+		 */
 		public String getColumnName(int column) {
 			return columns[column];
 		}
 		
+		
+		/**
+		 * specifies wether a cell is editable or not
+		 * @param rowIndex the row index
+		 * @param columnIndex the column index
+		 * @return true if the cell is editable, false if not
+		 */
 		public boolean isCellEditable(int rowIndex, int columnIndex) {
 			return false;
 		}

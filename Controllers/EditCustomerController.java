@@ -11,11 +11,14 @@ import javax.swing.JOptionPane;
 
 /**
  * Controller - Edit Customer
- *
  */
 public class EditCustomerController {
 	EditCustomer window;
 	
+	/**
+	 * constructor, sets up the interface
+	 * @param window the window this object will be assigned with
+	 */
 	public EditCustomerController(EditCustomer window) {
 		this.window = window;
 		
@@ -42,10 +45,19 @@ public class EditCustomerController {
 			
 			object.put("carTitle", car.get("carTypeName").toString() + " (" + licensePlate + ")");
 		}
+		
 		window.setValues(reservations);
 	}
 	
+	
+	/**
+	 * class to receive actionlistener calls from the save button
+	 */
 	private class SaveListener implements ActionListener {
+		/**
+		 * handles the event
+		 * @param e the actionlistener event object
+		 */
 		public void actionPerformed(ActionEvent e) {
 			Customer customerModel = new Customer();
 			
@@ -65,7 +77,15 @@ public class EditCustomerController {
 		}
 	}
 	
+	
+	/**
+	 * class to receive actionlistener calls from the cancel button
+	 */
 	private class CancelListener implements ActionListener {
+		/**
+		 * handles the event
+		 * @param e the actionlistener event object
+		 */
 		public void actionPerformed(ActionEvent e) {
 			window.dispose();
 		}

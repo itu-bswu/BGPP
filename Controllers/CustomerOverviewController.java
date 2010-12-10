@@ -10,12 +10,15 @@ import java.util.Map;
 
 /**
  * Controller - Customer Overview
- *
  */
 public class CustomerOverviewController {
 	CustomerOverview window;
 	List<Map<String, Object>> customers;
 	
+	/**
+	 * constructor, sets up the interface
+	 * @param window the window this object with be assigned with
+	 */
 	public CustomerOverviewController(CustomerOverview window) {
 		this.window = window;
 		
@@ -27,7 +30,15 @@ public class CustomerOverviewController {
 		window.setValues(customers);
 	}
 	
+	
+	/**
+	 * class to receive actionlistener calls from the search button
+	 */
 	private class SearchListener implements ActionListener {
+		/**
+		 * handles the event
+		 * @param e the actionlistener event object
+		 */
 		public void actionPerformed(ActionEvent e) {
 			Customer customerModel = new Customer();
 			int phone = 0;
@@ -39,7 +50,15 @@ public class CustomerOverviewController {
 		}
 	}
 	
+	
+	/**
+	 * class to receive mouselistener calls from the table
+	 */
 	private class TableClickListener implements MouseListener {
+		/**
+		 * handles mouse click events
+		 * @param e the mouselistener event object
+		 */
 		public void mouseClicked(MouseEvent e) {
 			if (e.getClickCount() == 2) {
 				int row = window.getSelectedRow();
@@ -48,9 +67,28 @@ public class CustomerOverviewController {
 			}
 		}
 		
+		/**
+		 * handles mouse entered events
+		 * @param e the mouselistener event object
+		 */
 		public void mouseEntered(MouseEvent e) {}
+		
+		/**
+		 * handles mouse exited events
+		 * @param e the mouselistener event object
+		 */
 		public void mouseExited(MouseEvent e) {}
+		
+		/**
+		 * handles mouse pressed events
+		 * @param e the mouselistener event object
+		 */
 		public void mousePressed(MouseEvent e) {}
+		
+		/**
+		 * handles mouse released events
+		 * @param e the mouselistener event object
+		 */
 		public void mouseReleased(MouseEvent e) {}
 	}
 }

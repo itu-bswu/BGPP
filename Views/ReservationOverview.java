@@ -12,11 +12,9 @@ import java.util.Calendar;
 
 /**
  * View - Reservation Overview
- *
  */
 public class ReservationOverview extends JFrame {
 	/**
-	 * CellState enum
 	 * Specifices 4 constants for marking a cell as the start, middle or end of a period
 	 * Used when drawing the cells
 	 */
@@ -50,7 +48,7 @@ public class ReservationOverview extends JFrame {
 	private JLabel currentDateLabel;
 	
 	/**
-	 * ReservationOverview contructor
+	 * Constructor, sets up the interface
 	 */
 	public ReservationOverview() {
 		super("Reservations overview");
@@ -64,7 +62,6 @@ public class ReservationOverview extends JFrame {
 		carsStates = new CellState[0][0];
 		cellReservationIds = new Integer[0][0];
 		
-		//creates the table
 		table = new JTable(new CustomTableModel());
 		table.setShowGrid(true);
 		table.setGridColor(Color.GRAY);
@@ -81,8 +78,11 @@ public class ReservationOverview extends JFrame {
 		this.setVisible(true);
 	}
 	
+	
+	/**
+	 * sets up the menu bar
+	 */
 	public void setupMenuBar () {
-		//setting up the menu bar
 		JMenuBar menuBar = new JMenuBar();
 		this.setJMenuBar(menuBar);
 		
@@ -117,6 +117,10 @@ public class ReservationOverview extends JFrame {
 		viewMenu.add(customerListItem);
 	}
 	
+	
+	/**
+	 * updates the table cells by applying a default size and/or setting a custom cell rendering
+	 */
 	public void updateTableCells() {
 		for (int i = 0; i < table.getColumnModel().getColumnCount(); i++) {
 			if (i == 0) {
@@ -129,7 +133,6 @@ public class ReservationOverview extends JFrame {
 	
 	
 	/**
-	 * addNewReservationListener
 	 * add a new ActionListener to the add new reservation action
 	 * @param a the ActionListener
 	 */
@@ -139,7 +142,6 @@ public class ReservationOverview extends JFrame {
 	
 	
 	/**
-	 * addQuitListener
 	 * add a new ActionListener to the quit action
 	 * @param a the ActionListener
 	 */
@@ -149,7 +151,6 @@ public class ReservationOverview extends JFrame {
 	
 	
 	/**
-	 * addGotoListener
 	 * add a new ActionListener to the go to date action
 	 * @param a the ActionListener
 	 */
@@ -159,7 +160,6 @@ public class ReservationOverview extends JFrame {
 	
 	
 	/**
-	 * addCustomerListListener
 	 * add a new ActionListener to the show customer list action
 	 * @param a the ActionListener
 	 */
@@ -169,7 +169,6 @@ public class ReservationOverview extends JFrame {
 	
 	
 	/**
-	 * addNextWeekListener
 	 * add a new ActionListener to the previous week list action
 	 * @param a the ActionListener
 	 */
@@ -179,7 +178,6 @@ public class ReservationOverview extends JFrame {
 	
 	
 	/**
-	 * addUpdateListener
 	 * add a new ActionListener to the update reservations list action
 	 * @param a the ActionListener
 	 */
@@ -189,7 +187,6 @@ public class ReservationOverview extends JFrame {
 	
 	
 	/**
-	 * addPrevWeekListener
 	 * add a new ActionListener to the next week list action
 	 * @param a the ActionListener
 	 */
@@ -199,7 +196,6 @@ public class ReservationOverview extends JFrame {
 	
 	
 	/**
-	 * addTableMouseListener
 	 * add a new MouseListener to the table
 	 * @param m the MouseListener
 	 */
@@ -209,7 +205,6 @@ public class ReservationOverview extends JFrame {
 	
 	
 	/**
-	 * getSelectedRow
 	 * used to receive the selected row in the table
 	 * @return the selected row index
 	 */
@@ -219,7 +214,6 @@ public class ReservationOverview extends JFrame {
 	
 	
 	/**
-	 * getSelectedColumn
 	 * used to receive the selected column in the table
 	 * @return the selected column index
 	 */
@@ -229,7 +223,6 @@ public class ReservationOverview extends JFrame {
 	
 	
 	/**
-	 * getWeek
 	 * gets the current week number displayed in the table
 	 * @return the current week number
 	 */
@@ -248,7 +241,6 @@ public class ReservationOverview extends JFrame {
 	
 	
 	/**
-	 * goToWeek
 	 * changes the table to display data for the specified week number
 	 * @param weekNr the week number to change to
 	 * @param yearNr the year to change to
@@ -260,7 +252,6 @@ public class ReservationOverview extends JFrame {
 	
 	
 	/**
-	 * setCars
 	 * sets the car-rows of the table
 	 * @param carList the List of car Maps
 	 */
@@ -271,7 +262,6 @@ public class ReservationOverview extends JFrame {
 	
 	
 	/**
-	 * setReservations
 	 * sets the reservations to be shown in the table
 	 * @param reservationsList the List of reservations
 	 */
@@ -282,7 +272,6 @@ public class ReservationOverview extends JFrame {
 	
 	
 	/**
-	 * resetReservationsStates
 	 * resets the cell states for the table
 	 */
 	private void resetReservationStates() {
@@ -307,7 +296,7 @@ public class ReservationOverview extends JFrame {
 	
 	/**
 	 * CustomTableModel
-	 * 
+	 * custom table model to control the data
 	 */
 	private class CustomTableModel extends AbstractTableModel {
 		private List<Map<String, Object>> cars = null;
@@ -317,8 +306,7 @@ public class ReservationOverview extends JFrame {
 		private String[] columns = null;
 		
 		/**
-		 * CustomTableModel contructor
-		 * sets up the table model
+		 * contructor, sets up the table model
 		 */
 		public CustomTableModel() {
 			columns = new String[8];
@@ -332,7 +320,6 @@ public class ReservationOverview extends JFrame {
 		
 		
 		/**
-		 * setCars
 		 * sets the car-rows of the table
 		 * @param carList the List of car Maps
 		 */
@@ -347,7 +334,6 @@ public class ReservationOverview extends JFrame {
 		
 		
 		/**
-		 * setReservations
 		 * sets the reservations to be shown in the table
 		 * @param reservationsList the List of reservations
 		 */
@@ -387,7 +373,6 @@ public class ReservationOverview extends JFrame {
 		
 		
 		/**
-		 * goToWeek
 		 * changes the table to display data for the specified week number
 		 * @param weekNr the week number to change to
 		 * @param yearNr the year to change to
@@ -420,6 +405,10 @@ public class ReservationOverview extends JFrame {
 		}
 		
 		
+		/**
+		 * gets the number of rows in the table
+		 * @return number of rows
+		 */
 		public int getRowCount() {
 			if (cars == null) {
 				return 0;
@@ -429,6 +418,10 @@ public class ReservationOverview extends JFrame {
 		}
 		
 		
+		/**
+		 * gets the number of columns in the table
+		 * @return number of columns
+		 */
 		public int getColumnCount() {
 			if (columns == null) {
 				return 0;
@@ -438,6 +431,12 @@ public class ReservationOverview extends JFrame {
 		}
 		
 		
+		/**
+		 * gets the value of the cell
+		 * @param row the row
+		 * @param column the column
+		 * @return the object at that cell
+		 */
 		public Object getValueAt(int row, int column) {
 			if (column > 0) {
 				return null;
@@ -452,11 +451,22 @@ public class ReservationOverview extends JFrame {
 		}
 		
 		
+		/**
+		 * gets the name of the column
+		 * @param column the column index
+		 * @return the name of the column
+		 */
 		public String getColumnName(int column) {
 			return columns[column];
 		}
 		
 		
+		/**
+		 * specifies wether a cell is editable or not
+		 * @param rowIndex the row index
+		 * @param columnIndex the column index
+		 * @return true if the cell is editable, false if not
+		 */
 		public boolean isCellEditable(int rowIndex, int columnIndex) {
 			return false;
 		}
@@ -476,7 +486,7 @@ public class ReservationOverview extends JFrame {
 		 * getTableCellRendererComponent
 		 * method defined in table.TableCellRenderer
 		 * @param table the table
-		 * @param value ??
+		 * @param value the value of the cell
 		 * @param selected wether the cell is selected or not
 		 * @param focus wether the cell is in focus or not
 		 * @param row the cell's row index
@@ -491,7 +501,6 @@ public class ReservationOverview extends JFrame {
 		}
 		
 		/**
-		 * paintComponent
 		 * draws the cell contents
 		 * @param g the Graphics object
 		 */

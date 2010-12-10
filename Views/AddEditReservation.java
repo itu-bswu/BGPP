@@ -11,7 +11,6 @@ import java.text.SimpleDateFormat;
 
 /**
  * View - Add/Edit Reservation
- *
  */
 public class AddEditReservation extends JFrame {
 	private int thisReservation;
@@ -118,6 +117,10 @@ public class AddEditReservation extends JFrame {
 	}
 	
 	
+	/**
+	 * specifies wether it is editing an existing reservation or creating a new one
+	 * @param isEditing true if it's an editing, false if it's a new
+	 */
 	public void setIsEditing(boolean isEditing) {
 		if (isEditing) {
 			deleteButton.setVisible(true);
@@ -130,31 +133,55 @@ public class AddEditReservation extends JFrame {
 	}
 	
 	
+	/**
+	 * gets the string in the name field
+	 * @return the name string
+	 */
 	public String getCustomerName() {
 		return customerNameInput.getText();
 	}
 	
 	
+	/**
+	 * gets the string in the phone field
+	 * @return the phone string
+	 */
 	public String getCustomerPhone() {
 		return customerPhoneInput.getText();
 	}
 	
 	
+	/**
+	 * gets the selected car type
+	 * @return the selected index
+	 */
 	public int getSelectedCarTypeIndex() {
 		return carTypeSelect.getSelectedIndex();
 	}
 	
 	
+	/**
+	 * gets the string in the start date
+	 * @return the start date string
+	 */
 	public String getStartDate() {
 		return fromDateInput.getText();
 	}
 	
 	
+	/**
+	 * gets the string in the end date
+	 * @return the end date string
+	 */
 	public String getEndDate() {
 		return toDateInput.getText();
 	}
 	
 	
+	/**
+	 * sets the shown car types
+	 * @param carTypes string array of car type descriptions
+	 */
 	public void setCarTypes(String[] carTypes) {
 		for (String s : carTypes) {
 			carTypeSelect.addItem(s);
@@ -162,6 +189,14 @@ public class AddEditReservation extends JFrame {
 	}
 	
 	
+	/**
+	 * sets the data to be shown
+	 * @param customerName the string to be shown in the name field
+	 * @param customerPhone the string to be shown in the phone field
+	 * @param fromDate the date object to be parsed and shown in the from date field
+	 * @param toDate the date object to be parsed and shown in the to date field
+	 * @param carType the car type index to be chosen in the car type combobox
+	 */
 	public void setData(String customerName, String customerPhone, Date fromDate, Date toDate, int carType) {
 		SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM-yy");
 		fromDateInput.setText(dateFormatter.format(fromDate));
@@ -172,21 +207,37 @@ public class AddEditReservation extends JFrame {
 	}
 	
 	
+	/**
+	 * get the reservation id currently being edited
+	 * @return the reservation id;
+	 */
 	public int getReservationId() {
 		return thisReservation;
 	}
 	
 	
+	/**
+	 * adds an actionlistener to the cancel button
+	 * @param a the actionlistener instance
+	 */
 	public void addCancelListener(ActionListener a) {
 		cancelButton.addActionListener(a);
 	}
 	
 	
+	/**
+	 * adds an actionlistener to the delete button
+	 * @param a the actionlistener instance
+	 */
 	public void addDeleteListener(ActionListener a) {
 		deleteButton.addActionListener(a);
 	}
 	
 	
+	/**
+	 * adds an actionlistener to the save button
+	 * @param a the actionlistener instance
+	 */
 	public void addSaveListener(ActionListener a) {
 		saveButton.addActionListener(a);
 	}

@@ -17,7 +17,6 @@ import javax.swing.JOptionPane;
 
 /**
  * Controller - Add/Edit Reservation
- *
  */
 public class AddEditReservationController {
 	AddEditReservation window;
@@ -26,6 +25,10 @@ public class AddEditReservationController {
 	
 	boolean isEditing;
 	
+	/**
+	 * constructor, sets up the interface
+	 * @param window the window this object will be assigned with
+	 */
 	public AddEditReservationController(AddEditReservation window) {
 		this.window = window;
 		
@@ -89,13 +92,29 @@ public class AddEditReservationController {
 		}
 	}
 	
+	
+	/**
+	 * class to receieve actionlistener calls from the go to cancel button
+	 */
 	private class CancelListener implements ActionListener {
+		/**
+		 * handles the event
+		 * @param e the actionlistener event object
+		 */
 		public void actionPerformed(ActionEvent e) {
 			window.dispose();
 		}
 	}
 	
+	
+	/**
+	 * class to receieve actionlistener calls from the go to delete button
+	 */
 	private class DeleteListener implements ActionListener {
+		/**
+		 * handles the event
+		 * @param e the actionlistener event object
+		 */
 		public void actionPerformed(ActionEvent e) {
 			if (isEditing) {
 				int reservationId = window.getReservationId();
@@ -109,7 +128,15 @@ public class AddEditReservationController {
 		}
 	}
 	
+	
+	/**
+	 * class to receieve actionlistener calls from the go to save button
+	 */
 	private class SaveListener implements ActionListener {
+		/**
+		 * handles the event
+		 * @param e the actionlistener event object
+		 */
 		public void actionPerformed(ActionEvent e) {
 			if (isEditing) {
 				Customer customerModel = new Customer();

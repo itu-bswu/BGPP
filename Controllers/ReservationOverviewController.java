@@ -16,7 +16,6 @@ import java.util.Date;
 
 /**
  * Controller - Reservation Overview
- *
  */
 public class ReservationOverviewController {
 	ReservationOverview window;
@@ -48,6 +47,9 @@ public class ReservationOverviewController {
 	}
 	
 	
+	/**
+	 * loads reservations to be shown in the overview table
+	 */
 	public void loadReservations() {
 		Calendar dates = Calendar.getInstance();
 		dates.setFirstDayOfWeek(Calendar.MONDAY);
@@ -66,7 +68,14 @@ public class ReservationOverviewController {
 	}
 	
 	
+	/**
+	 * class to recieve mouselistener calls from the table
+	 */
 	private class TableMouseListener implements MouseListener {
+		/**
+		 * handles mouse click events
+		 * @param e the mouselistener event object
+		 */
 		public void mouseClicked(MouseEvent e) {
 			if (e.getClickCount() == 2) {
 				int reservationId = window.getReservationForSelectedCell();
@@ -76,42 +85,98 @@ public class ReservationOverviewController {
 			}
 		}
 		
+		/**
+		 * handles mouse entered events
+		 * @param e the mouselistener event object
+		 */
 		public void mouseEntered(MouseEvent e) {}
 		
+		/**
+		 * handles mouse exited events
+		 * @param e the mouselistener event object
+		 */
 		public void mouseExited(MouseEvent e) {}
 		
+		/**
+		 * handles mouse pressed events
+		 * @param e the mouselistener event object
+		 */
 		public void mousePressed(MouseEvent e) {}
 		
+		/**
+		 * handles mouse released events
+		 * @param e the mouselistener event object
+		 */
 		public void mouseReleased(MouseEvent e) {}
 	}
 	
+	
+	/**
+	 * class to receieve actionlistener calls from the new reservations menu item
+	 */
 	private class NewReservationListener implements ActionListener {
+		/**
+		 * handles the event
+		 * @param e the actionlistener event object
+		 */
 		public void actionPerformed(ActionEvent e) {
 			new AddEditReservationController(new AddEditReservation());
 		}
 	}
 	
+	
+	/**
+	 * class to receieve actionlistener calls from the list customers menu item
+	 */
 	private class CustomerListListener implements ActionListener {
+		/**
+		 * handles the event
+		 * @param e the actionlistener event object
+		 */
 		public void actionPerformed(ActionEvent e) {
 			new CustomerOverviewController(new CustomerOverview());
 		}
 	}
 	
+	
+	/**
+	 * class to receieve actionlistener calls from the previous week menu item
+	 */
 	private class PrevWeekListener implements ActionListener {
+		/**
+		 * handles the event
+		 * @param e the actionlistener event object
+		 */
 		public void actionPerformed(ActionEvent e) {
 			window.goToWeek(window.getWeek()-1, window.getYear());
 			loadReservations();
 		}
 	}
 	
+	
+	/**
+	 * class to receieve actionlistener calls from the next week menu item
+	 */
 	private class NextWeekListener implements ActionListener {
+		/**
+		 * handles the event
+		 * @param e the actionlistener event object
+		 */
 		public void actionPerformed(ActionEvent e) {
 			window.goToWeek(window.getWeek()+1, window.getYear());
 			loadReservations();
 		}
 	}
 	
+	
+	/**
+	 * class to receieve actionlistener calls from the go to week menu item
+	 */
 	private class GotoWeekListener implements ActionListener {
+		/**
+		 * handles the event
+		 * @param e the actionlistener event object
+		 */
 		public void actionPerformed(ActionEvent e) {
 			Object[] weeks = new Object[52];
 			
@@ -127,7 +192,15 @@ public class ReservationOverviewController {
 		}
 	}
 	
+	
+	/**
+	 * class to receieve actionlistener calls from the update reservations menu item
+	 */
 	private class UpdateListener implements ActionListener {
+		/**
+		 * handles the event
+		 * @param e the actionlistener event object
+		 */
 		public void actionPerformed(ActionEvent e) {
 			loadReservations();
 		}
