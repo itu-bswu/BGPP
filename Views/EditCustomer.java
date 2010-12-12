@@ -23,9 +23,6 @@ public class EditCustomer extends JFrame {
 	
 	int customerId;
 	
-	public final String saveButtonTitle = "Save";
-	public final String cancelButtonTitle = "Cancel";
-	
 	/**
 	 * constructor, sets up the interface
 	 * @param customerId the customerId to load

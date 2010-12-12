@@ -62,7 +62,6 @@ public class CustomerOverviewController {
 		public void mouseClicked(MouseEvent e) {
 			if (e.getClickCount() == 2) {
 				int row = window.getSelectedRow();
-				int column = window.getSelectedColumn();
 				new EditCustomerController(new EditCustomer((Integer)customers.get(row).get("id")));
 			}
 		}

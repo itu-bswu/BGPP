@@ -3,11 +3,11 @@ import Controllers.*;
 
 /**
  * Main - Main class
- *
  */
 public class Main {
 	public static void main(String[] args) {
-		ReservationOverview window = new ReservationOverview();
+		ReservationOverview window = ReservationOverview.getInstance();
 		ReservationOverviewController controller = new ReservationOverviewController(window);
+		window.setController(controller);
 	}
 }

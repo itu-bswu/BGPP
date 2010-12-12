@@ -5,6 +5,7 @@ import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.*;
 import Models.*;
+import Controllers.ReservationOverviewController;
 import java.util.Map;
 import java.util.Date;
 import java.util.List;
@@ -33,13 +34,6 @@ public class ReservationOverview extends JFrame {
 	private JMenuItem customerListItem;
 	private JMenuItem updateReservationsItem;
 	
-	public final String customerListItemTitle = "View customer list...";
-	public final String newReservationItemTitle = "New reservation...";
-	public final String prevWeekItemTitle = "Previous week";
-	public final String nextWeekItemTitle = "Next week";
-	public final String gotoItemTitle = "Go to week...";
-	public final String updateReservationsTitle = "Reload reservations";
-	
 	private JTable table;
 	
 	private int week;
@@ -47,10 +41,38 @@ public class ReservationOverview extends JFrame {
 	
 	private JLabel currentDateLabel;
 	
+	private ReservationOverviewController controller;
+	
+	static ReservationOverview instance = null;
+	
+	
+	/**
+	 * gets the shared instance of this window
+	 * @return the shared instance
+	 */
+	public static ReservationOverview getInstance() {
+		if (instance == null) {
+			instance = new ReservationOverview();
+		}
+		
+		return instance;
+	}
+	
+	
+	public void setController(ReservationOverviewController controller) {
+		this.controller = controller;
+	}
+	
+	
+	public ReservationOverviewController getController() {
+		return controller;
+	}
+	
+	
 	/**
 	 * Constructor, sets up the interface
 	 */
-	public ReservationOverview() {
+	protected ReservationOverview() {
 		super("Reservations overview");
 		
 		this.setSize(800, 400);
@@ -89,7 +111,7 @@ public class ReservationOverview extends JFrame {
 		JMenu fileMenu = new JMenu("File");
 		menuBar.add(fileMenu);
 		
-		newReservationItem = new JMenuItem(newReservationItemTitle);
+		newReservationItem = new JMenuItem("New reservation...");
 		fileMenu.add(newReservationItem);
 		
 		fileMenu.addSeparator();
@@ -99,36 +121,22 @@ public class ReservationOverview extends JFrame {
 		JMenu viewMenu = new JMenu("View");
 		menuBar.add(viewMenu);
 		
-		prevWeekItem = new JMenuItem(prevWeekItemTitle);
+		prevWeekItem = new JMenuItem("Previous week");
 		viewMenu.add(prevWeekItem);
 		
-		nextWeekItem = new JMenuItem(nextWeekItemTitle);
+		nextWeekItem = new JMenuItem("Next week");
 		viewMenu.add(nextWeekItem);
 		
-		gotoItem = new JMenuItem(gotoItemTitle);
+		gotoItem = new JMenuItem("Go to week...");
 		viewMenu.add(gotoItem);
 		
 		viewMenu.addSeparator();
-		updateReservationsItem = new JMenuItem(updateReservationsTitle);
+		updateReservationsItem = new JMenuItem("Reload reservations");
 		viewMenu.add(updateReservationsItem);
 		
 		viewMenu.addSeparator();
-		customerListItem = new JMenuItem(customerListItemTitle);
+		customerListItem = new JMenuItem("View customer list...");
 		viewMenu.add(customerListItem);
-	}
-	
-	
-	/**
-	 * updates the table cells by applying a default size and/or setting a custom cell rendering
-	 */
-	public void updateTableCells() {
-		for (int i = 0; i < table.getColumnModel().getColumnCount(); i++) {
-			if (i == 0) {
-				table.getColumnModel().getColumn(i).setMinWidth(175);
-			} else {
-				table.getColumnModel().getColumn(i).setCellRenderer(new CustomTableCellRenderer());
-			}
-		}
 	}
 	
 	
@@ -272,6 +280,20 @@ public class ReservationOverview extends JFrame {
 	
 	
 	/**
+	 * updates the table cells by applying a default size and/or setting a custom cell rendering
+	 */
+	public void updateTableCells() {
+		for (int i = 0; i < table.getColumnModel().getColumnCount(); i++) {
+			if (i == 0) {
+				table.getColumnModel().getColumn(i).setMinWidth(175);
+			} else {
+				table.getColumnModel().getColumn(i).setCellRenderer(new CustomTableCellRenderer());
+			}
+		}
+	}
+	
+	
+	/**
 	 * resets the cell states for the table
 	 */
 	private void resetReservationStates() {
@@ -311,11 +333,6 @@ public class ReservationOverview extends JFrame {
 		public CustomTableModel() {
 			columns = new String[8];
 			columns[0] = "Car";
-			
-			int i;
-			for (i = 1; i < 8; i++) {
-				columns[i] = "";
-			}
 		}
 		
 		

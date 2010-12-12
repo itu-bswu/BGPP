@@ -1,6 +1,8 @@
 package Controllers;
 
 import Views.AddEditReservation;
+import Views.ReservationOverview;
+import Controllers.ReservationOverviewController;
 import java.util.Calendar;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -54,9 +56,6 @@ public class AddEditReservationController {
 			Map<String, Object> customerObject = customerModel.read(customer);
 			String customerName = (String)customerObject.get("name");
 			int customerPhone = (Integer)customerObject.get("phone");
-			
-			Map<String, Object> carObject = carModel.read(car);
-			int carId = (Integer)carObject.get("id");
 			
 			cars = carModel.list();
 			String[] carNames = new String[cars.size()];
@@ -123,6 +122,7 @@ public class AddEditReservationController {
 				
 				if (reservationModel.delete(reservationId)) {
 					window.dispose();
+					ReservationOverview.getInstance().getController().loadReservations();
 				}
 			}
 		}
@@ -148,8 +148,6 @@ public class AddEditReservationController {
 				Date startDate = dateFormatter.parse(window.getStartDate(), new ParsePosition(0));
 				Date endDate = dateFormatter.parse(window.getEndDate(), new ParsePosition(0));
 				
-				System.out.println("id: " + window.getSelectedCarTypeIndex() + ", car: " + cars.get(window.getSelectedCarTypeIndex()));
-				
 				int reservationId = window.getReservationId();
 				int carId = (Integer)cars.get(window.getSelectedCarTypeIndex()).get("id");
 				
@@ -157,6 +155,7 @@ public class AddEditReservationController {
 				
 				if (success) {
 					window.dispose();
+					ReservationOverview.getInstance().getController().loadReservations();
 				} else {
 					JOptionPane.showMessageDialog(window, "This car is not free in the specified period", "Warning", JOptionPane.WARNING_MESSAGE);
 				}
@@ -175,6 +174,7 @@ public class AddEditReservationController {
 				
 				if (result > -1) {
 					window.dispose();
+					ReservationOverview.getInstance().getController().loadReservations();
 				} else {
 					JOptionPane.showMessageDialog(window, "There are no free cars in the specified period", "Warning", JOptionPane.WARNING_MESSAGE);
 				}
