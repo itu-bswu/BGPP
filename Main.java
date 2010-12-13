@@ -1,5 +1,6 @@
 import Views.*;
 import Controllers.*;
+import javax.swing.JFrame;
 
 /**
  * Main - Main class
@@ -9,5 +10,6 @@ public class Main {
 		ReservationOverview window = ReservationOverview.getInstance();
 		ReservationOverviewController controller = new ReservationOverviewController(window);
 		window.setController(controller);
+		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 }

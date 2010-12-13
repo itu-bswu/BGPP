@@ -144,9 +144,8 @@ public class AddEditReservationController {
 				
 				Reservation reservationModel = new Reservation();
 				
-				SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM-yy");
-				Date startDate = dateFormatter.parse(window.getStartDate(), new ParsePosition(0));
-				Date endDate = dateFormatter.parse(window.getEndDate(), new ParsePosition(0));
+				Date startDate = window.getStartDate();
+				Date endDate = window.getEndDate();
 				
 				int reservationId = window.getReservationId();
 				int carId = (Integer)cars.get(window.getSelectedCarTypeIndex()).get("id");
@@ -166,9 +165,8 @@ public class AddEditReservationController {
 				
 				Reservation reservationModel = new Reservation();
 				
-				SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM-yy");
-				Date startDate = dateFormatter.parse(window.getStartDate(), new ParsePosition(0));
-				Date endDate = dateFormatter.parse(window.getEndDate(), new ParsePosition(0));
+				Date startDate = window.getStartDate();
+				Date endDate = window.getEndDate();
 				
 				int result = reservationModel.create(customerId, carType, new java.sql.Date(startDate.getTime()), new java.sql.Date(endDate.getTime()));
 				

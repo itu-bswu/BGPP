@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Date;
 import java.awt.event.ActionListener;
 import Models.*;
-import java.text.SimpleDateFormat;
+import com.michaelbaranov.microba.calendar.DatePicker;
 
 /**
  * View - Add/Edit Reservation
@@ -16,10 +16,11 @@ public class AddEditReservation extends JFrame {
 	private int thisReservation;
 	
 	private JComboBox carTypeSelect;
-	private JTextField fromDateInput;
-	private JTextField toDateInput;
 	private JTextField customerNameInput;
 	private JTextField customerPhoneInput;
+	
+	private DatePicker fromDatePicker;
+	private DatePicker toDatePicker;
 	
 	public final String cancelButtonTitle = "Cancel";
 	public final String saveButtonTitle = "Save";
@@ -87,11 +88,11 @@ public class AddEditReservation extends JFrame {
 		carTypeSelect = new JComboBox();
 		inputPanel.add(carTypeSelect);
 		
-		fromDateInput = new JTextField();
-		inputPanel.add(fromDateInput);
+		fromDatePicker = new DatePicker();
+		inputPanel.add(fromDatePicker);
 		
-		toDateInput = new JTextField();
-		inputPanel.add(toDateInput);
+		toDatePicker = new DatePicker();
+		inputPanel.add(toDatePicker);
 		
 		customerNameInput = new JTextField();
 		inputPanel.add(customerNameInput);
@@ -164,8 +165,8 @@ public class AddEditReservation extends JFrame {
 	 * gets the string in the start date
 	 * @return the start date string
 	 */
-	public String getStartDate() {
-		return fromDateInput.getText();
+	public Date getStartDate() {
+		return fromDatePicker.getDate();
 	}
 	
 	
@@ -173,8 +174,8 @@ public class AddEditReservation extends JFrame {
 	 * gets the string in the end date
 	 * @return the end date string
 	 */
-	public String getEndDate() {
-		return toDateInput.getText();
+	public Date getEndDate() {
+		return toDatePicker.getDate();
 	}
 	
 	
@@ -198,9 +199,12 @@ public class AddEditReservation extends JFrame {
 	 * @param carType the car type index to be chosen in the car type combobox
 	 */
 	public void setData(String customerName, String customerPhone, Date fromDate, Date toDate, int carType) {
-		SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM-yy");
-		fromDateInput.setText(dateFormatter.format(fromDate));
-		toDateInput.setText(dateFormatter.format(toDate));
+		
+		try {
+			fromDatePicker.setDate(fromDate);
+			toDatePicker.setDate(toDate);
+		} catch (Exception e) {}
+		
 		customerNameInput.setText(customerName);
 		customerPhoneInput.setText(customerPhone);
 		carTypeSelect.setSelectedIndex(carType);
