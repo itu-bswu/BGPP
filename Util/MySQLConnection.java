@@ -27,10 +27,11 @@ public class MySQLConnection {
 	protected MySQLConnection () {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			/*this.conn = DriverManager.getConnection
-				("jdbc:mysql://mysql.itu.dk/rent_a_car", "rac", "vand22kanon");*/
 			this.conn = DriverManager.getConnection
-			("jdbc:mysql://customerwise.dk/rac", "rac", "vand22kanon");
+				("jdbc:mysql://mysql.itu.dk/rent_a_car", "rac", "vand22kanon");
+			// Temporary database
+			/*this.conn = DriverManager.getConnection
+			("jdbc:mysql://customerwise.dk/rac", "rac", "vand22kanon");*/
 		} catch (SQLException e) {
 			Logger.write("Couldn't open database connection: " + e.getMessage());
 		} catch (ClassNotFoundException e) {
