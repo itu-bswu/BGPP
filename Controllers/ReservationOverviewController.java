@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import Util.Logger;
+import javax.swing.JOptionPane;
 
 /**
  * Controller - Reservation Overview
@@ -36,7 +38,15 @@ public class ReservationOverviewController {
 		window.addUpdateListener(new UpdateListener());
 		
 		Car carModel = new Car();
-		List<Map<String, Object>> carList = carModel.list();
+		List<Map<String, Object>> carList = null;
+		try {
+			carList = carModel.list();
+		} catch (NullPointerException e) {
+			Logger.write("could not connect to database");
+			JOptionPane.showMessageDialog(window, "Could not connect to the database", "Warning", JOptionPane.WARNING_MESSAGE);
+			window.dispose();
+			return;
+		}
 		window.setCars(carList);
 		
 		Calendar currentTime = Calendar.getInstance();
